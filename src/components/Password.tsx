@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import styles from "./Login";
+import styles from "../../Login";
 import { useNavigation } from "@react-navigation/native";
 
 export default function Password(){

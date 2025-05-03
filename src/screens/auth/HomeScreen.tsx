@@ -9,9 +9,9 @@ import {
 } from "react-native";
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import styles from "../StyleHome";
-import BottomMenu from "../ButtonMenu";
-import vinhosData from '../vinhos.json';
+import styles from "../../../StyleHome";
+import BottomMenu from "../../components/ButtonMenu";
+import vinhosData from '../../../vinhos.json';
 
 const Home = () => {
   const insets = useSafeAreaInsets();
