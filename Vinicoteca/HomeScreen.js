@@ -1,0 +1,155 @@
+import React from "react";
+import { 
+  View, 
+  Text, 
+  TextInput, 
+  ScrollView, 
+  Image, 
+  TouchableOpacity
+} from "react-native";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import styles from "./StyleHome";
+import vinhosData from './vinhos.json';
+
+const Home = () => {
+  const insets = useSafeAreaInsets();
+  const vinhosTintos = vinhosData.filter(vinho => vinho.tipo === "Tinto");
+  const topAvaliados = [...vinhosData]
+    .sort((a, b) => b.avaliacao - a.avaliacao)
+    .slice(0, 5);
+
+  return (
+    <View style={{ flex: 1 }}>
+      {/* Main Content */}
+      <ScrollView 
+        style={{ 
+          flex: 1, 
+          backgroundColor: "white",
+        }}
+        contentContainerStyle={{
+          paddingTop: insets.top + 15, // Espaço seguro + margem
+          paddingBottom: 70 + insets.bottom // Espaço para o menu
+        }}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.container}>
+          {/* Header */}
+          <View style={styles.containerTitle}>
+            <Text style={styles.title}>Vinicoteca</Text>
+          </View>
+
+
+          {/* Search Bar */}
+        <View style={styles.containerSearch}>
+        <MaterialCommunityIcons 
+            name="magnify" 
+            size={20} 
+            color="#6B2737" 
+            style={styles.searchIcon}
+        />
+        <TextInput 
+            style={styles.textInput}
+            placeholder="Buscar vinho..."
+            placeholderTextColor="#6B7280"
+        />
+        </View>
+
+          {/* For You Section */}
+          <View style={styles.containerSub}>
+            <Text style={styles.subtittle}>Para você</Text>
+          </View>
+
+          <ScrollView 
+            style={[styles.containerCard, { marginBottom: 20, marginStart: 15 }]}
+            horizontal 
+            showsHorizontalScrollIndicator={false}
+          >
+            {vinhosTintos.map(vinho => (
+              <View key={vinho.id} style={styles.card}>
+                <Image 
+                  source={{ uri: vinho.imagem }} 
+                  style={styles.image}
+                  resizeMode="contain"
+                />
+                <Text style={styles.nome} numberOfLines={1}>{vinho.nome}</Text>
+                <View style={styles.linha}>
+                  <Text style={styles.nota}>⭐ {vinho.avaliacao.toFixed(1)}</Text>
+                  <Text style={styles.preco}>R$ {vinho.preco.toFixed(2)}</Text>
+                </View>
+              </View>
+            ))}
+          </ScrollView>
+
+          {/* Wines by Region */}
+          <View style={[styles.containerSub, { marginTop: 10 }]}>
+            <Text style={styles.subtittle}>Vinhos por região</Text>
+          </View>
+
+          <View style={styles.containerMap}>
+            <Text style={{ textAlign: 'center', marginTop: 60, color: '#666' }}>
+              Mapa das regiões vinícolas
+            </Text>
+          </View>
+
+          {/* Top Rated Section */}
+          <View style={[styles.containerSub, { marginTop: 15 }]}>
+            <Text style={styles.subtittle}>Top bem avaliados</Text>
+          </View>
+
+          <ScrollView 
+            style={[styles.containerCard, { marginBottom: 20, marginStart: 15 }]}
+            horizontal 
+            showsHorizontalScrollIndicator={false}
+          >
+            {topAvaliados.map(vinho => (
+              <View key={vinho.id} style={styles.card}>
+                <Image 
+                  source={{ uri: vinho.imagem }} 
+                  style={styles.image}
+                  resizeMode="contain"
+                />
+                <Text style={styles.nome} numberOfLines={1}>{vinho.nome}</Text>
+                <View style={styles.linha}>
+                  <Text style={styles.nota}>⭐ {vinho.avaliacao.toFixed(1)}</Text>
+                  <Text style={styles.preco}>R$ {vinho.preco.toFixed(2)}</Text>
+                </View>
+              </View>
+            ))}
+          </ScrollView>
+        </View>
+      </ScrollView>
+
+      {/* Bottom Navigation Menu */}
+      <View style={[
+        styles.bottomMenu,
+        { 
+          paddingBottom: insets.bottom,
+          height: 60 + insets.bottom 
+        }
+      ]}>
+        <TouchableOpacity style={styles.menuItem}>
+          <MaterialCommunityIcons name="home" size={26} color="#6B2737" />
+          <Text style={styles.menuText}>Início</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.menuItem}>
+          <MaterialCommunityIcons name="glass-wine" size={26} color="#6B2737" />
+          <Text style={styles.menuText}>Biblioteca</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.menuItem}>
+          <MaterialCommunityIcons name="bottle-wine" size={26} color="#6B2737" />
+          <Text style={styles.menuText}>Minha Adega</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.menuItem}>
+          <MaterialCommunityIcons name="store" size={26} color="#6B2737" />
+          <Text style={styles.menuText}>Loja</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
+export default Home;

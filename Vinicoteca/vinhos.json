@@ -1,0 +1,47 @@
+[
+    {
+      "id": 1,
+      "nome": "Cabernet Sauvignon",
+      "regiao": "Vale do Maipo, Chile",
+      "avaliacao": 4.5,
+      "preco": 89.90,
+      "tipo": "Tinto",
+      "imagem": "https://http2.mlstatic.com/D_NQ_NP_2X_654950-MLB81387871238_122024-F-vinho-chileno-don-melchor-cabernet-sauvignon-2021-750ml.webp"
+    },
+    {
+      "id": 2,
+      "nome": "Malbec Gran",
+      "regiao": "Mendoza, Argentina",
+      "avaliacao": 4.8,
+      "preco": 109.00,
+      "tipo": "Tinto",
+      "imagem": "https://http2.mlstatic.com/D_NQ_NP_2X_920725-MLU75012992283_032024-F.webp"
+    },
+    {
+      "id": 3,
+      "nome": "Chardonnay",
+      "regiao": "Serra Gaúcha, Brasil",
+      "avaliacao": 4.2,
+      "preco": 75.50,
+      "tipo": "Branco",
+      "imagem": "https://http2.mlstatic.com/D_NQ_NP_2X_813541-MLU75811739442_042024-F.webp"
+    },
+    {
+      "id": 4,
+      "nome": "Pinot Noir Elegance",
+      "regiao": "Borgonha, França",
+      "avaliacao": 4.9,
+      "preco": 198.00,
+      "tipo": "Tinto",
+      "imagem": "https://http2.mlstatic.com/D_NQ_NP_2X_660685-MLU74116114364_012024-F.webp"
+    },
+    {
+      "id": 5,
+      "nome": "Rosé Provence",
+      "regiao": "Provence, França",
+      "avaliacao": 4.4,
+      "preco": 95.00,
+      "tipo": "Rosé",
+      "imagem": "https://http2.mlstatic.com/D_NQ_NP_2X_966887-MLB77402295351_072024-F-vinho-frances-rose-mimi-em-provence-garrafa-750-ml.webp"
+    }
+  ]
