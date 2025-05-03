@@ -7,11 +7,11 @@ import {
   Image, 
   TouchableOpacity
 } from "react-native";
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import styles from "./StyleHome";
-import BottomMenu from "./ButtonMenu";
-import vinhosData from './vinhos.json';
+import styles from "../StyleHome";
+import BottomMenu from "../ButtonMenu";
+import vinhosData from '../vinhos.json';
 
 const Home = () => {
   const insets = useSafeAreaInsets();
@@ -43,12 +43,7 @@ const Home = () => {
 
           {/* Search Bar */}
         <View style={styles.containerSearch}>
-        <MaterialCommunityIcons 
-            name="magnify" 
-            size={20} 
-            color="#6B2737" 
-            style={styles.searchIcon}
-        />
+
         <TextInput 
             style={styles.textInput}
             placeholder="Buscar vinho..."

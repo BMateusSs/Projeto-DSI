@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import styles from "./Login";
+import styles from "../Login";
 
 export default function Login() {
     const navigation = useNavigation();

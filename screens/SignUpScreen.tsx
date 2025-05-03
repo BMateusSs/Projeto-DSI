@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import styles from "./Login";
+import styles from "../Login";
 
 export default function SignUp(){
     const navigation = useNavigation()

@@ -12,7 +12,7 @@ export default function Password(){
             
             <TextInput 
             placeholder="seu@email.com"
-            keyboardType="email-adress"
+            keyboardType="email-address"
             style={styles.containerInput}
             />
 
