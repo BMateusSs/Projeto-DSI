@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styles from "../../../Login";
 import {InputEmail, ValidatedEmailInput} from "../../components/InputEmail";
+import { ConfirmButton } from "../../components/ConfirmButton";
 
 export default function Login() {
     const navigation = useNavigation();
@@ -53,12 +54,10 @@ export default function Login() {
                     <Text style={styles.forget}>Esqueceu a senha?</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity 
-                    style={styles.containerButton}
+                <ConfirmButton
+                    title="Entrar"
                     onPress={handleLogin}
-                >
-                    <Text style={styles.textButton}>Entrar</Text>
-                </TouchableOpacity>
+                />
                 
                 <Text style={styles.option}>Ou</Text>
 

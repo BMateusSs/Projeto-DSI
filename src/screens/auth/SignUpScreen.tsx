@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styles from "../../../Login";
+import { ConfirmButton } from "../../components/ConfirmButton";
+import { InputEmail } from "../../components/InputEmail";
 
 export default function SignUp(){
     const navigation = useNavigation()
+    const [email, setEmail] = useState("");
 
     function handleLogin(){
         navigation.navigate('Login')
@@ -19,14 +22,14 @@ export default function SignUp(){
             <TextInput
             style={styles.containerInput}
             placeholder="Informe seu nome" 
-            secureTextEntry
             />
 
-            <TextInput
-            style={styles.containerInput}
-            placeholder="seu@email.com" 
-            keyboardType="email-adress"
+            <InputEmail
+                email={email}
+                onChangeEmail={setEmail}
+                hasError={false}
             />
+            
 
             <TextInput
             style={styles.containerInput}
@@ -40,11 +43,10 @@ export default function SignUp(){
             secureTextEntry
             />
 
-            <TouchableOpacity
-            style={styles.containerButton}
-            >
-                <Text style={styles.textButton}>Registrar</Text>
-            </TouchableOpacity>
+            <ConfirmButton
+                title="Registrar"
+                onPress={() => {}}
+            />
 
             <View style={styles.containerFlex}>
                 <Text style={styles.forget}>Já tem conta?</Text>
