@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../screens/auth/Login'; // Importando estilos de Login.ts
 
@@ -15,14 +15,12 @@ const Link: React.FC<LinkProps> = ({ to, label, params }) => {
   const [normalText, linkText] = label.split('*');
 
   return (
-    <Text style={styles.forget}> {/* Aplicando o estilo para o texto normal */}
-      {normalText}
+    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <Text style={styles.forget}>{normalText}</Text>
       <TouchableOpacity onPress={() => navigation.navigate(to, params)}>
-        <Text style={styles.textBold}> {/* Aplicando o estilo para o link em negrito */}
-          {linkText}
-        </Text>
+        <Text style={styles.textBold}>{linkText}</Text>
       </TouchableOpacity>
-    </Text>
+    </View>
   );
 };
 
