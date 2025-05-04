@@ -4,13 +4,11 @@ import {
   Text, 
   TextInput, 
   ScrollView, 
-  Image, 
-  TouchableOpacity
-} from "react-native";
+  Image} from "react-native";
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import styles from "../../../StyleHome";
-import BottomMenu from "../../components/ButtonMenu";
+import BottomMenu from "../../components/BottonMenu";
 import vinhosData from '../../../vinhos.json';
 
 const Home = () => {
@@ -22,26 +20,25 @@ const Home = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      {/* Main Content */}
       <ScrollView 
         style={{ 
           flex: 1, 
           backgroundColor: "white",
         }}
         contentContainerStyle={{
-          paddingTop: insets.top + 15, // Espaço seguro + margem
-          paddingBottom: 70 + insets.bottom // Espaço para o menu
+          paddingTop: insets.top + 15,
+          paddingBottom: 70 + insets.bottom 
         }}
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.container}>
-          {/* Header */}
+          
           <View style={styles.containerTitle}>
             <Text style={styles.title}>Vinicoteca</Text>
           </View>
 
 
-          {/* Search Bar */}
+          
         <View style={styles.containerSearch}>
 
         <TextInput 
@@ -51,7 +48,7 @@ const Home = () => {
         />
         </View>
 
-          {/* For You Section */}
+          
           <View style={styles.containerSub}>
             <Text style={styles.subtittle}>Para você</Text>
           </View>
@@ -77,7 +74,7 @@ const Home = () => {
             ))}
           </ScrollView>
 
-          {/* Wines by Region */}
+          
           <View style={[styles.containerSub, { marginTop: 10 }]}>
             <Text style={styles.subtittle}>Vinhos por região</Text>
           </View>
@@ -88,7 +85,7 @@ const Home = () => {
             </Text>
           </View>
 
-          {/* Top Rated Section */}
+          
           <View style={[styles.containerSub, { marginTop: 15 }]}>
             <Text style={styles.subtittle}>Top bem avaliados</Text>
           </View>

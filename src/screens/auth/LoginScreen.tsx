@@ -3,21 +3,27 @@ import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styles from "../../../Login";
 import {InputEmail, ValidatedEmailInput} from "../../components/InputEmail";
+<<<<<<< Updated upstream
 import { ConfirmButton } from "../../components/ConfirmButton";
+=======
+import { InputPassword } from "../../components/InputPassword";
+>>>>>>> Stashed changes
 
 export default function Login() {
     const navigation = useNavigation();
     const [email, setEmail] = useState("");
-    const [senha, setSenha] = useState(""); // Renomeado para manter consistência
+    const [senha, setSenha] = useState("");
+
+    const [senhaError, setSenhaError] = useState(false);
+
+
 
     function handleLogin() {
-        // Verifica campos vazios
         if (!email || !senha) {
             Alert.alert("Erro", "Preencha todos os campos!");
             return;
         }
 
-        // Validação (compare com trim() para remover espaços acidentais)
         if (email.trim() === "bruno@email.com" && senha.trim() === "12345") {
             navigation.navigate("Home");
         } else {
@@ -38,21 +44,10 @@ export default function Login() {
             <Text style={styles.title}>Bem-vindo</Text>
             
             <View style={styles.containerLogin}>
-                {/* Campo de E-mail (CORRIGIDO: onChangeText em vez de onChange) */}
+                
                 <InputEmail email={email} onChangeEmail={setEmail} hasError={true}/>
 
-                {/* Campo de Senha */}
-                <TextInput
-                    style={styles.containerInput}
-                    placeholder="Senha"
-                    secureTextEntry
-                    value={senha}
-                    onChangeText={setSenha} 
-                />
-
-                <TouchableOpacity onPress={handlePassword}>
-                    <Text style={styles.forget}>Esqueceu a senha?</Text>
-                </TouchableOpacity>
+                <InputPassword password={senha} onChangePassword={setSenha} hasError={true}/>
 
                 <ConfirmButton
                     title="Entrar"
