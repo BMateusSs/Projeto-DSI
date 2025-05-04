@@ -51,11 +51,12 @@ const styleInputPassword = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
-    paddingHorizontal: 10,
+    padding: 10,
   },
   input: {
     flex: 1,
     height: 40,
     marginRight: 10,
+    borderColor: '#fff',
   },
 });
