@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
-import {
-  TextInput,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-} from 'react-native';
-
+import { TextInput, View, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {VinicotecaTheme} from "../styles/colors";
+import { Dimensions } from 'react-native';
+
+const { width } = Dimensions.get('window'); // Obtém a largura da tela
 
 interface ValidatedPasswordInputProps {
   password: string;
@@ -24,9 +20,12 @@ export function InputPassword({
   const [visible, setVisible] = useState(false);
 
   return (
-    <View style={styleInputPassword.container}>
+    <View style={[styleInputPassword.container, { width: width * 0.8 }]}> {/* Responsividade: 80% da largura da tela */}
       <TextInput
-        style={[styleInputPassword.input, hasError && styleInputPassword.inputError]}
+        style={[
+          styleInputPassword.input, 
+          hasError && styleInputPassword.inputError
+        ]}
         value={password}
         onChangeText={onChangePassword}
         placeholder="Senha"
@@ -34,12 +33,8 @@ export function InputPassword({
         autoCapitalize="none"
       />
       <TouchableOpacity onPress={() => setVisible((v) => !v)}>
-        <Icon
-            name={visible ? 'eye-off' : 'eye'}
-            size={24}
-            color="gray"/>
+        <Icon name={visible ? 'eye-off' : 'eye'} size={24} color="gray" />
       </TouchableOpacity>
-
     </View>
   );
 }
@@ -52,10 +47,13 @@ const styleInputPassword = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 5,
     paddingHorizontal: 10,
+    marginBottom: 20,
   },
   input: {
     flex: 1,
-    height: 40,
-    marginRight: 10,
+    height: 50,
+  },
+  inputError: {
+    borderColor: 'red',
   },
 });

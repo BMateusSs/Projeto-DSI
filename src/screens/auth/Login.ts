@@ -1,6 +1,14 @@
 import { StyleSheet } from "react-native";
 import { VinicotecaTheme } from "../../styles/colors";
 
+const baseButton = {
+  width: "100%",
+  height: 58,
+  borderRadius: 10,
+  justifyContent: "center",
+  alignItems: "center",
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -36,23 +44,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   containerButton: {
+    ...baseButton,
     backgroundColor: VinicotecaTheme.colors.primary,
-    width: "100%",
-    height: 58,
-    borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
     marginBottom: 20,
   },
   containerButtonRegister: {
+    ...baseButton,
     backgroundColor: VinicotecaTheme.colors.white,
-    width: "100%",
-    height: 58,
-    borderRadius: 10,
     borderColor: VinicotecaTheme.colors.primary,
     borderWidth: 1,
-    justifyContent: "center",
-    alignItems: "center",
     marginTop: 20,
     marginBottom: 20,
   },

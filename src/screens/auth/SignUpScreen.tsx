@@ -5,10 +5,12 @@ import styles from "./Login";
 import { ConfirmButton } from "../../components/ConfirmButton";
 import { InputEmail } from "../../components/InputEmail";
 import Link from "../../components/Link";
+import { InputPassword } from "../../components/InputPassword";
 
 export default function SignUp(){
     const navigation = useNavigation()
     const [email, setEmail] = useState("");
+    const [senha, setSenha] = useState("");
 
     function handleLogin(){
         navigation.navigate('Login')
@@ -32,11 +34,7 @@ export default function SignUp(){
             />
             
 
-            <TextInput
-            style={styles.containerInput}
-            placeholder="Senha" 
-            secureTextEntry
-            />
+            <InputPassword password={senha} onChangePassword={setSenha} hasError={true}/>
 
             <TextInput
             style={styles.containerInput}

@@ -1,12 +1,15 @@
 import React from 'react';
-import { TouchableOpacity, Text, ActivityIndicator, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-// Botão vermelho
+import { TouchableOpacity, Text, ActivityIndicator, StyleSheet, Dimensions } from 'react-native';
+
+// Botão com responsividade
 interface ConfirmButtonProps {
   title: string;
   onPress: () => void;
   loading?: boolean;
   disabled?: boolean;
 }
+
+const { width, height } = Dimensions.get('window'); // Obtém a largura e altura da tela
 
 export function ConfirmButton({
   title,
@@ -16,7 +19,11 @@ export function ConfirmButton({
 }: ConfirmButtonProps) {
   return (
     <TouchableOpacity
-      style={[styles.button, (disabled || loading) && styles.buttonDisabled]}
+      style={[
+        styles.button,
+        (disabled || loading) && styles.buttonDisabled,
+        { width: width * 0.8, height: height * 0.07 }, // Responsividade: 80% da largura da tela, altura ajustada
+      ]}
       onPress={onPress}
       activeOpacity={0.8}
       disabled={disabled || loading}
@@ -32,9 +39,7 @@ export function ConfirmButton({
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#6B2737', // cor do botão
-    minWidth: '80%',
-    height: 58,
+    backgroundColor: '#6B2737', // Cor do botão
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
@@ -44,7 +49,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#9E9E9E',
   },
   text: {
-    color: 'white', // cor do texto
+    color: 'white', // Cor do texto
     fontSize: 18,
     fontWeight: 'bold',
   },
