@@ -7,7 +7,7 @@ import {
   Image} from "react-native";
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import styles from "../../../StyleHome";
+import styles from "../../styles/StyleHome";
 import BottomMenu from "../../components/BottonMenu";
 import vinhosData from '../../../vinhos.json';
 

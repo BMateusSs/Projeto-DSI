@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {VinicotecaTheme} from "../styles/colors";
 
 interface ValidatedPasswordInputProps {
   password: string;
@@ -23,9 +24,9 @@ export function InputPassword({
   const [visible, setVisible] = useState(false);
 
   return (
-    <View style={styles.container}>
+    <View style={styleInputPassword.container}>
       <TextInput
-        style={[styles.input, hasError && styles.inputError]}
+        style={[styleInputPassword.input, hasError && styleInputPassword.inputError]}
         value={password}
         onChangeText={onChangePassword}
         placeholder="Senha"
@@ -43,23 +44,18 @@ export function InputPassword({
   );
 }
 
-const styles = StyleSheet.create({
+const styleInputPassword = StyleSheet.create({
   container: {
-    margin: 10,
-  },
-  input: {
+    flexDirection: 'row',
+    alignItems: 'center',
     borderWidth: 1,
     borderColor: '#ccc',
-    padding: 10,
     borderRadius: 5,
+    paddingHorizontal: 10,
   },
-  inputError: {
-    borderColor: 'red',
-  },
-  toggleText: {
-    marginTop: 5,
-    color: 'blue',
-    fontSize: 14,
-    alignSelf: 'flex-end',
+  input: {
+    flex: 1,
+    height: 40,
+    marginRight: 10,
   },
 });

@@ -3,11 +3,9 @@ import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styles from "../../../Login";
 import {InputEmail, ValidatedEmailInput} from "../../components/InputEmail";
-<<<<<<< Updated upstream
 import { ConfirmButton } from "../../components/ConfirmButton";
-=======
 import { InputPassword } from "../../components/InputPassword";
->>>>>>> Stashed changes
+
 
 export default function Login() {
     const navigation = useNavigation();

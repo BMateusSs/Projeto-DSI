@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import styles from "../../StyleHome";
+import styles from "../styles/StyleHome";
 
 export default function BottomMenu() {
     const insets = useSafeAreaInsets();

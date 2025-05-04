@@ -4,12 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54248801-d136-4bd0-a813-51239f3dc329" name="Changes" comment="create the components files">
-      <change afterPath="$PROJECT_DIR$/src/styles/colors.ts" afterDir="false" />
+    <list default="true" id="54248801-d136-4bd0-a813-51239f3dc329" name="Changes" comment="create the variables for colors.ts">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StyleHome.ts" beforeDir="false" afterPath="$PROJECT_DIR$/StyleHome.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/InputPassword.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/InputPassword.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/auth/LoginScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/auth/LoginScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/colors.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/colors.ts" afterDir="false" />
     </list>
     <list id="271af2f5-cdd9-406c-b2d1-ceb5a8ea566b" name="Changes by albet" comment="" />
+    <list id="b1abd318-4518-4d44-bc66-672ea4fccdaf" name="Changes by MariaClara" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -49,25 +53,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;create-components&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_interpreter_path&quot;: &quot;/home/victor-yghor/.nvm/versions/node/v18.20.8/bin/node&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;npm.android.executor&quot;: &quot;Run&quot;,
-    &quot;npm.start.executor&quot;: &quot;Run&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/home/victor-yghor/Documentos/UFRPE/PISI3DSI3ES/Projeto-DSI/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "create-components",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_interpreter_path": "/home/victor-yghor/.nvm/versions/node/v18.20.8/bin/node",
+    "nodejs_package_manager_path": "npm",
+    "npm.android.executor": "Run",
+    "npm.start.executor": "Run",
+    "settings.editor.selected.configurable": "Errors",
+    "ts.external.directory.path": "/home/victor-yghor/Documentos/UFRPE/PISI3DSI3ES/Projeto-DSI/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -131,7 +135,7 @@
       <workItem from="1746294189722" duration="141000" />
       <workItem from="1746294355233" duration="2162000" />
       <workItem from="1746305029650" duration="14282000" />
-      <workItem from="1746364861831" duration="2087000" />
+      <workItem from="1746364861831" duration="3578000" />
     </task>
     <task id="LOCAL-00001" summary="change the directories of the file and use typescript">
       <option name="closed" value="true" />
@@ -181,7 +185,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746318885911</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="create the variables for colors.ts">
+      <option name="closed" value="true" />
+      <created>1746367059667</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1746367059667</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -206,6 +218,7 @@
     <MESSAGE value="fix the inputEmail" />
     <MESSAGE value="create the basic components" />
     <MESSAGE value="create the components files" />
-    <option name="LAST_COMMIT_MESSAGE" value="create the components files" />
+    <MESSAGE value="create the variables for colors.ts" />
+    <option name="LAST_COMMIT_MESSAGE" value="create the variables for colors.ts" />
   </component>
 </project>
