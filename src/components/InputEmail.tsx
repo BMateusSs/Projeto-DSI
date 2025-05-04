@@ -2,34 +2,26 @@ import React, { useState } from 'react';
 import { TextInput, Text, View, StyleSheet } from 'react-native';
 
 interface ValidatedEmailInputProps {
-  email: string;
+    email: string;
   onChangeEmail: (newEmail: string) => void;
+  hasError: Boolean;
 }
 
-export function ValidatedEmailInput({ email, onChangeEmail}: ValidatedEmailInputProps) {
-  const [isValid, setIsValid] = React.useState(true);
+export function InputEmail({ email, onChangeEmail, hasError }: ValidatedEmailInputProps) {
 
-  function handleEmailChange(text: string) {
-    onChangeEmail(text);
-    const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-    setIsValid(regex.test(text));
-  }
-
-  return (
-    <View style={styles.container}>
-      <TextInput
-        style={[styles.input, !isValid && styles.inputError]}
-        value={email}
-        onChangeText={handleEmailChange}
-        placeholder={"Digite seu Email"}
-        autoCapitalize={"none"}
-        keyboardType={"email-address"}
-      />
-      {!isValid && <Text style={styles.errorText}>Tem algo de errado com o email</Text>}
-    </View>
-  );
+    return (
+        <View style={styles.container}>
+            <TextInput
+                style={[styles.input, hasError && styles.inputError]}
+                value={email}
+                onChangeText={onChangeEmail}
+                placeholder={"Digite seu Email"}
+                autoCapitalize={"none"}
+                keyboardType={"email-address"}
+                />
+        </View>
+    );
 }
-
 
 const styles = StyleSheet.create({
     container: {
