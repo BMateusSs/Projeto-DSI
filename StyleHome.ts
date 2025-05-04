@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import {VinicotecaTheme} from "./src/styles/colors";
 
 const styles = StyleSheet.create({
     container: {
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        color: "#6B2737",
+        color: VinicotecaTheme.colors.primary,
         fontSize: 25,
         fontWeight: 'bold'
     },
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
 
     searchIcon: {
         marginRight: 8,
-        color: '#6B2737'
+        color: VinicotecaTheme.colors.primary
     },
 
     textInput: {
@@ -52,7 +53,7 @@ const styles = StyleSheet.create({
     subtittle: {
         fontSize: 20,
         fontWeight: 'bold',
-        color: '#6B2737'
+        color: VinicotecaTheme.colors.primary
     },
 
     containerCard: {
@@ -106,7 +107,7 @@ const styles = StyleSheet.create({
     preco: {
         fontSize: 14,
         fontWeight: 'bold',
-        color: '#6B2737'
+        color: VinicotecaTheme.colors.primary
     },
 
     containerMap: {
@@ -145,7 +146,7 @@ const styles = StyleSheet.create({
     
     menuText: {
         fontSize: 12,
-        color: '#6B2737',
+        color: VinicotecaTheme.colors.primary,
         marginTop: 5,
         fontWeight: '500'
     },
