@@ -5,7 +5,7 @@ import styles from "../../../Login";
 import {InputEmail, ValidatedEmailInput} from "../../components/InputEmail";
 import { ConfirmButton } from "../../components/ConfirmButton";
 import { InputPassword } from "../../components/InputPassword";
-
+import Link from "../../components/Link";
 
 export default function Login() {
     const navigation = useNavigation();
@@ -46,6 +46,8 @@ export default function Login() {
                 <InputEmail email={email} onChangeEmail={setEmail} hasError={true}/>
 
                 <InputPassword password={senha} onChangePassword={setSenha} hasError={true}/>
+
+                <Link to="Password" label="Esqueceu a senha? *Clique aqui*" />
 
                 <ConfirmButton
                     title="Entrar"

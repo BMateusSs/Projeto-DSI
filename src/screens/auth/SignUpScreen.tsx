@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import styles from "../../../Login";
 import { ConfirmButton } from "../../components/ConfirmButton";
 import { InputEmail } from "../../components/InputEmail";
+import Link from "../../components/Link";
 
 export default function SignUp(){
     const navigation = useNavigation()
@@ -48,12 +49,7 @@ export default function SignUp(){
                 onPress={() => {}}
             />
 
-            <View style={styles.containerFlex}>
-                <Text style={styles.forget}>Já tem conta?</Text>
-                <TouchableOpacity onPress={handleLogin}>
-                    <Text style={styles.textBold}>Entrar</Text>
-                </TouchableOpacity>
-            </View>
+            <Link to="Login" label="Já tem uma conta? *Entrar*"/>
 
         </View>
     )
