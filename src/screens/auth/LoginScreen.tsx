@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styles from "../../../Login";
+import {ValidatedEmailInput} from "../../components/InputEmail";
 
 export default function Login() {
     const navigation = useNavigation();
@@ -37,13 +38,7 @@ export default function Login() {
             
             <View style={styles.containerLogin}>
                 {/* Campo de E-mail (CORRIGIDO: onChangeText em vez de onChange) */}
-                <TextInput 
-                    style={styles.containerInput}
-                    placeholder="seu@email.com"
-                    value={email}
-                    onChangeText={setEmail} 
-                    keyboardType="email-address"
-                />
+                <ValidatedEmailInput email={email} onChangeEmail={setEmail} initialIsValid={true}/>
 
                 {/* Campo de Senha */}
                 <TextInput
