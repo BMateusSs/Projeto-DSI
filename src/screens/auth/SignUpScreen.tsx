@@ -17,16 +17,45 @@ export default function SignUp(){
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleSignUp = () => {
-        if (password !== confirmPassword) {
-          setErrorMessage('As senhas não coincidem');
-        } else if (password.length < 6) {
-          setErrorMessage('A senha deve ter pelo menos 6 caracteres');
-        } else {
-          setErrorMessage('');
-          
-          console.log('Usuário cadastrado');
-        }
-      };
+    
+      if (password !== confirmPassword) {
+        setErrorMessage('As senhas não coincidem');
+        return;
+      }
+    
+      if (password.length < 6) {
+        setErrorMessage('A senha deve ter pelo menos 6 caracteres');
+        return;
+      }
+    
+      const hasUpperCase = /[A-Z]/.test(password);
+      const hasLowerCase = /[a-z]/.test(password);
+      const hasNumber = /[0-9]/.test(password);
+      const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    
+      if (!hasUpperCase) {
+        setErrorMessage('A senha deve conter pelo menos uma letra maiúscula');
+        return;
+      }
+    
+      if (!hasLowerCase) {
+        setErrorMessage('A senha deve conter pelo menos uma letra minúscula');
+        return;
+      }
+    
+      if (!hasNumber) {
+        setErrorMessage('A senha deve conter pelo menos um número');
+        return;
+      }
+    
+      if (!hasSpecialChar) {
+        setErrorMessage('A senha deve conter pelo menos um caractere especial (!@#$%^&*(),.?":{}|<>)');
+        return;
+      }
+    
+      setErrorMessage('');
+      console.log('Usuário cadastrado com sucesso!');
+    };
 
     return(
         <View style={styles.container}>
@@ -64,3 +93,5 @@ export default function SignUp(){
         </View>
     )
 }
+
+
