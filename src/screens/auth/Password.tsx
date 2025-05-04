@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text } from "react-native";
-import styles from "../../../Login";
+import styles from "./Login";
 import { useNavigation } from "@react-navigation/native";
 import { ConfirmButton } from "../../components/ConfirmButton";
 import { InputEmail } from "../../components/InputEmail";

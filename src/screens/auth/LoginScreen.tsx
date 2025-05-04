@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import styles from "../../../Login";
+import styles from "./Login";
 import {InputEmail, ValidatedEmailInput} from "../../components/InputEmail";
 import { ConfirmButton } from "../../components/ConfirmButton";
 import { InputPassword } from "../../components/InputPassword";

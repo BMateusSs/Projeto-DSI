@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, ActivityIndicator, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-
+// Botão vermelho
 interface ConfirmButtonProps {
   title: string;
   onPress: () => void;

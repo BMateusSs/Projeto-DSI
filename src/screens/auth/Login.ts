@@ -1,0 +1,93 @@
+import { StyleSheet } from "react-native";
+import { VinicotecaTheme } from "../../styles/colors";
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: VinicotecaTheme.colors.white,
+  },
+  containerLogin: {
+    width: "80%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  title: {
+    fontSize: 35,
+    color: VinicotecaTheme.colors.primary,
+    fontWeight: "bold",
+    marginBottom: 80,
+  },
+  containerInput: {
+    width: "100%",
+    height: 58,
+    borderRadius: 10,
+    backgroundColor: VinicotecaTheme.colors.white,
+    borderColor: VinicotecaTheme.colors.textInputBorder,
+    borderWidth: 1,
+    padding: 20,
+    marginBottom: 20,
+  },
+  textInput: {
+    color: VinicotecaTheme.colors.textInputPlaceHolder,
+    fontSize: 18,
+  },
+  containerButton: {
+    backgroundColor: VinicotecaTheme.colors.primary,
+    width: "100%",
+    height: 58,
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  containerButtonRegister: {
+    backgroundColor: VinicotecaTheme.colors.white,
+    width: "100%",
+    height: 58,
+    borderRadius: 10,
+    borderColor: VinicotecaTheme.colors.primary,
+    borderWidth: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  textButton: {
+    color: VinicotecaTheme.colors.white,
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  textButtonRegister: {
+    color: VinicotecaTheme.colors.primary,
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  forget: {
+    fontSize: 15,
+    color: VinicotecaTheme.colors.primary,
+    marginBottom: 32,
+  },
+  option: {
+    fontSize: 15,
+    color: VinicotecaTheme.colors.primary,
+    marginBottom: 20,
+  },
+  textBold: {
+    fontSize: 15,
+    color: VinicotecaTheme.colors.primary,
+    marginBottom: 32,
+    fontWeight: "bold",
+  },
+  containerFlex: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+  },
+});
+
+export default styles;

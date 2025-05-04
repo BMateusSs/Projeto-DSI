@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TextInput, View } from 'react-native';
-import styles from "../../Login";
+import styles from "../screens/auth/Login";
 
 interface ValidatedEmailInputProps {
     email: string;
