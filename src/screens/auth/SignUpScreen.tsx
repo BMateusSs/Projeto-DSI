@@ -4,15 +4,28 @@ import { useNavigation } from "@react-navigation/native";
 import styles from "./Login";
 import { ConfirmButton } from "../../components/ConfirmButton";
 import { InputEmail } from "../../components/InputEmail";
+import CreatePassword from "../../components/CreatePassword";
 import Link from "../../components/Link";
 
 export default function SignUp(){
     const navigation = useNavigation()
     const [email, setEmail] = useState("");
 
-    function handleLogin(){
-        navigation.navigate('Login')
-    }
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const handleSignUp = () => {
+        if (password !== confirmPassword) {
+          setErrorMessage('As senhas não coincidem');
+        } else if (password.length < 6) {
+          setErrorMessage('A senha deve ter pelo menos 6 caracteres');
+        } else {
+          setErrorMessage('');
+          
+          console.log('Usuário cadastrado');
+        }
+      };
 
     return(
         <View style={styles.container}>
@@ -32,21 +45,17 @@ export default function SignUp(){
             />
             
 
-            <TextInput
-            style={styles.containerInput}
-            placeholder="Senha" 
-            secureTextEntry
-            />
-
-            <TextInput
-            style={styles.containerInput}
-            placeholder="Confirmar senha" 
-            secureTextEntry
-            />
+            <CreatePassword 
+                password={password}
+                setPassword={setPassword}
+                confirmPassword={confirmPassword}
+                setConfirmPassword={setConfirmPassword}
+                errorMessage={errorMessage}
+                />
 
             <ConfirmButton
                 title="Registrar"
-                onPress={() => {}}
+                onPress={handleSignUp}
             />
 
             <Link to="Login" label="Já tem uma conta? *Entrar*"/>
