@@ -16,7 +16,7 @@ export function InputEmail({ email, onChangeEmail, hasError }: ValidatedEmailInp
       <TextInput
         style={[
           styles.containerInput, 
-          hasError && styles.inputError, 
+          
           { width: width * 0.8 } // Responsividade: 80% da largura da tela
         ]}
         value={email}

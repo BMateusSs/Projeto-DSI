@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import styles from '../screens/auth/Login';
 
 interface CreatePasswordProps {
   password: string;
@@ -17,64 +18,40 @@ const CreatePassword: React.FC<CreatePasswordProps> = ({
   setConfirmPassword,
   errorMessage
 }) => {
-
-    const [visible, setVisible] = useState(true)
+  const [visible, setVisible] = useState(true);
+  const [confirmVisible, setConfirmVisible] = useState(true);
 
   return (
-    <View >
-        <View style={styleInputPassword.container}>
-            <TextInput
-            style={styleInputPassword.input}
-            placeholder="Senha"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry={!visible}/>
-
-            <TouchableOpacity onPress={() => setVisible((v) => !v)}>
-                <Icon name={visible ? 'eye-off' : 'eye'} size={24} color="gray" />
-            </TouchableOpacity>
-        </View>
+    <View style={styles.containerCreatePassword}>
+      <View style={styles.containerInput}>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Senha"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={!visible}
+        />
+        <TouchableOpacity onPress={() => setVisible((v) => !v)}>
+          <Icon name={visible ? 'eye-off' : 'eye'} size={24} color="gray" />
+        </TouchableOpacity>
+      </View>
       
-        <View style={styleInputPassword.container}>
-            <TextInput
-            style={styleInputPassword.input}
-            placeholder="Confirmar senha"
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            secureTextEntry/>
+      <View style={styles.containerInput}>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Confirmar senha"
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+          secureTextEntry={!confirmVisible}
+        />
+        <TouchableOpacity onPress={() => setConfirmVisible((v) => !v)}>
+          <Icon name={confirmVisible ? 'eye-off' : 'eye'} size={24} color="gray" />
+        </TouchableOpacity>
+      </View>
 
-            <TouchableOpacity onPress={() => setVisible((v) => !v)}>
-                <Icon name={visible ? 'eye-off' : 'eye'} size={24} color="gray" />
-            </TouchableOpacity>
-            
-        </View>
-      
-
-      {errorMessage && <Text>{errorMessage}</Text>}
+      {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
     </View>
   );
 };
-
-const styleInputPassword = StyleSheet.create({
-    container: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      borderWidth: 1,
-      borderColor: '#ccc',
-      borderRadius: 5,
-      padding: 10,
-      marginBottom: 20,
-      minWidth: '90%',
-    },
-    input: {
-      flex: 1,
-      
-      height: 40,
-      marginRight: 10,
-      borderColor: '#fff',
-    },
-  });
-
-
 
 export default CreatePassword;

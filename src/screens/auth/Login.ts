@@ -29,19 +29,32 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 80,
   },
+  containerCreatePassword: {
+    width: "90%"
+  },
   containerInput: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     width: "100%",
-    height: 58,
+    height: 60,
     borderRadius: 10,
     backgroundColor: VinicotecaTheme.colors.white,
-    borderColor: VinicotecaTheme.colors.textInputBorder,
+    borderColor: VinicotecaTheme.colors.primary,
     borderWidth: 1,
-    padding: 20,
-    marginBottom: 20,
+    paddingHorizontal: 20,
+    marginBottom: 15,
   },
   textInput: {
-    color: VinicotecaTheme.colors.textInputPlaceHolder,
-    fontSize: 18,
+    flex: 1,
+    fontSize: 16,
+    paddingVertical: 10,
+    marginRight: 10,
+  },
+  errorText: {
+    color: 'red',
+    marginBottom: 15,
+    marginLeft: 5,
   },
   containerButton: {
     ...baseButton,
@@ -50,6 +63,7 @@ const styles = StyleSheet.create({
   },
   containerButtonRegister: {
     ...baseButton,
+    width: '100%',
     backgroundColor: VinicotecaTheme.colors.white,
     borderColor: VinicotecaTheme.colors.primary,
     borderWidth: 1,

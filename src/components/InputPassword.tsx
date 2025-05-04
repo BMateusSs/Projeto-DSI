@@ -3,7 +3,7 @@ import { TextInput, View, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {VinicotecaTheme} from "../styles/colors";
 import { Dimensions } from 'react-native';
-
+import styles from '../screens/auth/Login';
 const { width } = Dimensions.get('window'); // Obtém a largura da tela
 
 interface ValidatedPasswordInputProps {
@@ -20,7 +20,7 @@ export function InputPassword({
   const [visible, setVisible] = useState(false);
 
   return (
-    <View style={[styleInputPassword.container, { width: width * 0.8 }]}> {/* Responsividade: 80% da largura da tela */}
+    <View style={[styles.containerInput, { width: width * 0.8 }]}> {/* Responsividade: 80% da largura da tela */}
       <TextInput
         style={[
           styleInputPassword.input, 
@@ -45,7 +45,7 @@ const styleInputPassword = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#ccc',
-    borderRadius: 5,
+    borderRadius: 10,
     padding: 10,
     marginBottom: 20,
   },
