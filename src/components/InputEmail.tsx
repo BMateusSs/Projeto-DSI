@@ -1,8 +1,6 @@
-import React from 'react';
-import { TextInput, View, Dimensions } from 'react-native';
-import styles from "../screens/auth/Login";
-
-const { width } = Dimensions.get('window');
+import React from "react";
+import { TextInput, View } from "react-native";
+import styles from "../styles/authStyles";
 
 interface ValidatedEmailInputProps {
   email: string;
@@ -10,20 +8,16 @@ interface ValidatedEmailInputProps {
   hasError: boolean;
 }
 
-export function InputEmail({ email, onChangeEmail, hasError }: ValidatedEmailInputProps) {
+export function InputEmail({ email, onChangeEmail }: ValidatedEmailInputProps) {
   return (
-    <View>
+    <View style={styles.inputContainer}>
       <TextInput
-        style={[
-          styles.containerInput, 
-          
-          { width: width * 0.8 }
-        ]}
+        style={styles.inputText}
         value={email}
         onChangeText={onChangeEmail}
-        placeholder={"Digite seu Email"}
-        autoCapitalize={"none"}
-        keyboardType={"email-address"}
+        placeholder="Digite seu Email"
+        autoCapitalize="none"
+        keyboardType="email-address"
       />
     </View>
   );

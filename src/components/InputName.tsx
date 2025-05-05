@@ -1,6 +1,6 @@
 import React from 'react';
 import { TextInput, View, Dimensions } from 'react-native';
-import styles from "../screens/auth/Login";
+import styles from "../styles/authStyles";
 
 const { width } = Dimensions.get('window');
 
@@ -12,12 +12,9 @@ interface InputNameProps {
 
 export function InputName({ value, onChangeName, placeholder = "Digite seu nome" }: InputNameProps) {
   return (
-    <View>
+    <View style={styles.inputContainer}>
       <TextInput
-        style={[
-          styles.containerInput,
-          { width: width * 0.8 },
-        ]}
+        style={[styles.inputText, { width: width * 0.8 }]}
         value={value}
         onChangeText={onChangeName}
         placeholder={placeholder}

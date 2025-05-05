@@ -1,7 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, ActivityIndicator, StyleSheet, Dimensions } from 'react-native';
 
-// Botão com responsividade
 interface ConfirmButtonProps {
   title: string;
   onPress: () => void;
@@ -9,7 +8,7 @@ interface ConfirmButtonProps {
   disabled?: boolean;
 }
 
-const { width, height } = Dimensions.get('window'); // Obtém a largura e altura da tela
+const { width, height } = Dimensions.get('window');
 
 export function ConfirmButton({
   title,
@@ -22,7 +21,7 @@ export function ConfirmButton({
       style={[
         styles.button,
         (disabled || loading) && styles.buttonDisabled,
-        { width: width * 0.8, height: height * 0.07 }, // Responsividade: 80% da largura da tela, altura ajustada
+        { width: width * 0.8, height: height * 0.07 },
       ]}
       onPress={onPress}
       activeOpacity={0.8}

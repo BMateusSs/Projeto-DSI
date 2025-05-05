@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, Dimensions } from 'react-native';
 import { VinicotecaTheme } from '../styles/colors';
-// botão branco borda vermelha
+
 interface AccountButtonProps {
   title: string;
   onPress: () => void;

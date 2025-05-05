@@ -1,10 +1,7 @@
-import React, { useState } from 'react';
-import { TextInput, View, StyleSheet, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {VinicotecaTheme} from "../styles/colors";
-import { Dimensions } from 'react-native';
-import styles from '../screens/auth/Login';
-const { width } = Dimensions.get('window'); // Obtém a largura da tela
+import React, { useState } from "react";
+import { TextInput, View, TouchableOpacity } from "react-native";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import styles from "../styles/authStyles";
 
 interface ValidatedPasswordInputProps {
   password: string;
@@ -15,17 +12,13 @@ interface ValidatedPasswordInputProps {
 export function InputPassword({
   password,
   onChangePassword,
-  hasError,
 }: ValidatedPasswordInputProps) {
   const [visible, setVisible] = useState(false);
 
   return (
-    <View style={[styles.containerInput, { width: width * 0.8 }]}> {/* Responsividade: 80% da largura da tela */}
+    <View style={styles.inputContainer}>
       <TextInput
-        style={[
-          styleInputPassword.input, 
-          hasError && styleInputPassword.inputError
-        ]}
+        style={styles.inputText}
         value={password}
         onChangeText={onChangePassword}
         placeholder="Senha"
@@ -33,26 +26,8 @@ export function InputPassword({
         autoCapitalize="none"
       />
       <TouchableOpacity onPress={() => setVisible((v) => !v)}>
-        <Icon name={visible ? 'eye-off' : 'eye'} size={24} color="gray" />
+        <Icon name={visible ? "eye-off" : "eye"} size={24} color="gray" />
       </TouchableOpacity>
     </View>
   );
 }
-
-const styleInputPassword = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 10,
-    padding: 10,
-    marginBottom: 20,
-  },
-  input: {
-    flex: 1,
-    height: 40,
-    marginRight: 10,
-    borderColor: '#fff',
-  },
-});

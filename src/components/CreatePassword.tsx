@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import styles from '../screens/auth/Login';
-
-const { width } = Dimensions.get('window');
+import authStyles from '../styles/authStyles';
 
 interface CreatePasswordProps {
   password: string;
@@ -24,37 +22,39 @@ const CreatePassword: React.FC<CreatePasswordProps> = ({
   const [confirmVisible, setConfirmVisible] = useState(false);
 
   return (
-    <View style={{ width: width * 0.8 }}>
-      {}
-      <View style={styles.containerInput}>
+    <View style={{ gap: 10, alignItems: 'center', width: '100%' }}>
+
+      <View style={authStyles.inputContainer}>
         <TextInput
-          style={styles.textInput}
+          style={authStyles.inputText}
           placeholder="Senha"
           value={password}
           onChangeText={setPassword}
           secureTextEntry={!visible}
         />
-        <TouchableOpacity onPress={() => setVisible((v) => !v)}>
+        <TouchableOpacity onPress={() => setVisible(!visible)}>
           <Icon name={visible ? 'eye-off' : 'eye'} size={24} color="gray" />
         </TouchableOpacity>
       </View>
-      
-      {}
-      <View style={styles.containerInput}>
+
+      <View style={authStyles.inputContainer}>
         <TextInput
-          style={styles.textInput}
+          style={authStyles.inputText}
           placeholder="Confirmar senha"
           value={confirmPassword}
           onChangeText={setConfirmPassword}
           secureTextEntry={!confirmVisible}
         />
-        <TouchableOpacity onPress={() => setConfirmVisible((v) => !v)}>
+        <TouchableOpacity onPress={() => setConfirmVisible(!confirmVisible)}>
           <Icon name={confirmVisible ? 'eye-off' : 'eye'} size={24} color="gray" />
         </TouchableOpacity>
       </View>
 
-      {}
-      {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
+      {errorMessage ? (
+        <Text style={{ color: 'red', fontSize: 14, marginBottom: 10 }}>
+          {errorMessage}
+        </Text>
+      ) : null}
     </View>
   );
 };

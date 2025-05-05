@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingVertical: 16,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     backgroundColor: VinicotecaTheme.colors.white,
   },
   containerLogin: {
