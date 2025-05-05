@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput } from "react-native";
+import { View, TextInput } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styles from "./Login";
 import { ConfirmButton } from "../../components/ConfirmButton";
@@ -8,9 +8,11 @@ import CreatePassword from "../../components/CreatePassword";
 import Link from "../../components/Link";
 import { SignUpValidation } from "../../hooks/SignUpValidation";
 import Title from "../../components/Title";
+import { InputName } from "../../components/InputName";
 
 export default function SignUp() {
   const navigation = useNavigation();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -27,9 +29,10 @@ export default function SignUp() {
     <View style={styles.container}>
       <Title text="Cadastrar" align="center" />
 
-      <TextInput
-        style={styles.containerInput}
-        placeholder="Informe seu nome" 
+      <InputName
+        value={name}
+        onChangeName={setName}
+        placeholder="Informe seu nome"
       />
 
       <InputEmail
