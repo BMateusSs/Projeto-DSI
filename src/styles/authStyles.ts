@@ -1,4 +1,3 @@
-// src/styles/authStyles.ts
 import { StyleSheet, Dimensions } from "react-native";
 import { VinicotecaTheme } from "./colors";
 
