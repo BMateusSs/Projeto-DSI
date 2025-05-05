@@ -7,6 +7,7 @@ import { InputEmail } from "../../components/InputEmail";
 import CreatePassword from "../../components/CreatePassword";
 import Link from "../../components/Link";
 import { SignUpValidation } from "../../hooks/SignUpValidation";
+import Title from "../../components/Title";
 
 export default function SignUp() {
   const navigation = useNavigation();
@@ -24,9 +25,7 @@ export default function SignUp() {
 
   return (
     <View style={styles.container}>
-      <View>
-        <Text style={styles.title}>Cadastrar</Text>
-      </View>
+      <Title text="Cadastrar" align="center" />
 
       <TextInput
         style={styles.containerInput}

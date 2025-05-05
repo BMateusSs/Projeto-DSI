@@ -6,6 +6,7 @@ import {InputEmail, ValidatedEmailInput} from "../../components/InputEmail";
 import { ConfirmButton } from "../../components/ConfirmButton";
 import { InputPassword } from "../../components/InputPassword";
 import Link from "../../components/Link";
+import Title from "../../components/Title";
 
 export default function Login() {
     const navigation = useNavigation();
@@ -39,7 +40,7 @@ export default function Login() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Bem-vindo</Text>
+            <Title text="Bem-vindo" align="center" />
             
             <View style={styles.containerLogin}>
                 
