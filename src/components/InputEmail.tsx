@@ -1,8 +1,8 @@
 import React from 'react';
-import { TextInput, View, StyleSheet, Dimensions } from 'react-native';
+import { TextInput, View, Dimensions } from 'react-native';
 import styles from "../screens/auth/Login";
 
-const { width } = Dimensions.get('window'); // Obtém a largura da tela
+const { width } = Dimensions.get('window');
 
 interface ValidatedEmailInputProps {
   email: string;
@@ -17,7 +17,7 @@ export function InputEmail({ email, onChangeEmail, hasError }: ValidatedEmailInp
         style={[
           styles.containerInput, 
           
-          { width: width * 0.8 } // Responsividade: 80% da largura da tela
+          { width: width * 0.8 }
         ]}
         value={email}
         onChangeText={onChangeEmail}

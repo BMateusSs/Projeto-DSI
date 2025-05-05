@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from '../screens/auth/Login';
 
@@ -24,11 +24,11 @@ const CreatePassword: React.FC<CreatePasswordProps> = ({
   const [confirmVisible, setConfirmVisible] = useState(false);
 
   return (
-    <View style={[styles.containerCreatePassword, { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 20 }]}>
+    <View style={{ width: width * 0.8 }}>
       {}
-      <View style={[styles.containerInput, { width: width * 0.8 }]}>
+      <View style={styles.containerInput}>
         <TextInput
-          style={styleInputPassword.input}
+          style={styles.textInput}
           placeholder="Senha"
           value={password}
           onChangeText={setPassword}
@@ -40,9 +40,9 @@ const CreatePassword: React.FC<CreatePasswordProps> = ({
       </View>
       
       {}
-      <View style={[styles.containerInput, { width: width * 0.8 }]}>
+      <View style={styles.containerInput}>
         <TextInput
-          style={styleInputPassword.input}
+          style={styles.textInput}
           placeholder="Confirmar senha"
           value={confirmPassword}
           onChangeText={setConfirmPassword}
@@ -57,23 +57,6 @@ const CreatePassword: React.FC<CreatePasswordProps> = ({
       {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
     </View>
   );
-}
-const styleInputPassword = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 10,
-    padding: 10,
-    marginBottom: 20,
-  },
-  input: {
-    flex: 1,
-    height: 40,
-    marginRight: 10,
-    borderColor: '#fff',
-  },
-});
+};
 
 export default CreatePassword;
