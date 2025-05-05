@@ -7,6 +7,7 @@ import { ConfirmButton } from "../../components/ConfirmButton";
 import { InputPassword } from "../../components/InputPassword";
 import Link from "../../components/Link";
 import Title from "../../components/Title";
+import { AccountButton } from "../../components/AccountButton";
 
 export default function Login() {
     const navigation = useNavigation();
@@ -57,12 +58,10 @@ export default function Login() {
                 
                 <Text style={styles.option}>Ou</Text>
 
-                <TouchableOpacity 
-                    style={styles.containerButtonRegister}
+                <AccountButton
+                    title="Criar conta"
                     onPress={handleSignUp}
-                >
-                    <Text style={styles.textButtonRegister}>Criar conta</Text>
-                </TouchableOpacity>
+                />
             </View>
         </View>
     );
