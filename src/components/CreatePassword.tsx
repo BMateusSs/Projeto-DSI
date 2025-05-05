@@ -20,8 +20,8 @@ const CreatePassword: React.FC<CreatePasswordProps> = ({
   setConfirmPassword,
   errorMessage,
 }) => {
-  const [visible, setVisible] = useState(true);
-  const [confirmVisible, setConfirmVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
+  const [confirmVisible, setConfirmVisible] = useState(false);
 
   return (
     <View style={[styles.containerCreatePassword, { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 20 }]}>
