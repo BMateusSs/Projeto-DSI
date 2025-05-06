@@ -4,38 +4,42 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54248801-d136-4bd0-a813-51239f3dc329" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ButtonMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/ButtonMenu.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HomeScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/HomeScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/Login.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LoginScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/LoginScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Password.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SignUpScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/SignUpScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StyleHome.js" beforeDir="false" afterPath="$PROJECT_DIR$/StyleHome.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+    <list default="true" id="54248801-d136-4bd0-a813-51239f3dc329" name="Changes" comment="create the variables for colors.ts">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/InputPassword.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/InputPassword.tsx" afterDir="false" />
     </list>
-    <list id="7f09178b-85ff-4e7e-9e91-8805e9068c24" name="Changes by MariaClara" comment="">
-      <change beforePath="$PROJECT_DIR$/HomeScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/HomeScreen.tsx" afterDir="false" />
-    </list>
+    <list id="271af2f5-cdd9-406c-b2d1-ceb5a8ea566b" name="Changes by albet" comment="" />
+    <list id="b1abd318-4518-4d44-bc66-672ea4fccdaf" name="Changes by MariaClara" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/screens/HomeScreen.tsx">
-      <ranges>
-        <range start1="11" end1="14" start2="11" end2="14" changelist="54248801-d136-4bd0-a813-51239f3dc329" />
-        <range start1="45" end1="51" start2="45" end2="46" changelist="7f09178b-85ff-4e7e-9e91-8805e9068c24" />
-      </ranges>
-    </file>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;victorYghor&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/BMateusSs/Projeto-DSI.git&quot;,
+    &quot;accountId&quot;: &quot;519046d0-ea18-4c81-a20d-15ff3d43e8ef&quot;
+  }
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
@@ -45,25 +49,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_interpreter_path": "/home/victor-yghor/.nvm/versions/node/v18.20.8/bin/node",
-    "nodejs_package_manager_path": "npm",
-    "npm.android.executor": "Run",
-    "npm.start.executor": "Run",
-    "settings.editor.selected.configurable": "settings.nodejs",
-    "ts.external.directory.path": "/home/victor-yghor/Documentos/UFRPE/PISI3DSI3ES/Projeto-DSI/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;create-components&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_interpreter_path&quot;: &quot;/home/victor-yghor/.nvm/versions/node/v18.20.8/bin/node&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.android.executor&quot;: &quot;Run&quot;,
+    &quot;npm.start.executor&quot;: &quot;Run&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/victor-yghor/Documentos/UFRPE/PISI3DSI3ES/Projeto-DSI/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -75,6 +79,10 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/components" />
+      <recent name="$PROJECT_DIR$/src/screens/auth" />
+      <recent name="$PROJECT_DIR$/src/app" />
+      <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$/screens" />
     </key>
   </component>
@@ -122,11 +130,91 @@
       <updated>1746294187698</updated>
       <workItem from="1746294189722" duration="141000" />
       <workItem from="1746294355233" duration="2162000" />
-      <workItem from="1746305029650" duration="5871000" />
+      <workItem from="1746305029650" duration="14282000" />
+      <workItem from="1746364861831" duration="3578000" />
     </task>
+    <task id="LOCAL-00001" summary="change the directories of the file and use typescript">
+      <option name="closed" value="true" />
+      <created>1746314913272</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1746314913272</updated>
+    </task>
+    <task id="LOCAL-00002" summary="put directories to separet the files">
+      <option name="closed" value="true" />
+      <created>1746316645450</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1746316645450</updated>
+    </task>
+    <task id="LOCAL-00003" summary="create the email input field">
+      <option name="closed" value="true" />
+      <created>1746318144809</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1746318144809</updated>
+    </task>
+    <task id="LOCAL-00004" summary="fix the inputEmail">
+      <option name="closed" value="true" />
+      <created>1746318551301</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1746318551301</updated>
+    </task>
+    <task id="LOCAL-00005" summary="create the basic components">
+      <option name="closed" value="true" />
+      <created>1746318629698</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1746318629698</updated>
+    </task>
+    <task id="LOCAL-00006" summary="create the components files">
+      <option name="closed" value="true" />
+      <created>1746318885911</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1746318885911</updated>
+    </task>
+    <task id="LOCAL-00007" summary="create the variables for colors.ts">
+      <option name="closed" value="true" />
+      <created>1746367059667</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1746367059667</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <MESSAGE value="change the directories of the file and use typescript" />
+    <MESSAGE value="put directories to separet the files" />
+    <MESSAGE value="create the email input field" />
+    <MESSAGE value="fix the inputEmail" />
+    <MESSAGE value="create the basic components" />
+    <MESSAGE value="create the components files" />
+    <MESSAGE value="create the variables for colors.ts" />
+    <option name="LAST_COMMIT_MESSAGE" value="create the variables for colors.ts" />
   </component>
 </project>

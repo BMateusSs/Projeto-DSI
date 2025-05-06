@@ -1,58 +1,58 @@
-import React from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import styles from "../../../Login";
+import { ConfirmButton } from "../../components/ConfirmButton";
+import { InputEmail } from "../../components/InputEmail";
+import CreatePassword from "../../components/CreatePassword";
+import Link from "../../components/Link";
+import { SignUpValidation } from "../../hooks/SignUpValidation";
+import Title from "../../components/Title";
+import { InputName } from "../../components/InputName";
+import styles from "../../styles/authStyles";
 
-export default function SignUp(){
-    const navigation = useNavigation()
+export default function SignUp() {
+  const navigation = useNavigation();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  
+  const { errorMessage, validateSignUp } = SignUpValidation();
 
-    function handleLogin(){
-        navigation.navigate('Login')
+  const handleSignUp = () => {
+    if (validateSignUp(password, confirmPassword)) {
+      console.log('Usuário cadastrado com sucesso!');
     }
+  };
 
-    return(
-        <View style={styles.container}>
-            <View>
-                <Text style={styles.title}>Cadastrar</Text>
-            </View>
+  return (
+    <View style={styles.container}>
+      <Title text="Cadastrar" />
 
-            <TextInput
-            style={styles.containerInput}
-            placeholder="Informe seu nome" 
-            secureTextEntry
-            />
+      <View style={styles.containerForm}>
+        <InputName
+          value={name}
+          onChangeName={setName}
+          placeholder="Informe seu nome"
+        />
+        <InputEmail
+          email={email}
+          onChangeEmail={setEmail}
+          hasError={false}
+        />
+        <CreatePassword 
+          password={password}
+          setPassword={setPassword}
+          confirmPassword={confirmPassword}
+          setConfirmPassword={setConfirmPassword}
+          errorMessage={errorMessage}
+        />
+      </View>
 
-            <TextInput
-            style={styles.containerInput}
-            placeholder="seu@email.com" 
-            keyboardType="email-adress"
-            />
-
-            <TextInput
-            style={styles.containerInput}
-            placeholder="Senha" 
-            secureTextEntry
-            />
-
-            <TextInput
-            style={styles.containerInput}
-            placeholder="Confirmar senha" 
-            secureTextEntry
-            />
-
-            <TouchableOpacity
-            style={styles.containerButton}
-            >
-                <Text style={styles.textButton}>Registrar</Text>
-            </TouchableOpacity>
-
-            <View style={styles.containerFlex}>
-                <Text style={styles.forget}>Já tem conta?</Text>
-                <TouchableOpacity onPress={handleLogin}>
-                    <Text style={styles.textBold}>Entrar</Text>
-                </TouchableOpacity>
-            </View>
-
-        </View>
-    )
+      <View style={styles.containerFooter}>
+        <ConfirmButton title="Registrar" onPress={handleSignUp} />
+        <Link to="Login" label="Já tem uma conta? *Entrar*" />
+      </View>
+    </View>
+  );
 }
