@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import authStyles from '../styles/authStyles';
+import { PasswordRequirements } from './PasswordRequirements';
+import { passwordValidations } from '../hooks/passwordValidations';
 
 interface CreatePasswordProps {
   password: string;
@@ -23,7 +25,6 @@ const CreatePassword: React.FC<CreatePasswordProps> = ({
 
   return (
     <View style={{ gap: 10, alignItems: 'center', width: '100%' }}>
-
       <View style={authStyles.inputContainer}>
         <TextInput
           style={authStyles.inputText}
@@ -50,11 +51,16 @@ const CreatePassword: React.FC<CreatePasswordProps> = ({
         </TouchableOpacity>
       </View>
 
-      {errorMessage ? (
+      <PasswordRequirements 
+        password={password} 
+        validations={passwordValidations} 
+      />
+
+      {errorMessage && (
         <Text style={{ color: 'red', fontSize: 14, marginBottom: 10 }}>
           {errorMessage}
         </Text>
-      ) : null}
+      )}
     </View>
   );
 };
