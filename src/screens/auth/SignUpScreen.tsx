@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { View, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { ConfirmButton } from "../../components/ConfirmButton";
 import { InputEmail } from "../../components/InputEmail";
@@ -26,7 +26,10 @@ export default function SignUp() {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView 
+      contentContainerStyle={styles.container}
+      keyboardShouldPersistTaps="handled"
+    >
       <Title text="Cadastrar" />
 
       <View style={styles.containerForm}>
@@ -53,6 +56,6 @@ export default function SignUp() {
         <ConfirmButton title="Registrar" onPress={handleSignUp} />
         <Link to="Login" label="Já tem uma conta? *Entrar*" />
       </View>
-    </View>
+    </ScrollView>
   );
 }

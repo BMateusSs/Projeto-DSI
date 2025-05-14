@@ -1,4 +1,3 @@
-// src/screens/auth/Login.tsx
 import React, { useState } from "react";
 import { View, Text, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -15,17 +14,24 @@ export default function Login() {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [hasError, setHasError] = useState(false);
 
   function handleLogin() {
+    setHasError(false);
+    setErrorMessage("");
+
     if (!email || !senha) {
-      Alert.alert("Erro", "Preencha todos os campos!");
+      setErrorMessage("Preencha todos os campos!");
+      setHasError(true);
       return;
     }
 
-    if (email.trim() === "bruno@email.com" && senha.trim() === "12345") {
+    if (email.trim() === "bruno@email.com" && senha.trim() === "#Brun0") {
       navigation.navigate("Home");
     } else {
-      Alert.alert("Erro", "Credenciais incorretas!");
+      setErrorMessage("E-mail ou senha inválida!");
+      setHasError(true);
     }
   }
 
@@ -38,8 +44,15 @@ export default function Login() {
       <Title text="Bem-vindo"/>
 
       <View style={styles.containerForm}>
-        <InputEmail email={email} onChangeEmail={setEmail} hasError={false} />
-        <InputPassword password={senha} onChangePassword={setSenha} hasError={false} />
+        {errorMessage ? (
+          <Text style={{ color: 'red', fontSize: 14, marginBottom: 10 }}>
+            {errorMessage}
+          </Text>
+        ) : null}
+
+        <InputEmail email={email} onChangeEmail={setEmail} hasError={hasError} />
+        <InputPassword password={senha} onChangePassword={setSenha} hasError={hasError} />
+        
         <Link to="Password" label="Esqueceu a senha? *Clique aqui*" />
         <ConfirmButton title="Entrar" onPress={handleLogin} />
         <Text style={styles.option}>Ou</Text>

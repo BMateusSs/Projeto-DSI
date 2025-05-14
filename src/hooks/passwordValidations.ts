@@ -9,15 +9,15 @@ export const passwordValidations: PasswordValidation[] = [
     isValid: (password: string) => password.length >= 6,
   },
   {
-    label: '1 letra maiúscula',
+    label: 'Pelo menos 1 letra maiúscula',
     isValid: (password: string) => /[A-Z]/.test(password),
   },
   {
-    label: '1 número',
+    label: 'Pelo menos 1 número',
     isValid: (password: string) => /[0-9]/.test(password),
   },
   {
-    label: '1 caractere especial',
+    label: 'Pelo menos 1 caractere especial',
     isValid: (password: string) => /[!@#$%^&*(),.?":{}|<>]/.test(password),
   },
 ];

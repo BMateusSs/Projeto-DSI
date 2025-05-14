@@ -22,6 +22,7 @@ const CreatePassword: React.FC<CreatePasswordProps> = ({
 }) => {
   const [visible, setVisible] = useState(false);
   const [confirmVisible, setConfirmVisible] = useState(false);
+  const [showRequirements, setShowRequirements] = useState(false);
 
   return (
     <View style={{ gap: 10, alignItems: 'center', width: '100%' }}>
@@ -32,11 +33,20 @@ const CreatePassword: React.FC<CreatePasswordProps> = ({
           value={password}
           onChangeText={setPassword}
           secureTextEntry={!visible}
+          onFocus={() => setShowRequirements(true)}
+          onBlur={() => setShowRequirements(false)}
         />
         <TouchableOpacity onPress={() => setVisible(!visible)}>
           <Icon name={visible ? 'eye-off' : 'eye'} size={24} color="gray" />
         </TouchableOpacity>
       </View>
+
+      {showRequirements && (
+        <PasswordRequirements 
+          password={password} 
+          validations={passwordValidations} 
+        />
+      )}
 
       <View style={authStyles.inputContainer}>
         <TextInput
@@ -45,16 +55,12 @@ const CreatePassword: React.FC<CreatePasswordProps> = ({
           value={confirmPassword}
           onChangeText={setConfirmPassword}
           secureTextEntry={!confirmVisible}
+          onFocus={() => setShowRequirements(false)}
         />
         <TouchableOpacity onPress={() => setConfirmVisible(!confirmVisible)}>
           <Icon name={confirmVisible ? 'eye-off' : 'eye'} size={24} color="gray" />
         </TouchableOpacity>
       </View>
-
-      <PasswordRequirements 
-        password={password} 
-        validations={passwordValidations} 
-      />
 
       {errorMessage && (
         <Text style={{ color: 'red', fontSize: 14, marginBottom: 10 }}>
