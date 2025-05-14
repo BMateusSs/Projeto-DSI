@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import authStyles from '../styles/authStyles';
+import { PasswordRequirements } from './PasswordRequirements';
+import { passwordValidations } from '../hooks/passwordValidations';
 
 interface CreatePasswordProps {
   password: string;
@@ -20,10 +22,10 @@ const CreatePassword: React.FC<CreatePasswordProps> = ({
 }) => {
   const [visible, setVisible] = useState(false);
   const [confirmVisible, setConfirmVisible] = useState(false);
+  const [showRequirements, setShowRequirements] = useState(false);
 
   return (
     <View style={{ gap: 10, alignItems: 'center', width: '100%' }}>
-
       <View style={authStyles.inputContainer}>
         <TextInput
           style={authStyles.inputText}
@@ -31,11 +33,20 @@ const CreatePassword: React.FC<CreatePasswordProps> = ({
           value={password}
           onChangeText={setPassword}
           secureTextEntry={!visible}
+          onFocus={() => setShowRequirements(true)}
+          onBlur={() => setShowRequirements(false)}
         />
         <TouchableOpacity onPress={() => setVisible(!visible)}>
           <Icon name={visible ? 'eye-off' : 'eye'} size={24} color="gray" />
         </TouchableOpacity>
       </View>
+
+      {showRequirements && (
+        <PasswordRequirements 
+          password={password} 
+          validations={passwordValidations} 
+        />
+      )}
 
       <View style={authStyles.inputContainer}>
         <TextInput
@@ -44,17 +55,18 @@ const CreatePassword: React.FC<CreatePasswordProps> = ({
           value={confirmPassword}
           onChangeText={setConfirmPassword}
           secureTextEntry={!confirmVisible}
+          onFocus={() => setShowRequirements(false)}
         />
         <TouchableOpacity onPress={() => setConfirmVisible(!confirmVisible)}>
           <Icon name={confirmVisible ? 'eye-off' : 'eye'} size={24} color="gray" />
         </TouchableOpacity>
       </View>
 
-      {errorMessage ? (
+      {errorMessage && (
         <Text style={{ color: 'red', fontSize: 14, marginBottom: 10 }}>
           {errorMessage}
         </Text>
-      ) : null}
+      )}
     </View>
   );
 };
