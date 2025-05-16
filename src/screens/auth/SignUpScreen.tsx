@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { View, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import { signUp } from "../../firebase/authSignUp";
-import { updateProfile } from "firebase/auth";
+import { UserAuthService } from "../../firebase/UserAuthService";
 
 import { ConfirmButton } from "../../components/ConfirmButton";
 import { InputEmail } from "../../components/InputEmail";
@@ -20,6 +19,7 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const authService = new UserAuthService();
   
   const { errorMessage, validateSignUp } = SignUpValidation();
 
@@ -29,9 +29,7 @@ export default function SignUp() {
     }
   
     try {
-      const user = await signUp(email.trim(), password.trim(), name);
-      await updateProfile(user, { displayName: name});
-    
+      const user = await authService(email.trim(), password.trim(), name);
       navigation.navigate("SelectProfile", { uid: user.uid });
     } catch (error) {
       console.error(error);

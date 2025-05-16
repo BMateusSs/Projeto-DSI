@@ -3,7 +3,7 @@ import { View, Text, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styles from "../../styles/authStyles";
 
-import { signIn } from "../../firebase/authLogin";
+import { UserAuthService } from "../../firebase/UserAuthService";
 
 import { InputEmail } from "../../components/InputEmail";
 import { InputPassword } from "../../components/InputPassword";
@@ -18,22 +18,23 @@ export default function Login() {
   const [senha, setSenha] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [hasError, setHasError] = useState(false);
+  const authService = new UserAuthService();
 
   async function handleLogin() {
     setHasError(false);
     setErrorMessage("");
 
     if (!email || !senha) {
-      setErrorMessage("Preencha todos os campos!");
+      setErrorMessage("Preencha todos os campos");
       setHasError(true);
       return;
     }
 
     try {
-      await signIn(email.trim(), senha.trim());
+      await authService.signIn(email.trim(), senha.trim());
       navigation.navigate("Home")
     } catch (error) {
-      setErrorMessage("E-mail ou senha inválidos!");
+      setErrorMessage("E-mail ou senha inválidos");
       setHasError(true);
       console.error(error);
     }
