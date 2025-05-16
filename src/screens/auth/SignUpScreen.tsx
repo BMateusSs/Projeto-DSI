@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { View, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+
+import { signUp } from "../../firebase/authSignUp";
+import { updateProfile } from "firebase/auth";
+
 import { ConfirmButton } from "../../components/ConfirmButton";
 import { InputEmail } from "../../components/InputEmail";
 import CreatePassword from "../../components/CreatePassword";
@@ -19,9 +23,19 @@ export default function SignUp() {
   
   const { errorMessage, validateSignUp } = SignUpValidation();
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     if (validateSignUp(password, confirmPassword)) {
-      console.log('Usuário cadastrado com sucesso!');
+      return;
+    }
+  
+    try {
+      const user = await signUp(email.trim(), password.trim(), name);
+      await updateProfile(user, { displayName: name});
+    
+      navigation.navigate("SelectProfile", { uid: user.uid });
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Erro", "Não foi possível realizar o cadastro");
     }
   };
 

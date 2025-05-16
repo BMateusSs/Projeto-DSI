@@ -3,6 +3,8 @@ import { View, Text, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styles from "../../styles/authStyles";
 
+import { signIn } from "../../firebase/authLogin";
+
 import { InputEmail } from "../../components/InputEmail";
 import { InputPassword } from "../../components/InputPassword";
 import { ConfirmButton } from "../../components/ConfirmButton";
@@ -17,7 +19,7 @@ export default function Login() {
   const [errorMessage, setErrorMessage] = useState("");
   const [hasError, setHasError] = useState(false);
 
-  function handleLogin() {
+  async function handleLogin() {
     setHasError(false);
     setErrorMessage("");
 
@@ -27,11 +29,13 @@ export default function Login() {
       return;
     }
 
-    if (email.trim() === "bruno@email.com" && senha.trim() === "#Brun0") {
-      navigation.navigate("Home");
-    } else {
-      setErrorMessage("E-mail ou senha inválida!");
+    try {
+      await signIn(email.trim(), senha.trim());
+      navigation.navigate("Home")
+    } catch (error) {
+      setErrorMessage("E-mail ou senha inválidos!");
       setHasError(true);
+      console.error(error);
     }
   }
 
