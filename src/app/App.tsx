@@ -7,6 +7,8 @@ import Login from "../screens/auth/LoginScreen";
 import SignUp from "../screens/auth/SignUpScreen";
 import Home from "../screens/auth/HomeScreen";
 import Password from "../screens/auth/Password";
+import SelectProfile from "../screens/auth/SelectProfile";
+import PasswordRecoveryCode from "../screens/auth/PasswordRecoveryCode";
 
 const Stack = createNativeStackNavigator();
 
@@ -16,8 +18,10 @@ function App() {
       <Stack.Navigator initialRouteName="Login" id={undefined}>
         <Stack.Screen name="Login" component={Login}/>
         <Stack.Screen name="SignUp" component={SignUp}/>
+        <Stack.Screen name="SelectProfile" component={SelectProfile}/>
         <Stack.Screen name="Home" component={Home}/>
         <Stack.Screen name="Password" component={Password}/>
+        <Stack.Screen name="RecoveryCode" component={PasswordRecoveryCode}/>
       </Stack.Navigator>
     </NavigationContainer>
     

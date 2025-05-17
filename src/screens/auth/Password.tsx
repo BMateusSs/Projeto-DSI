@@ -1,6 +1,6 @@
 // src/screens/auth/Password.tsx
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Alert } from "react-native"; // Adicionei Alert para feedback
 import { useNavigation } from "@react-navigation/native";
 import styles from "../../styles/authStyles";
 
@@ -10,6 +10,15 @@ import Title from "../../components/Title";
 
 export default function Password() {
   const [email, setEmail] = useState("");
+  const navigation = useNavigation();
+
+  function handleCode() {
+    if (!email.trim()) {
+      Alert.alert("Erro", "Por favor, informe seu e-mail.");
+      return;
+    }
+    navigation.navigate("RecoveryCode");
+  }
 
   return (
     <View style={styles.container}>
@@ -20,8 +29,15 @@ export default function Password() {
       </Text>
 
       <View style={styles.containerForm}>
-        <InputEmail email={email} onChangeEmail={setEmail} hasError={false} />
-        <ConfirmButton title="Enviar código" onPress={() => {}} />
+        <InputEmail 
+          email={email} 
+          onChangeEmail={setEmail} 
+          hasError={false} 
+        />
+        <ConfirmButton 
+          title="Enviar código" 
+          onPress={handleCode} 
+        />
       </View>
     </View>
   );

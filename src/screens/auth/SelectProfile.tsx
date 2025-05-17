@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import { VinicotecaTheme } from '../../styles/colors';
+import { View, StyleSheet, Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { ConfirmButton } from '../../components/ConfirmButton';
 import { AccountButton } from '../../components/AccountButton';
 import authStyles from '../../styles/authStyles';
@@ -15,6 +15,7 @@ const profiles = [
 ];
 
 export default function SelectProfile() {
+  const navigation = useNavigation();
   const [selected, setSelected] = useState<string | null>(null);
 
   const handleSelect = (id: string) => {
@@ -23,8 +24,9 @@ export default function SelectProfile() {
 
   const handleContinue = () => {
     if (selected) {
-        // cont
+      // Aqui você pode salvar o tipo de perfil no seu estado global ou banco de dados
       console.log('Perfil selecionado:', selected);
+      navigation.navigate("Home"); // Navega para a tela principal
     }
   };
 
@@ -38,6 +40,7 @@ export default function SelectProfile() {
             key={profile.id}
             title={profile.label}
             onPress={() => handleSelect(profile.id)}
+            selected={selected === profile.id}
           />
         ))}
 

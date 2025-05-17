@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { UserAuthService } from "../../firebase/UserAuthService";
-
 import { ConfirmButton } from "../../components/ConfirmButton";
 import { InputEmail } from "../../components/InputEmail";
 import CreatePassword from "../../components/CreatePassword";
@@ -24,16 +23,17 @@ export default function SignUp() {
   const { errorMessage, validateSignUp } = SignUpValidation();
 
   const handleSignUp = async () => {
-    if (validateSignUp(password, confirmPassword)) {
-      return;
+    // Validação agora retorna true se houver erro
+    if (validateSignUp(password, confirmPassword, email, name)) {
+      return; // Se houver erro de validação, não continua
     }
-  
+
     try {
-      const user = await authService(email.trim(), password.trim(), name);
-      navigation.navigate("SelectProfile", { uid: user.uid });
-    } catch (error) {
-      console.error(error);
-      Alert.alert("Erro", "Não foi possível realizar o cadastro");
+      await authService.signUp(email.trim(), password.trim(), name.trim());
+      navigation.navigate("SelectProfile");
+    } catch (error: any) {
+      console.error("Erro no cadastro:", error);
+      Alert.alert("Erro", error.message || "Não foi possível realizar o cadastro");
     }
   };
 
