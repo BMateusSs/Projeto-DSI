@@ -40,6 +40,8 @@ export default function SelectProfile() {
 
       if (selected === 'consumer') {
         navigation.navigate('Preferences', { uid });
+      } else if (selected === 'business') {
+        navigation.navigate('InfoBusiness', { uid });
       } else {
         navigation.navigate('Home');
       }

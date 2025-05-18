@@ -18,18 +18,49 @@ export default function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [nameError, setNameError] = useState("");
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const authService = new UserAuthService();
+  const [loading, setLoading] = useState(false);
   
   const { errorMessage, validateSignUp } = SignUpValidation();
 
-  const handleSignUp = async () => {    
-    if (!validateSignUp(password, confirmPassword)) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  const isFormValid = (): boolean => {
+    return(
+      name.trim().length > 0 &&
+      emailRegex.test(email) &&
+      password.length > 0 &&
+      confirmPassword.length > 0
+    );
+  };
+
+  const handleSignUp = async () => {  
+    setNameError("");
+    setEmailError("");
+
+    if (!name.trim()) {
+      setNameError("Nome não preenchido");
+      return;
+    }
+    if (!email.trim()) {
+      setEmailError("E-mail não preenchido");
+      return;
+    }
+    if (!emailRegex.test(email)) {
+      setEmailError("E-mail inválido");
+      return;
+    }  
+    
+    const valid = validateSignUp(password, confirmPassword);
+    if (!valid) {
       return;
     }
   
     try {
+      setLoading(true);
       setEmailError("");
       const user = await authService.signUp(email.trim(), password.trim(), name);
       navigation.navigate("SelectProfile", { uid: user.uid });
@@ -40,6 +71,8 @@ export default function SignUp() {
       } else {
           Alert.alert("Erro", "Não foi possível realizar o cadastro");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -53,13 +86,20 @@ export default function SignUp() {
       <View style={styles.containerForm}>
         <InputName
           value={name}
-          onChangeName={setName}
+          onChangeName={(text) => {
+            setName(text);
+            if (nameError) setNameError("");
+          }}
           placeholder="Informe seu nome"
         />
+        {nameError !== "" && <Text style={{ color: 'red', marginBottom: 10 }}>{nameError}</Text>}
         <InputEmail
           email={email}
-          onChangeEmail={setEmail}
-          hasError={false}
+          onChangeEmail={(text) => {
+            setEmail(text);
+            if (emailError) setEmailError("");
+          }}
+          hasError={!!emailError}
         />
         {emailError !== "" && (
           <Text style={{ color: "red", marginBottom: 10}}>{emailError}</Text>
@@ -74,7 +114,12 @@ export default function SignUp() {
       </View>
 
       <View style={styles.containerFooter}>
-        <ConfirmButton title="Registrar" onPress={handleSignUp} />
+        <ConfirmButton 
+        title="Registrar" 
+        onPress={handleSignUp}
+        loading={loading}
+        disabled={!isFormValid()} 
+        />
         <Link to="Login" label="Já tem uma conta? *Entrar*" />
       </View>
     </ScrollView>

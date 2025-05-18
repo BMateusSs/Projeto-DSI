@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, User } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { auth, db } from "../firebase/firebaseConfig";
 
 export class UserAuthService {
@@ -42,4 +42,19 @@ export class UserAuthService {
       { merge: true }
     );
   }
-}
+
+  async updateBusinessInfo(uid: string, businessData: any){
+    await setDoc(
+      doc(db, "users", uid),
+      { businessInfo: businessData},
+      { merge: true }
+    );
+  }
+
+  async checkIfCnpjExists(cnpj: string): Promise<boolean> {
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("businessInfo.cnpj", "==", cnpj));
+    const snapshot = await getDocs(q);
+    return !snapshot.empty;
+    }
+  }
