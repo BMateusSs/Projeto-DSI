@@ -6,6 +6,9 @@ import { AccountButton } from '../../components/AccountButton';
 import authStyles from '../../styles/authStyles';
 import Title from '../../components/Title';
 
+import { UserAuthService } from '../../firebase/UserAuthService';
+import { useRoute } from '@react-navigation/native';
+
 const { width } = Dimensions.get('window');
 
 const profiles = [
@@ -15,16 +18,26 @@ const profiles = [
 ];
 
 export default function SelectProfile() {
+  const route = useRoute();
+  const { uid } = route.params as { uid: string };
+  console.log("UID do usuário:", uid);
+
   const [selected, setSelected] = useState<string | null>(null);
+  const userService = new UserAuthService();
 
   const handleSelect = (id: string) => {
     setSelected(id);
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (selected) {
-        // cont
       console.log('Perfil selecionado:', selected);
+      try {
+        await userService.updateUserProfile(uid, selected);
+        console.log("Perfil atualizado no Firestore");
+      } catch (error) {
+        console.error("Erro ao atualizar o perfil", error);
+      }
     }
   };
 
@@ -38,6 +51,7 @@ export default function SelectProfile() {
             key={profile.id}
             title={profile.label}
             onPress={() => handleSelect(profile.id)}
+            selected={selected === profile.id}//
           />
         ))}
 

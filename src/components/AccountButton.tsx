@@ -5,15 +5,17 @@ import { VinicotecaTheme } from '../styles/colors';
 interface AccountButtonProps {
   title: string;
   onPress: () => void;
+  selected?: boolean;
 }
 
 const { width, height } = Dimensions.get('window');
 
-export function AccountButton({ title, onPress }: AccountButtonProps) {
+export function AccountButton({ title, onPress, selected }: AccountButtonProps) {
   return (
     <TouchableOpacity
       style={[
         styles.button,
+        selected && styles.buttonSelected,
         { width: width * 0.8, height: height * 0.07 },
       ]}
       onPress={onPress}
@@ -34,6 +36,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
     marginBottom: 20,
+  },
+  buttonSelected: {
+    backgroundColor: '#e0e0e0',
   },
   text: {
     color: VinicotecaTheme.colors.primary,

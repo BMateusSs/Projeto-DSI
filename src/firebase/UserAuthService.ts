@@ -26,4 +26,12 @@ export class UserAuthService {
       createdAt: new Date(),
     });
   }
+
+  async updateUserProfile(uid: string, profile: string) {
+    await setDoc(
+      doc(db, "users", uid),
+      { profile },
+      { merge: true }
+    )
+  }
 }

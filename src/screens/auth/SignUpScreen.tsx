@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, Alert, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { UserAuthService } from "../../firebase/UserAuthService";
@@ -17,23 +17,29 @@ export default function SignUp() {
   const navigation = useNavigation();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const authService = new UserAuthService();
   
   const { errorMessage, validateSignUp } = SignUpValidation();
 
-  const handleSignUp = async () => {
-    if (validateSignUp(password, confirmPassword)) {
+  const handleSignUp = async () => {    
+    if (!validateSignUp(password, confirmPassword)) {
       return;
     }
   
     try {
-      const user = await authService(email.trim(), password.trim(), name);
+      setEmailError("");
+      const user = await authService.signUp(email.trim(), password.trim(), name);
       navigation.navigate("SelectProfile", { uid: user.uid });
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      Alert.alert("Erro", "Não foi possível realizar o cadastro");
+      if (error.code === "auth/email-already-in-use"){
+        setEmailError("E-mail já cadastrado");
+      } else {
+          Alert.alert("Erro", "Não foi possível realizar o cadastro");
+      }
     }
   };
 
@@ -55,6 +61,9 @@ export default function SignUp() {
           onChangeEmail={setEmail}
           hasError={false}
         />
+        {emailError !== "" && (
+          <Text style={{ color: "red", marginBottom: 10}}>{emailError}</Text>
+        )}
         <CreatePassword 
           password={password}
           setPassword={setPassword}
