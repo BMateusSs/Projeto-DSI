@@ -7,7 +7,7 @@ import authStyles from '../../styles/authStyles';
 import Title from '../../components/Title';
 
 import { UserAuthService } from '../../firebase/UserAuthService';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
@@ -22,6 +22,8 @@ export default function SelectProfile() {
   const { uid } = route.params as { uid: string };
   console.log("UID do usuário:", uid);
 
+  const navigation = useNavigation()
+
   const [selected, setSelected] = useState<string | null>(null);
   const userService = new UserAuthService();
 
@@ -30,16 +32,24 @@ export default function SelectProfile() {
   };
 
   const handleContinue = async () => {
-    if (selected) {
-      console.log('Perfil selecionado:', selected);
-      try {
-        await userService.updateUserProfile(uid, selected);
-        console.log("Perfil atualizado no Firestore");
-      } catch (error) {
-        console.error("Erro ao atualizar o perfil", error);
+  if (selected) {
+    console.log('Perfil selecionado:', selected);
+    try {
+      await userService.updateUserProfile(uid, selected);
+      console.log("Perfil atualizado no Firestore");
+
+      if (selected === 'consumer') {
+        navigation.navigate('Preferences', { uid });
+      } else {
+        navigation.navigate('Home');
       }
+
+    } catch (error) {
+      console.error("Erro ao atualizar o perfil", error);
     }
-  };
+  }
+};
+
 
   return (
     <View style={authStyles.container}>

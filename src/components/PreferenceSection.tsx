@@ -6,6 +6,8 @@ interface PreferenceSectionProps {
   title: string;
   subtitle?: string;
   options: string[];
+  selected: string[] | string | null;
+  onChange: (value: string[] | string) => void;
   multiSelect?: boolean;
 }
 
@@ -13,22 +15,34 @@ const PreferenceSection: React.FC<PreferenceSectionProps> = ({
   title,
   subtitle,
   options,
+  selected,
+  onChange,
   multiSelect = false,
 }) => {
-  const [selectedOptions, setSelectedOptions] = React.useState<string[]>([]);
-  
   const toggleOption = (option: string) => {
     if (multiSelect) {
-      if (selectedOptions.includes(option)) {
-        setSelectedOptions(selectedOptions.filter(item => item !== option));
+      if (Array.isArray(selected)) {
+        if (selected.includes(option)) {
+          onChange(selected.filter(item => item !== option));
+        } else {
+          onChange([...selected, option]);
+        }
       } else {
-        setSelectedOptions([...selectedOptions, option]);
+        onChange([option]);
       }
     } else {
-      setSelectedOptions([option]);
+      onChange(option);
     }
   };
-  
+
+  const isSelected = (option: string) => {
+    if (multiSelect && Array.isArray(selected)) {
+      return selected.includes(option);
+    } else {
+      return selected === option;
+    }
+  };
+
   return (
     <View style={styles.sectionContainer}>
       <Text style={styles.sectionTitle}>{title}</Text>
@@ -40,13 +54,13 @@ const PreferenceSection: React.FC<PreferenceSectionProps> = ({
             key={index}
             style={[
               styles.optionButton,
-              selectedOptions.includes(option) && styles.optionButtonSelected
+              isSelected(option) && styles.optionButtonSelected
             ]}
             onPress={() => toggleOption(option)}
           >
             <Text style={[
               styles.optionText,
-              selectedOptions.includes(option) && styles.optionTextSelected
+              isSelected(option) && styles.optionTextSelected
             ]}>
               {option}
             </Text>

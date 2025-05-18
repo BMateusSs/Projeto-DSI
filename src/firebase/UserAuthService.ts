@@ -32,6 +32,14 @@ export class UserAuthService {
       doc(db, "users", uid),
       { profile },
       { merge: true }
-    )
+    );
+  }
+
+  async updateUserPreferences(uid: string, preferencesData: any) {
+    await setDoc(
+      doc(db, "users", uid),
+      { preferences: preferencesData },
+      { merge: true }
+    );
   }
 }

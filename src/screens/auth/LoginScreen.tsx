@@ -32,7 +32,7 @@ export default function Login() {
 
     try {
       await authService.signIn(email.trim(), senha.trim());
-      navigation.navigate("Preferences")
+      navigation.navigate("Home")
     } catch (error) {
       setErrorMessage("E-mail ou senha inválidos");
       setHasError(true);
