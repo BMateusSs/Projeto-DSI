@@ -11,6 +11,12 @@ import Title from "../../components/Title";
 export default function Password() {
   const [email, setEmail] = useState("");
 
+  const navigation = useNavigation()
+
+  function handleCode(){
+    navigation.navigate("RecoveryCode")
+  }
+
   return (
     <View style={styles.container}>
       <Title text="Recuperar senha" />
@@ -21,7 +27,7 @@ export default function Password() {
 
       <View style={styles.containerForm}>
         <InputEmail email={email} onChangeEmail={setEmail} hasError={false} />
-        <ConfirmButton title="Enviar código" onPress={() => {}} />
+        <ConfirmButton title="Enviar código" onPress={handleCode} />
       </View>
     </View>
   );
