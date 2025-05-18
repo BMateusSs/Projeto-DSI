@@ -10,6 +10,7 @@ import Password from "../screens/auth/Password";
 import SelectProfile from "../screens/auth/SelectProfile";
 import PasswordRecoveryCode from "../screens/auth/PasswordRecoveryCode";
 import { NewPassword } from "../screens/auth/NewPassword";
+import PreferencesScreen from "../screens/auth/Preferences";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +25,7 @@ function App() {
         <Stack.Screen name="Password" component={Password}/>
         <Stack.Screen name="RecoveryCode" component={PasswordRecoveryCode}/>
         <Stack.Screen name="NewPassword" component={NewPassword}/>
+        <Stack.Screen name="Preferences" component={PreferencesScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
     
