@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { View, Text, Alert } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styles from "../../styles/authStyles";
+import { Keyboard, TouchableWithoutFeedback } from "react-native";
 
 import { UserAuthService } from "../../firebase/UserAuthService";
 
@@ -48,29 +49,34 @@ export default function Login() {
   }
 
   return (
-    <View style={styles.container}>
-      <Title text="Bem-vindo"/>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} acessible={false}>
+      <ScrollView
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps="handled"
+      >
+        <Title text="Bem-vindo"/>
 
-      <View style={styles.containerForm}>
-        {errorMessage ? (
-          <Text style={{ color: 'red', fontSize: 14, marginBottom: 10 }}>
-            {errorMessage}
-          </Text>
-        ) : null}
+        <View style={styles.containerForm}>
+          {errorMessage ? (
+            <Text style={{ color: 'red', fontSize: 14, marginBottom: 10 }}>
+              {errorMessage}
+            </Text>
+          ) : null}
 
-        <InputEmail email={email} onChangeEmail={setEmail} hasError={hasError} />
-        <InputPassword password={senha} onChangePassword={setSenha} hasError={hasError} />
-        
-        <RememberMeSwitch
-        value={rememberMe}
-        onValueChange={setRememberMe}
-        />
+          <InputEmail email={email} onChangeEmail={setEmail} hasError={hasError} />
+          <InputPassword password={senha} onChangePassword={setSenha} hasError={hasError} />
+          
+          <RememberMeSwitch
+          value={rememberMe}
+          onValueChange={setRememberMe}
+          />
 
-        <Link to="Password" label="Esqueceu a senha? *Clique aqui*" />
-        <ConfirmButton title="Entrar" onPress={handleLogin} />
-        <Text style={styles.option}>Ou</Text>
-        <AccountButton title="Criar conta" onPress={handleSignUp} />
-      </View>
-    </View>
+          <Link to="Password" label="Esqueceu a senha? *Clique aqui*" />
+          <ConfirmButton title="Entrar" onPress={handleLogin} />
+          <Text style={styles.option}>Ou</Text>
+          <AccountButton title="Criar conta" onPress={handleSignUp} />
+        </View>
+      </ScrollView>
+    </TouchableWithoutFeedback>
   );
 }

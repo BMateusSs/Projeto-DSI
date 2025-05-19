@@ -42,8 +42,8 @@ export default function SelectProfile() {
         navigation.navigate('Preferences', { uid });
       } else if (selected === 'business') {
         navigation.navigate('InfoBusiness', { uid });
-      } else {
-        navigation.navigate('Home');
+      } else if (selected === 'producer') {
+        navigation.navigate('InfoProducer', { uid });
       }
 
     } catch (error) {

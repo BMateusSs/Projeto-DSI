@@ -12,6 +12,7 @@ import PasswordRecoveryCode from "../screens/auth/PasswordRecoveryCode";
 import { NewPassword } from "../screens/auth/NewPassword";
 import PreferencesScreen from "../screens/auth/Preferences";
 import InfoBusiness from "../screens/auth/InfoBusiness";
+import InfoProducer from "../screens/auth/InfoProducer";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +29,7 @@ function App() {
         <Stack.Screen name="NewPassword" component={NewPassword}/>
         <Stack.Screen name="Preferences" component={PreferencesScreen}/>
         <Stack.Screen name="InfoBusiness" component={InfoBusiness}/>
+        <Stack.Screen name="InfoProducer" component={InfoProducer}/>
       </Stack.Navigator>
     </NavigationContainer>
     
