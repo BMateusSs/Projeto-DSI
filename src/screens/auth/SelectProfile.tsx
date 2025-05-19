@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import { VinicotecaTheme } from '../../styles/colors';
+import { View } from 'react-native';
 import { ConfirmButton } from '../../components/ConfirmButton';
 import { AccountButton } from '../../components/AccountButton';
 import authStyles from '../../styles/authStyles';
@@ -8,8 +7,6 @@ import Title from '../../components/Title';
 
 import { UserAuthService } from '../../firebase/UserAuthService';
 import { useNavigation, useRoute } from '@react-navigation/native';
-
-const { width } = Dimensions.get('window');
 
 const profiles = [
   { id: 'consumer', label: 'Consumidor' },
