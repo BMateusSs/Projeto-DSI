@@ -12,12 +12,15 @@ import { AccountButton } from "../../components/AccountButton";
 import Link from "../../components/Link";
 import Title from "../../components/Title";
 
+import RememberMeSwitch from "../../components/RememberMeSwitch";
+
 export default function Login() {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [hasError, setHasError] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true)
   const authService = new UserAuthService();
 
   async function handleLogin() {
@@ -58,6 +61,11 @@ export default function Login() {
         <InputEmail email={email} onChangeEmail={setEmail} hasError={hasError} />
         <InputPassword password={senha} onChangePassword={setSenha} hasError={hasError} />
         
+        <RememberMeSwitch
+        value={rememberMe}
+        onValueChange={setRememberMe}
+        />
+
         <Link to="Password" label="Esqueceu a senha? *Clique aqui*" />
         <ConfirmButton title="Entrar" onPress={handleLogin} />
         <Text style={styles.option}>Ou</Text>
