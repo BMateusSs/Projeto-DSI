@@ -1,5 +1,5 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, User } from "firebase/auth";
-import { doc, setDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, User, sendEmailVerification } from "firebase/auth";
+import { doc, setDoc, collection, getDocs, query, where, Timestamp } from "firebase/firestore";
 import { auth, db } from "../firebase/firebaseConfig";
 
 export class UserAuthService {
@@ -67,4 +67,31 @@ export class UserAuthService {
     const producerSnapshot = await getDocs(producerQuery);
     return !businessSnapshot.empty || !producerSnapshot.empty;
     }
+
+  async checkIfEmailExists(email: string): Promise<boolean> {
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+    return !querySnapshot.empty;
+    }
+
+  async generateRecoveryCode(uid: string): Promise<string> {
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const codeRef = doc(db, "recovery_codes", uid);
+    const expirationTime = Timestamp.fromMillis(Date.now() + 15 * 60 * 1000);
+    await setDoc(codeRef,  { code: code, expirationTime: expirationTime,
+    });
+    return code;
+  }
+
+  async getUserByEmail(email: string) {
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      return querySnapshot.docs[0].data();
+    } else {
+      return null;
+    }
+  }
   }
