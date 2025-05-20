@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styles from "../../styles/authStyles";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { UserAuthService } from "../../firebase/UserAuthService";
 
@@ -24,6 +25,21 @@ export default function Login() {
   const [rememberMe, setRememberMe] = useState(true)
   const authService = new UserAuthService();
 
+  useEffect(()=>{
+    const carregarCredenciais = async () => {
+      const saveEmail = await AsyncStorage.getItem('email');
+      const savePassword = await AsyncStorage.getItem('password');
+      const saveRemember = await AsyncStorage.getItem('remember');
+
+      if (saveRemember === 'true'){
+        setEmail(saveEmail || "")
+        setSenha(savePassword || "")
+        setRememberMe(true)
+      }
+    };
+    carregarCredenciais();
+  }, []);
+
   async function handleLogin() {
     setHasError(false);
     setErrorMessage("");
@@ -36,6 +52,17 @@ export default function Login() {
 
     try {
       await authService.signIn(email.trim(), senha.trim());
+
+      if (rememberMe){
+        await AsyncStorage.setItem('email', email);
+        await AsyncStorage.setItem('password', senha);
+        await AsyncStorage.setItem('remember', 'true');
+      } else {
+        await AsyncStorage.removeItem('email');
+        await AsyncStorage.removeItem('password');
+        await AsyncStorage.setItem('remember', 'false');
+      }
+
       navigation.navigate("Home")
     } catch (error) {
       setErrorMessage("E-mail ou senha inválidos");
