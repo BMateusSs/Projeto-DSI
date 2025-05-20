@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ScrollView, TouchableOpacity, Text, Alert } from 'react-native';
+import { ScrollView, TouchableOpacity, Text, Alert, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PreferenceSection from '../../components/PreferenceSection';
 import PriceRangeSelector from '../../components/PriceRangeSelector';
 import { styles } from '../../styles/preferenceStyles';
@@ -17,6 +18,7 @@ const PreferencesScreen: React.FC = () => {
   const [maxPrice, setMaxPrice] = useState<number>(1000);
 
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
 
   const handleSave = async () => {
     try {
@@ -47,61 +49,72 @@ const PreferencesScreen: React.FC = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>Suas preferências</Text>
+    <View style={{ flex: 1 }}>
+      <ScrollView 
+        style={{ flex: 1, backgroundColor: "white" }}
+        contentContainerStyle={{
+          paddingTop: insets.top + 15,
+          paddingBottom: 70 + insets.bottom 
+        }}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.container}>
+          <View style={styles.containerTitle}>
+            <Text style={styles.title}>Suas preferências</Text>
+          </View>
 
-      <PreferenceSection 
-        title="Tipos preferidos"
-        options={['Tinto', 'Branco', 'Rosé', 'Espumante']}
-        multiSelect
-        selected={types}
-        onChange={setTypes}
-      />
+          <PreferenceSection 
+            title="Tipos preferidos"
+            options={['Tinto', 'Branco', 'Rosé', 'Espumante']}
+            multiSelect
+            selected={types}
+            onChange={setTypes}
+          />
 
-      <PreferenceSection 
-        title="Perfil de sabor"
-        options={['Seco', 'Doce', 'Frutado', 'Terroso', 'Madeira', 'Especiado']}
-        multiSelect
-        selected={flavors}
-        onChange={setFlavors}
-      />
+          <PreferenceSection 
+            title="Perfil de sabor"
+            options={['Seco', 'Doce', 'Frutado', 'Terroso', 'Madeira', 'Especiado']}
+            multiSelect
+            selected={flavors}
+            onChange={setFlavors}
+          />
 
-      <PreferenceSection 
-        title="Regiões preferidas"
-        options={['Rioja', 'Douro', 'Cava', 'Bordeaux', 'Toscana']}
-        multiSelect
-        selected={regions}
-        onChange={setRegions}
-      />
+          <PreferenceSection 
+            title="Regiões preferidas"
+            options={['Rioja', 'Douro', 'Cava', 'Bordeaux', 'Toscana']}
+            multiSelect
+            selected={regions}
+            onChange={setRegions}
+          />
 
-      <PreferenceSection 
-        title="Teor alcoólico"
-        options={['Baixo (-12%)', 'Médio (12-14%)', 'Alto (+14%)']}
-        selected={alcoholContent}
-        onChange={setAlcoholContent}
-      />
+          <PreferenceSection 
+            title="Teor alcoólico"
+            options={['Baixo (-12%)', 'Médio (12-14%)', 'Alto (+14%)']}
+            selected={alcoholContent}
+            onChange={setAlcoholContent}
+          />
 
-      <PreferenceSection 
-        title="Harmonizar com"
-        options={['Carnes', 'Peixes', 'Queijos', 'Massas']}
-        multiSelect
-        selected={pairings}
-        onChange={setPairings}
-      />
+          <PreferenceSection 
+            title="Harmonizar com"
+            options={['Carnes', 'Peixes', 'Queijos', 'Massas']}
+            multiSelect
+            selected={pairings}
+            onChange={setPairings}
+          />
 
-      <PriceRangeSelector
-        min={50}
-        max={1000}
-        selectedMin={minPrice}
-        selectedMax={maxPrice}
-        onChangeMin={setMinPrice}
-        onChangeMax={setMaxPrice}
-      />
+          <PriceRangeSelector
+            max={1000}
+            selectedMax={maxPrice}
+            onChangeMax={setMaxPrice}
+          />
 
-      <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-        <Text style={styles.saveButtonText}>Salvar preferências</Text>
-      </TouchableOpacity>
-    </ScrollView>
+          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+            <Text style={styles.saveButtonText}>Salvar preferências</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+
+    </View>
   );
 };
 

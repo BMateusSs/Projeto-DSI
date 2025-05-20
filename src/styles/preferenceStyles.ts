@@ -25,12 +25,7 @@ export const styles = StyleSheet.create<Styles>({
     backgroundColor: '#fff',
     padding: 20,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#333',
-  },
+  
   sectionContainer: {
     marginBottom: 20,
   },
@@ -98,5 +93,14 @@ export const styles = StyleSheet.create<Styles>({
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  containerTitle: {
+          width: '90%',
+          marginBottom: 15
+  },
+  title: {
+      color: '#333',
+      fontSize: 25,
+      fontWeight: 'bold'
   },
 });

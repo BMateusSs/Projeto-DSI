@@ -15,7 +15,7 @@ import RegionMap from "../../components/RegionMap";
 const Home = () => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
-  const [loading, setLoading] = useState(true); // Enquanto verifica as preferências
+  const [loading, setLoading] = useState(true);
 
   const vinhosTintos = vinhosData.filter(vinho => vinho.tipo === "Tinto");
   const topAvaliados = [...vinhosData]
