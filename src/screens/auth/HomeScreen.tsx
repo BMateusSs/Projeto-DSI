@@ -11,6 +11,7 @@ import vinhosData from '../../../vinhos.json';
 import SearchBar from "../../components/SearchBar";
 import HorizontalWineList from "../../components/HorizontalWineList";
 import RegionMap from "../../components/RegionMap";
+import Heard from "../../components/Hearder";
 
 const Home = () => {
   const insets = useSafeAreaInsets();
@@ -59,18 +60,18 @@ const Home = () => {
 
   return (
     <View style={{ flex: 1 }}>
+      <Heard title="Vinicoteca"/>
+      
+      
       <ScrollView 
         style={{ flex: 1, backgroundColor: "white" }}
         contentContainerStyle={{
           paddingTop: insets.top + 15,
-          paddingBottom: 70 + insets.bottom 
+          paddingBottom: 30 + insets.bottom 
         }}
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.container}>
-          <View style={styles.containerTitle}>
-            <Text style={styles.title}>Vinicoteca</Text>
-          </View>
 
           <SearchBar />
 

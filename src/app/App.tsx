@@ -13,6 +13,9 @@ import { NewPassword } from "../screens/auth/NewPassword";
 import PreferencesScreen from "../screens/auth/Preferences";
 import InfoBusiness from "../screens/auth/InfoBusiness";
 import InfoProducer from "../screens/auth/InfoProducer";
+import Library from "../screens/LibraryScreen";
+import MinhaAdega from "../screens/MinhaAdega";
+import Store from "../screens/StoreScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +33,9 @@ function App() {
         <Stack.Screen name="Preferences" component={PreferencesScreen}/>
         <Stack.Screen name="InfoBusiness" component={InfoBusiness}/>
         <Stack.Screen name="InfoProducer" component={InfoProducer}/>
+        <Stack.Screen name="Library" component={Library}/>
+        <Stack.Screen name="Adega" component={MinhaAdega}/>
+        <Stack.Screen name="Store" component={Store}/>
       </Stack.Navigator>
     </NavigationContainer>
     
