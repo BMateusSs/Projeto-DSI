@@ -26,7 +26,6 @@ export default function Login() {
       const saveEmail = await AsyncStorage.getItem('email');
       const savePassword = await AsyncStorage.getItem('password');
       const saveRemember = await AsyncStorage.getItem('remember');
-
       if (saveRemember === 'true'){
         setEmail(saveEmail || "")
         setSenha(savePassword || "")

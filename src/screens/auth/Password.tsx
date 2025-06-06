@@ -14,6 +14,15 @@ export default function Password() {
   const navigation = useNavigation();
   const authService = new UserAuthService();
   async function handleCode() {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim()){
+      setError("Insira seu email");
+      return;
+    }
+    if (!emailRegex.test(email)) {
+      setError("Email inválido");
+      return;
+    }
     try {
       setError(null);
       const emailExists = await authService.checkIfEmailExists(email);
