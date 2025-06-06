@@ -4,16 +4,13 @@ import { useNavigation } from "@react-navigation/native";
 import styles from "../../styles/authStyles";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import { UserAuthService } from "../../firebase/UserAuthService";
-
 import { InputEmail } from "../../components/InputEmail";
 import { InputPassword } from "../../components/InputPassword";
 import { ConfirmButton } from "../../components/ConfirmButton";
 import { AccountButton } from "../../components/AccountButton";
 import Link from "../../components/Link";
 import Title from "../../components/Title";
-
 import RememberMeSwitch from "../../components/RememberMeSwitch";
 
 export default function Login() {
@@ -24,7 +21,6 @@ export default function Login() {
   const [hasError, setHasError] = useState(false);
   const [rememberMe, setRememberMe] = useState(true)
   const authService = new UserAuthService();
-
   useEffect(()=>{
     const carregarCredenciais = async () => {
       const saveEmail = await AsyncStorage.getItem('email');
@@ -39,20 +35,16 @@ export default function Login() {
     };
     carregarCredenciais();
   }, []);
-
   async function handleLogin() {
     setHasError(false);
     setErrorMessage("");
-
     if (!email || !senha) {
       setErrorMessage("Preencha todos os campos");
       setHasError(true);
       return;
     }
-
     try {
       await authService.signIn(email.trim(), senha.trim());
-
       if (rememberMe){
         await AsyncStorage.setItem('email', email);
         await AsyncStorage.setItem('password', senha);
@@ -62,7 +54,6 @@ export default function Login() {
         await AsyncStorage.removeItem('password');
         await AsyncStorage.setItem('remember', 'false');
       }
-
       navigation.navigate("Home")
     } catch (error) {
       setErrorMessage("E-mail ou senha inválidos");
@@ -70,11 +61,9 @@ export default function Login() {
       console.error(error);
     }
   }
-
   function handleSignUp() {
     navigation.navigate("SignUp");
   }
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} acessible={false}>
       <ScrollView

@@ -1,10 +1,8 @@
-// src/screens/auth/Password.tsx
 import React, { useState } from "react";
 import { View, Text, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { UserAuthService } from "../../firebase/UserAuthService";
 import styles from "../../styles/authStyles";
-
 import { ConfirmButton } from "../../components/ConfirmButton";
 import { InputEmail } from "../../components/InputEmail";
 import Title from "../../components/Title";
@@ -13,14 +11,11 @@ import Link from "../../components/Link";
 export default function Password() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
-
   const navigation = useNavigation();
   const authService = new UserAuthService();
-
   async function handleCode() {
     try {
       setError(null);
-
       const emailExists = await authService.checkIfEmailExists(email);
       if (emailExists) {
         const user = await authService.getUserByEmail(email);
@@ -37,7 +32,6 @@ export default function Password() {
       console.log(error);
       }
     }
-
   return (
     <View style={styles.container}>
       <Title text="Recuperar senha" />
