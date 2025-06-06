@@ -2,16 +2,16 @@ import React from 'react';
 import { View, Text, StyleSheet, StatusBar } from 'react-native';
 
 interface Props {
-  title: string;
+  name: string;
 }
 
-class Heard extends React.Component<Props> {
+class Header extends React.Component<Props> {
   render() {
     return (
       <View style={styles.headerContainer}>
         <StatusBar backgroundColor="#6B2737" barStyle="light-content" />
         <View style={styles.header}>
-          <Text style={styles.text}>{this.props.title}</Text>
+          <Text style={styles.text}> Olá, {this.props.name}</Text>
         </View>
       </View>
     );
@@ -25,10 +25,13 @@ const styles = StyleSheet.create({
   },
   header: {
     width: '100%',
-    height: 100,
+    height: 150,
     backgroundColor: '#6B2737',
     justifyContent: 'center',
     paddingTop: StatusBar.currentHeight,
+    borderEndEndRadius: 40,
+    borderBottomLeftRadius: 40,
+    alignItems: 'center'
   },
   text: {
     fontSize: 25,
@@ -38,4 +41,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Heard;
+export default Header;

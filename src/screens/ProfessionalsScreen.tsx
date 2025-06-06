@@ -1,16 +1,12 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import BottomMenu from "../components/BottonMenu";
-import Heard from "../components/Hearder";
 
-const MinhaAdega = () => {
+const Professionals = () => {
     return (
         <View style={styles.container}>
-            <Heard title="Minha Adega"/>
             <View style={styles.content}>
                 
             </View>
-            <BottomMenu/>
         </View>
     );
 };
@@ -24,4 +20,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default MinhaAdega;
+export default Professionals;

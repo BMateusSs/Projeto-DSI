@@ -6,22 +6,15 @@ import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 import styles from "../../styles/StyleHome";
-import BottomMenu from "../../components/BottonMenu";
 import vinhosData from '../../../vinhos.json';
-import SearchBar from "../../components/SearchBar";
-import HorizontalWineList from "../../components/HorizontalWineList";
-import RegionMap from "../../components/RegionMap";
-import Heard from "../../components/Hearder";
+import Header from "../../components/Header";
+
 
 const Home = () => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
-
-  const vinhosTintos = vinhosData.filter(vinho => vinho.tipo === "Tinto");
-  const topAvaliados = [...vinhosData]
-    .sort((a, b) => b.avaliacao - a.avaliacao)
-    .slice(0, 5);
+  const [userName, setUserName] = useState("");
 
   useEffect(() => {
     const verificarPreferencias = async () => {
@@ -37,6 +30,10 @@ const Home = () => {
           const dados = userSnap.data();
           const perfil = dados.profile;
           const preferencias = dados.preferences;
+
+          if (dados.name) {
+            setUserName(dados.name);
+          }
 
           if (perfil === "consumer" && (!preferencias || preferencias.length === 0)) {
             navigation.navigate("Preferences");
@@ -60,39 +57,7 @@ const Home = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <Heard title="Vinicoteca"/>
-      
-      
-      <ScrollView 
-        style={{ flex: 1, backgroundColor: "white" }}
-        contentContainerStyle={{
-          paddingTop: insets.top + 15,
-          paddingBottom: 30 + insets.bottom 
-        }}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.container}>
-
-          <SearchBar />
-
-          <HorizontalWineList 
-            wines={vinhosTintos} 
-            title="Para você" 
-          />
-
-          <View style={[styles.containerSub, { marginTop: 10 }]}>
-            <Text style={styles.subtittle}>Vinhos por região</Text>
-          </View>
-          <RegionMap />
-
-          <HorizontalWineList 
-            wines={topAvaliados} 
-            title="Top bem avaliados" 
-          />
-        </View>
-      </ScrollView>
-
-      <BottomMenu/>
+      <Header name={userName} />
     </View>
   );
 };
