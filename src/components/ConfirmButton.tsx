@@ -38,7 +38,7 @@ export function ConfirmButton({
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#6B2737', // Cor do botão
+    backgroundColor: '#6B2737',
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#9E9E9E',
   },
   text: {
-    color: 'white', // Cor do texto
+    color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
   },

@@ -13,6 +13,7 @@ import InfoBusiness from "../screens/auth/InfoBusiness";
 import InfoProducer from "../screens/auth/InfoProducer";
 
 import TabNavigation from "./TabNavigation"; // TabNavigation já inclui Home, Library, Adega, Store
+import AddWineScreen from "../screens/library/AddWineScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +29,9 @@ function StackRoute() {
         <Stack.Screen name="Preferences" component={PreferencesScreen} />
         <Stack.Screen name="InfoBusiness" component={InfoBusiness} />
         <Stack.Screen name="InfoProducer" component={InfoProducer} />
+        <Stack.Screen name="Adicionar Vinhos" component={AddWineScreen} 
+        options={{headerShown: true}}
+        />
         
         <Stack.Screen 
           name="Home" 

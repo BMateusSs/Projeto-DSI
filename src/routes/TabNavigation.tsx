@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialIcons, FontAwesome5, Ionicons } from '@expo/vector-icons';
 
 import Home from "../screens/auth/HomeScreen";
-import Library from "../screens/LibraryScreen";
+import Library from "../screens/library/LibraryScreen";
 import Professionals from "../screens/ProfessionalsScreen";
 import Store from "../screens/StoreScreen";
 
