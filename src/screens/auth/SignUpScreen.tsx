@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { View, ScrollView, Alert, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
 import { UserAuthService } from "../../firebase/UserAuthService";
-
 import { ConfirmButton } from "../../components/ConfirmButton";
 import { InputEmail } from "../../components/InputEmail";
 import CreatePassword from "../../components/CreatePassword";
@@ -23,11 +21,8 @@ export default function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const authService = new UserAuthService();
   const [loading, setLoading] = useState(false);
-  
   const { errorMessage, validateSignUp } = SignUpValidation();
-
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
   const isFormValid = (): boolean => {
     return(
       name.trim().length > 0 &&
@@ -36,11 +31,9 @@ export default function SignUp() {
       confirmPassword.length > 0
     );
   };
-
   const handleSignUp = async () => {  
     setNameError("");
     setEmailError("");
-
     if (!name.trim()) {
       setNameError("Nome não preenchido");
       return;
@@ -53,17 +46,15 @@ export default function SignUp() {
       setEmailError("E-mail inválido");
       return;
     }  
-    
     const valid = validateSignUp(password, confirmPassword);
     if (!valid) {
       return;
     }
-  
     try {
       setLoading(true);
       setEmailError("");
       const user = await authService.signUp(email.trim(), password.trim(), name);
-      navigation.navigate("SelectProfile", { uid: user.uid });
+      navigation.navigate("Preferences", { uid: user.uid });
     } catch (error: any) {
       console.error(error);
       if (error.code === "auth/email-already-in-use"){
@@ -75,7 +66,6 @@ export default function SignUp() {
       setLoading(false);
     }
   };
-
   return (
     <ScrollView 
       contentContainerStyle={styles.container}

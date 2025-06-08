@@ -6,18 +6,14 @@ export class UserAuthService {
   async signUp(email: string, password: string, name: string): Promise<User> {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
-
     await this.createUserDocument(user.uid, email, name);
     await updateProfile(user, { displayName: name });
-
     return user;
   }
-
   async signIn(email: string, password: string): Promise<User> {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     return userCredential.user;
   }
-
   private async createUserDocument(uid: string, email: string, name: string) {
     await setDoc(doc(db, "users", uid), {
       uid,
@@ -26,7 +22,6 @@ export class UserAuthService {
       createdAt: new Date(),
     });
   }
-
   async updateUserProfile(uid: string, profile: string) {
     await setDoc(
       doc(db, "users", uid),
@@ -34,7 +29,6 @@ export class UserAuthService {
       { merge: true }
     );
   }
-
   async updateUserPreferences(uid: string, preferencesData: any) {
     await setDoc(
       doc(db, "users", uid),
@@ -42,7 +36,6 @@ export class UserAuthService {
       { merge: true }
     );
   }
-
   async updateBusinessInfo(uid: string, businessData: any){
     await setDoc(
       doc(db, "users", uid),
@@ -50,7 +43,6 @@ export class UserAuthService {
       { merge: true }
     );
   }
-
   async updateProducerInfo(uid: string, producerData: any){
     await setDoc(
       doc(db, "users", uid),
@@ -58,7 +50,6 @@ export class UserAuthService {
       { merge: true }
     );
   }
-
   async checkIfCnpjExists(cnpj: string): Promise<boolean> {
     const usersRef = collection(db, "users");
     const businessQuery = query(usersRef, where("businessInfo.cnpj", "==", cnpj));
@@ -67,14 +58,12 @@ export class UserAuthService {
     const producerSnapshot = await getDocs(producerQuery);
     return !businessSnapshot.empty || !producerSnapshot.empty;
     }
-
   async checkIfEmailExists(email: string): Promise<boolean> {
     const usersRef = collection(db, "users");
     const q = query(usersRef, where("email", "==", email));
     const querySnapshot = await getDocs(q);
     return !querySnapshot.empty;
     }
-
   async generateRecoveryCode(uid: string): Promise<string> {
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     const codeRef = doc(db, "recovery_codes", uid);
@@ -83,7 +72,6 @@ export class UserAuthService {
     });
     return code;
   }
-
   async getUserByEmail(email: string) {
     const usersRef = collection(db, "users");
     const q = query(usersRef, where("email", "==", email));

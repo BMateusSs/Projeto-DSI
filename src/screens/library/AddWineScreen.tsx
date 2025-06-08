@@ -8,7 +8,6 @@ import StarRating from '../../components/StarRating';
 import SubTitle from '../../components/SubTitle';
 import { ConfirmButton } from '../../components/ConfirmButton';
 import { WineService } from '../../services/wineService';
-import { auth } from '../../firebase/firebaseConfig';
 
 const AddWineScreen = () => {
     const navigation = useNavigation();

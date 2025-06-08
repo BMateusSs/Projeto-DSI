@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, Alert } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { WineService, Wine } from '../../services/wineService';
-import { auth } from '../../firebase/firebaseConfig';
+import { auth, db } from "../../firebase/firebaseConfig";
 import WineList from '../../components/WineList';
 
 const WineListScreen = () => {

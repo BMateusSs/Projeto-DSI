@@ -16,10 +16,8 @@ const PreferencesScreen: React.FC = () => {
   const [alcoholContent, setAlcoholContent] = useState<string | null>(null);
   const [minPrice, setMinPrice] = useState<number>(50);
   const [maxPrice, setMaxPrice] = useState<number>(1000);
-
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
-
   const handleSave = async () => {
     try {
       const user = auth.currentUser;
@@ -27,7 +25,6 @@ const PreferencesScreen: React.FC = () => {
         Alert.alert("Erro", "Usuário não autenticado");
         return;
       }
-
       const userAuthService = new UserAuthService();
       await userAuthService.updateUserPreferences(user.uid, {
         types,
@@ -38,16 +35,13 @@ const PreferencesScreen: React.FC = () => {
         minPrice,
         maxPrice,
       });
-
       Alert.alert("Sucesso", "Preferências salvas com sucesso!");
       navigation.navigate("Home");
-
     } catch (error) {
       console.error("Erro ao salvar preferências:", error);
       Alert.alert("Erro", "Não foi possível salvar as preferências.");
     }
   };
-
   return (
     <View style={{ flex: 1 }}>
       <ScrollView 
