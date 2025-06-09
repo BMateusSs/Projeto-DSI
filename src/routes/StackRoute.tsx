@@ -21,7 +21,12 @@ function StackRoute() {
         <Stack.Screen name="RecoveryCode" component={PasswordRecoveryCode} />
         <Stack.Screen name="NewPassword" component={NewPassword} />
         <Stack.Screen name="Preferences" component={PreferencesScreen} />
-        <Stack.Screen name="Adicionar Vinhos" component={AddWineScreen} />
+        <Stack.Screen name="Adicionar Vinhos" component={AddWineScreen} 
+        options={{headerShown: true, 
+                  headerStyle: {backgroundColor: '6B2737'},
+                  headerTintColor: 'white',
+                  headerTitleStyle: {fontWeight: 'bold'}
+                  }}/>
         
         <Stack.Screen 
           name="Home" 

@@ -1,54 +1,63 @@
 import React from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { Wine } from '../services/wineService';
 import Card from './Card';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 interface WineListProps {
   wines: Wine[];
 }
 
 const WineList: React.FC<WineListProps> = ({ wines }) => {
+  const navigation = useNavigation();
+
+  const handleEditWine = (wine: Wine) => {
+    navigation.navigate('Adicionar Vinhos', { wineToEdit: wine });
+  };
+
   const renderWineItem = ({ item }: { item: Wine }) => (
-    <Card>
-      <Text style={styles.wineName}>{item.nome}</Text>
+    <TouchableOpacity onPress={() => handleEditWine(item)}>
+      <Card>
+        <Text style={styles.wineName}>{item.nome}</Text>
 
-      <View style={styles.detailRow}>
-        <Ionicons name="wine-outline" size={18} color="#8B4513" />
-        <Text style={styles.detailText}>{item.tipo}</Text>
-      </View>
-
-      <View style={styles.detailRow}>
-        <Ionicons name="map-outline" size={18} color="#8B4513" />
-        <Text style={styles.detailText}>{item.regiao}</Text>
-      </View>
-
-      <View style={styles.detailRow}>
-        <Ionicons name="bookmark-outline" size={18} color="#8B4513" />
-        <Text style={[
-          styles.detailText,
-          item.status === 'experimented' ? styles.statusExperimented : styles.statusDesired
-        ]}>
-          {item.status === 'experimented' ? 'Experimentado' : 'Desejado'}
-        </Text>
-      </View>
-
-      {item.status === 'experimented' && item.rating !== null && (
         <View style={styles.detailRow}>
-          <Ionicons name="star" size={18} color="#FFD700" />
-          <Text style={[styles.detailText, styles.ratingText]}>
-            {item.rating} estrelas
+          <Ionicons name="wine-outline" size={18} color="#8B4513" />
+          <Text style={styles.detailText}>{item.tipo}</Text>
+        </View>
+
+        <View style={styles.detailRow}>
+          <Ionicons name="map-outline" size={18} color="#8B4513" />
+          <Text style={styles.detailText}>{item.regiao}</Text>
+        </View>
+
+        <View style={styles.detailRow}>
+          <Ionicons name="bookmark-outline" size={18} color="#8B4513" />
+          <Text style={[
+            styles.detailText,
+            item.status === 'experimented' ? styles.statusExperimented : styles.statusDesired
+          ]}>
+            {item.status === 'experimented' ? 'Experimentado' : 'Desejado'}
           </Text>
         </View>
-      )}
 
-      {item.anotation && (
-        <View style={styles.anotationContainer}>
-          <Ionicons name="document-text-outline" size={18} color="#666666" />
-          <Text style={styles.anotationText}>{item.anotation}</Text>
-        </View>
-      )}
-    </Card>
+        {item.status === 'experimented' && item.rating !== null && (
+          <View style={styles.detailRow}>
+            <Ionicons name="star" size={18} color="#FFD700" />
+            <Text style={[styles.detailText, styles.ratingText]}>
+              {item.rating} estrelas
+            </Text>
+          </View>
+        )}
+
+        {item.anotation && (
+          <View style={styles.anotationContainer}>
+            <Ionicons name="document-text-outline" size={18} color="#666666" />
+            <Text style={styles.anotationText}>{item.anotation}</Text>
+          </View>
+        )}
+      </Card>
+    </TouchableOpacity>
   );
 
   return (
