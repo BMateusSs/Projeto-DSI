@@ -9,6 +9,7 @@ import { NewPassword } from "../screens/auth/NewPassword";
 import PreferencesScreen from "../screens/auth/Preferences";
 import TabNavigation from "./TabNavigation";
 import AddWineScreen from "../screens/library/AddWineScreen";
+import AddStoreScreen from "../screens/store/AddStoreScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,12 @@ function StackRoute() {
         <Stack.Screen name="NewPassword" component={NewPassword} />
         <Stack.Screen name="Preferences" component={PreferencesScreen} />
         <Stack.Screen name="Adicionar Vinhos" component={AddWineScreen} 
+        options={{headerShown: true, 
+                  headerStyle: {backgroundColor: '6B2737'},
+                  headerTintColor: 'white',
+                  headerTitleStyle: {fontWeight: 'bold'}
+                  }}/>
+        <Stack.Screen name="Adicionar Lojas" component={AddStoreScreen}
         options={{headerShown: true, 
                   headerStyle: {backgroundColor: '6B2737'},
                   headerTintColor: 'white',

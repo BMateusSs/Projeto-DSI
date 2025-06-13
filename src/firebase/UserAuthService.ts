@@ -36,28 +36,6 @@ export class UserAuthService {
       { merge: true }
     );
   }
-  async updateBusinessInfo(uid: string, businessData: any){
-    await setDoc(
-      doc(db, "users", uid),
-      { businessInfo: businessData},
-      { merge: true }
-    );
-  }
-  async updateProducerInfo(uid: string, producerData: any){
-    await setDoc(
-      doc(db, "users", uid),
-      { producerInfo: producerData },
-      { merge: true }
-    );
-  }
-  async checkIfCnpjExists(cnpj: string): Promise<boolean> {
-    const usersRef = collection(db, "users");
-    const businessQuery = query(usersRef, where("businessInfo.cnpj", "==", cnpj));
-    const producerQuery = query(usersRef, where("producerInfo.cnpj", "==", cnpj));
-    const businessSnapshot = await getDocs(businessQuery);
-    const producerSnapshot = await getDocs(producerQuery);
-    return !businessSnapshot.empty || !producerSnapshot.empty;
-    }
   async checkIfEmailExists(email: string): Promise<boolean> {
     const usersRef = collection(db, "users");
     const q = query(usersRef, where("email", "==", email));
