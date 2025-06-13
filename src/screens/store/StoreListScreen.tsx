@@ -1,15 +1,16 @@
-
 import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, Alert } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { auth } from '../../firebase/firebaseConfig';
 import storeService, { StoreData } from '../../services/storeService';
 import StoreList from '../../components/StoreList';
+import FilterSelector from '../../components/FilterSelector';
 
 const StoreListScreen = () => {
   const [stores, setStores] = useState<StoreData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [filter, setFilter] = useState<'all' | 'física' | 'online'>('all');
   const isFocused = useIsFocused();
   const fetchStores = async () => {
     if (!auth.currentUser) {
@@ -35,6 +36,10 @@ const StoreListScreen = () => {
       fetchStores();
     }
   }, [isFocused]);
+  const filteredStores = stores.filter((stores) => {
+    if (filter === 'all') return true;
+    return stores.type === filter;
+  });
   if (isLoading) {
     return (
       <View style={styles.centered}>
@@ -52,7 +57,16 @@ const StoreListScreen = () => {
   }
   return (
     <View style={styles.container}>
-      <StoreList stores={stores} />
+      <FilterSelector
+        options={[
+            { label: 'Todos', value: 'all' },
+            { label: 'Lojas Físicas', value: 'física' },
+            { label: 'Online', value: 'online' },
+        ]}
+        initialValue={filter}
+        onValueChange={(value) => setFilter(value as 'all' | 'física' | 'online')}
+      />
+      <StoreList stores={filteredStores} />
     </View>
   );
 };

@@ -1,11 +1,8 @@
 import { db } from "../firebase/firebaseConfig";
 import {
     collection,
-    doc,
-    setDoc,
     addDoc,
     getDocs,
-    orderBy,
     query,
     where,
     Timestamp,
@@ -33,7 +30,6 @@ const getStoresByUser = async (uid: string): Promise<StoreData[]> => {
     const storeQuery = query(
         collection(db, STORES_COLLECTION),
         where('createdBy', '==', uid),
-        //orderBy('createdAt', 'desc')
     );
     const snapshot = await getDocs(storeQuery);
     return snapshot.docs.map(doc => ({
