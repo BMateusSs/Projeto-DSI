@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Keyboard, Platform, TouchableWithoutFeedback } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styles from "../../styles/authStyles";
-import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserAuthService } from "../../firebase/UserAuthService";
 import { InputEmail } from "../../components/InputEmail";
@@ -12,6 +11,17 @@ import { AccountButton } from "../../components/AccountButton";
 import Link from "../../components/Link";
 import Title from "../../components/Title";
 import RememberMeSwitch from "../../components/RememberMeSwitch";
+
+const KeyboardDismissWrapper = ({ children }: { children: React.ReactNode }) => {
+  if (Platform.OS === 'web') {
+    return <View style={{ flex: 1 }}>{children}</View>;
+  }
+  return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={{ flex: 1 }}>{children}</View>
+    </TouchableWithoutFeedback>
+  );
+};
 
 export default function Login() {
   const navigation = useNavigation();
@@ -64,7 +74,7 @@ export default function Login() {
     navigation.navigate("SignUp");
   }
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} acessible={false}>
+    <KeyboardDismissWrapper>
       <ScrollView
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="handled"
@@ -92,6 +102,6 @@ export default function Login() {
           <AccountButton title="Criar conta" onPress={handleSignUp} />
         </View>
       </ScrollView>
-    </TouchableWithoutFeedback>
+    </KeyboardDismissWrapper>
   );
 }

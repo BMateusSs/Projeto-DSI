@@ -1,6 +1,8 @@
 import { db } from "../firebase/firebaseConfig";
 import {
     collection,
+    doc,
+    setDoc,
     addDoc,
     getDocs,
     orderBy,
@@ -10,33 +12,38 @@ import {
 } from 'firebase/firestore'
 
 export interface StoreData {
-    uid: string;
+    id?: string;
     name: string;
     type: string;
     address?: string;
     contact?: string;
     notes?: string;
-    createdAt?: Timestamp;
+    createdAt: Timestamp;
+    createdBy: string;
 }
 const STORES_COLLECTION = 'stores';
-const addStore = async (store: StoreData): Promise<void> => {
+const addStore = async (store: Omit<StoreData, 'id' | 'createdAt'>): Promise<void> => {
     await addDoc(collection(db, STORES_COLLECTION), {
         ...store,
         createdAt: Timestamp.now(),
+        createdBy: store.createdBy,
     });
 };
-const getStores = async (uid: string): Promise<StoreData[]> => {
+const getStoresByUser = async (uid: string): Promise<StoreData[]> => {
     const storeQuery = query(
         collection(db, STORES_COLLECTION),
-        where('uid', '==', uid),
-        orderBy('createdAt', 'desc')
+        where('createdBy', '==', uid),
+        //orderBy('createdAt', 'desc')
     );
     const snapshot = await getDocs(storeQuery);
-    return snapshot.docs.map(doc => doc.data() as StoreData);
+    return snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+    } as StoreData));
 };
 const storeService = {
     addStore,
-    getStores,
+    getStoresByUser,
 };
 
 export default storeService;

@@ -32,7 +32,7 @@ const AddStoreScreen: React.FC = () => {
     }
     try {
       await storeService.addStore({
-        uid: user.uid,
+        createdBy: user.uid,
         name,
         type,
         address,
@@ -68,7 +68,7 @@ const AddStoreScreen: React.FC = () => {
 
         <SubTitle title="Endereço" />
         <AddInput
-          placeholder="Digite o endereço"
+          placeholder="Endereço/link do site"
           value={address}
           onChange={setAddress}
         />
@@ -82,7 +82,7 @@ const AddStoreScreen: React.FC = () => {
 
         <SubTitle title="Anotações" />
         <Anotation
-          text="Digite anotações adicionais"
+          text="Anotações adicionais"
           value={notes}
           onChange={setNotes}
         />

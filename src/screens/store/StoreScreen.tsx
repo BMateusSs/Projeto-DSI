@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import AddButton from "../../components/AddButton";
 import { useNavigation } from "@react-navigation/native";
-import storeService from "../../services/storeService";
+import StoreListScreen from "./StoreListScreen";
 
 const Store = () => {
     const navigation = useNavigation();
@@ -12,7 +12,7 @@ const Store = () => {
     return (
         <View style={styles.container}>
             <View style={styles.content}>
-                {/* lista */}
+                <StoreListScreen />
             </View>
             <View style={styles.addButtonContainer}>
                 <AddButton onPress={addStore} />
