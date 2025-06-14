@@ -55,18 +55,28 @@ const StoreListScreen = () => {
       </View>
     );
   }
+  const handleDelete = async (deletedId: string) => {
+    try {
+        await storeService.deleteStore(deletedId);
+        setStores((prevStores) => prevStores.filter(store => store.id !== deletedId));
+    } catch (error) {
+        Alert.alert('Erro', 'Não foi possível deletar a loja');
+    }
+  };
   return (
     <View style={styles.container}>
       <FilterSelector
         options={[
-            { label: 'Todos', value: 'all' },
+            { label: 'Todas', value: 'all' },
             { label: 'Lojas Físicas', value: 'física' },
             { label: 'Online', value: 'online' },
         ]}
         initialValue={filter}
         onValueChange={(value) => setFilter(value as 'all' | 'física' | 'online')}
       />
-      <StoreList stores={filteredStores} />
+      <StoreList
+        stores={filteredStores}
+        onDelete={handleDelete} />
     </View>
   );
 };

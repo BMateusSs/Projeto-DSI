@@ -5,6 +5,7 @@ import {
     addDoc,
     getDocs,
     updateDoc,
+    deleteDoc,
     query,
     where,
     Timestamp,
@@ -50,10 +51,15 @@ const updateStore = async (store: StoreData): Promise<void> => {
         notes: store.notes || '',
     });
 };
+const deleteStore = async (id: string): Promise<void> => {
+    const storeRef = doc(db, STORES_COLLECTION, id);
+    await deleteDoc(storeRef);
+};
 const storeService = {
     addStore,
     getStoresByUser,
     updateStore,
+    deleteStore,
 };
 
 export default storeService;
