@@ -1,8 +1,10 @@
 import { db } from "../firebase/firebaseConfig";
 import {
     collection,
+    doc,
     addDoc,
     getDocs,
+    updateDoc,
     query,
     where,
     Timestamp,
@@ -37,9 +39,21 @@ const getStoresByUser = async (uid: string): Promise<StoreData[]> => {
         ...doc.data()
     } as StoreData));
 };
+const updateStore = async (store: StoreData): Promise<void> => {
+    if (!store.id) throw new Error('ID da loja é obrigatório para atualização');
+    const storeRef = doc(db, STORES_COLLECTION, store.id);
+    await updateDoc(storeRef, {
+        name: store.name,
+        type: store.type,
+        address: store.address || '',
+        contact: store.contact || '',
+        notes: store.notes || '',
+    });
+};
 const storeService = {
     addStore,
     getStoresByUser,
+    updateStore,
 };
 
 export default storeService;
