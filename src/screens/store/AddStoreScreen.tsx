@@ -89,8 +89,8 @@ const AddStoreScreen: React.FC = () => {
         <SubTitle title="Tipo" />
         <DualOptionSelector
           options={[
-            { label: 'Física', value: 'física' },
-            { label: 'Online', value: 'online' },
+            { label: 'Física', value: 'Física' },
+            { label: 'Online', value: 'Online' },
           ]}
           onValueChange={setType}
           initialValue={type}

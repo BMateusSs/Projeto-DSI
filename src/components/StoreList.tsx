@@ -1,9 +1,10 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import React, { useState} from 'react';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import Card from './Card';
 import storeService, { StoreData } from '../services/storeService';
+import ConfirmPopup from './ConfirmPopup';
 
 interface StoreListProps {
   stores: StoreData[];
@@ -12,78 +13,91 @@ interface StoreListProps {
 
 const StoreList: React.FC<StoreListProps> = ({ stores, onDelete }) => {
   const navigation = useNavigation();
-
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [storeIdToDelete, setStoreIdToDelete] = useState<string | null>(null);
   const handleEditStore = (store: StoreData) => {
     navigation.navigate('Adicionar Lojas', { storeToEdit: store });
   };
-  const handleDeleteStore = (storeId: string) => {
-    Alert.alert(
-        'Confirmação',
-        'Tem certeza que deseja deletar essa loja?',
-        [
-            { text: 'Cancelar', style: 'cancel' },
-            {
-                text: 'Deletar',
-                style: 'destructive',
-                onPress: () => onDelete(storeId),
-            },
-        ]
-    );
+  const confirmDelete = (storeId: string) => {
+    setStoreIdToDelete(storeId);
+    setModalVisible(true);
   };
-
-    const renderStoreItem = ({ item }: { item: StoreData }) => (
+  const executeDelete = () => {
+    if (storeIdToDelete) {
+      onDelete(storeIdToDelete);
+      setStoreIdToDelete(null);
+    }
+    setModalVisible(false);
+  };
+  const cancelDelete = () => {
+    setStoreIdToDelete(null);
+    setModalVisible(false);
+  };
+  const renderStoreItem = ({ item }: { item: StoreData }) => (
     <View style={{ marginBottom: 10 }}>
-        <Card>
-            <TouchableOpacity onPress={() => handleEditStore(item)}>
-                <Text style={styles.storeName}>{item.name}</Text>
+      <Card>
+        <TouchableOpacity onPress={() => handleEditStore(item)}>
+          <Text style={styles.storeName}>{item.name}</Text>
 
-                <View style={styles.detailRow}>
-                    <Ionicons name="storefront-outline" size={18} color="#8B4513" />
-                    <Text style={styles.detailText}>{item.type}</Text>
-                </View>
+          <View style={styles.detailRow}>
+            <Ionicons name="storefront-outline" size={18} color="#8B4513" />
+            <Text style={styles.detailText}>{item.type}</Text>
+          </View>
 
-            {item.address ? (
+          {item.address ? (
             <View style={styles.detailRow}>
-                <Ionicons name="location-outline" size={18} color="#8B4513" />
-                <Text style={styles.detailText}>{item.address}</Text>
+              <Ionicons name="location-outline" size={18} color="#8B4513" />
+              <Text style={styles.detailText}>{item.address}</Text>
             </View>
-            ) : null}
+          ) : null}
 
-            {item.contact ? (
+          {item.contact ? (
             <View style={styles.detailRow}>
-                <Ionicons name="call-outline" size={18} color="#8B4513" />
-                <Text style={styles.detailText}>{item.contact}</Text>
+              <Ionicons name="call-outline" size={18} color="#8B4513" />
+              <Text style={styles.detailText}>{item.contact}</Text>
             </View>
-            ) : null}
+          ) : null}
 
-            {item.notes ? (
+          {item.notes ? (
             <View style={styles.notesContainer}>
-                <Ionicons name="document-text-outline" size={18} color="#666666" />
-                <Text style={styles.notesText}>{item.notes}</Text>
+              <Ionicons name="document-text-outline" size={18} color="#666666" />
+              <Text style={styles.notesText}>{item.notes}</Text>
             </View>
-            ) : null}
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={{ marginTop: 10, alignSelf: 'flex-end' }}
-                onPress={() => handleDeleteStore(item.id!)}
-            >
-                <Ionicons name="trash-outline" size={24} color="#6B2737" />
-            </TouchableOpacity>
-        </Card>
+          ) : null}
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{ marginTop: 10, alignSelf: 'flex-end' }}
+          onPress={() => confirmDelete(item.id!)}
+        >
+          <Ionicons name="trash-outline" size={24} color="#6B2737" />
+        </TouchableOpacity>
+      </Card>
     </View>
-    );
+  );
+
   return (
-    <FlatList
-      data={stores}
-      keyExtractor={(item, index) => item.id ?? `store-${index}`}
-      renderItem={renderStoreItem}
-      contentContainerStyle={styles.listContent}
-      ListEmptyComponent={
-        <View style={styles.emptyListContainer}>
-          <Text style={styles.emptyListText}>Você ainda não adicionou nenhuma loja</Text>
-        </View>
-      }
-    />
+    <>
+      <FlatList
+        data={stores}
+        keyExtractor={(item, index) => item.id ?? `store-${index}`}
+        renderItem={renderStoreItem}
+        contentContainerStyle={styles.listContent}
+        ListEmptyComponent={
+          <View style={styles.emptyListContainer}>
+            <Text style={styles.emptyListText}>
+              Você ainda não adicionou nenhuma loja
+            </Text>
+          </View>
+        }
+      />
+      <ConfirmPopup
+        visible={isModalVisible}
+        message="Tem certeza que deseja deletar esta loja?"
+        onConfirm={executeDelete}
+        onCancel={cancelDelete}
+      />
+    </>
   );
 };
 

@@ -10,7 +10,7 @@ const StoreListScreen = () => {
   const [stores, setStores] = useState<StoreData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [filter, setFilter] = useState<'all' | 'física' | 'online'>('all');
+  const [filter, setFilter] = useState<'all' | 'Física' | 'Online'>('all');
   const isFocused = useIsFocused();
   const fetchStores = async () => {
     if (!auth.currentUser) {
@@ -68,11 +68,11 @@ const StoreListScreen = () => {
       <FilterSelector
         options={[
             { label: 'Todas', value: 'all' },
-            { label: 'Lojas Físicas', value: 'física' },
-            { label: 'Online', value: 'online' },
+            { label: 'Lojas Físicas', value: 'Física' },
+            { label: 'Online', value: 'Online' },
         ]}
         initialValue={filter}
-        onValueChange={(value) => setFilter(value as 'all' | 'física' | 'online')}
+        onValueChange={(value) => setFilter(value as 'all' | 'Física' | 'Online')}
       />
       <StoreList
         stores={filteredStores}
