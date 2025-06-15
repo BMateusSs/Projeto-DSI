@@ -1,4 +1,4 @@
-import { doc, setDoc, collection, getDocs, query, where, updateDoc } from "firebase/firestore";
+import { doc, setDoc, collection, getDocs, query, where, updateDoc, deleteDoc } from "firebase/firestore";
 import { db, auth } from "../firebase/firebaseConfig";
 
 export interface Wine {
@@ -82,6 +82,21 @@ export class WineService {
       }) as Wine);
     } catch (error) {
       console.error("Erro ao buscar vinhos:", error);
+      throw error;
+    }
+  }
+
+  static async deleteWine(wineId: string): Promise<void> {
+    try {
+      if (!auth.currentUser) {
+        throw new Error("Usuário não autenticado");
+      }
+
+      const wineRef = doc(db, this.COLLECTION_NAME, wineId);
+      await deleteDoc(wineRef);
+      console.log("Vinho deletado com sucesso!");
+    } catch (error) {
+      console.error(`Erro ao deletar vinho com ID ${wineId}:`, error);
       throw error;
     }
   }

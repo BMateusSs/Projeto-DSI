@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, Alert } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { WineService, Wine } from '../../services/wineService';
-import { auth, db } from "../../firebase/firebaseConfig";
+import { auth } from "../../firebase/firebaseConfig";
 import WineList from '../../components/WineList';
+import FilterSelector from '../../components/FilterSelector';
 
 const WineListScreen = () => {
   const [wines, setWines] = useState<Wine[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [filter, setFilter] = useState<'all' | 'experimented' | 'desired'>('all');
   const isFocused = useIsFocused();
 
   const fetchWines = async () => {
@@ -38,6 +40,20 @@ const WineListScreen = () => {
     }
   }, [isFocused]);
 
+  const filteredWines = wines.filter((wine) => {
+    if (filter === 'all') return true;
+    return wine.status === filter;
+  });
+
+  const handleDelete = async (deletedId: string) => {
+    try {
+      await WineService.deleteWine(deletedId);
+      setWines((prevWines) => prevWines.filter(wine => wine.id !== deletedId));
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível deletar o vinho');
+    }
+  };
+
   if (isLoading) {
     return (
       <View style={styles.centered}>
@@ -57,7 +73,19 @@ const WineListScreen = () => {
 
   return (
     <View style={styles.container}>
-      <WineList wines={wines} />
+      <FilterSelector
+        options={[
+          { label: 'Todos', value: 'all' },
+          { label: 'Experimentados', value: 'experimented' },
+          { label: 'Desejados', value: 'desired' },
+        ]}
+        initialValue={filter}
+        onValueChange={(value) => setFilter(value as 'all' | 'experimented' | 'desired')}
+      />
+      <WineList 
+        wines={filteredWines} 
+        onDelete={handleDelete} 
+      />
     </View>
   );
 };

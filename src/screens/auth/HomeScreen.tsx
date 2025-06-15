@@ -1,31 +1,38 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, ActivityIndicator } from "react-native";
+import { View, Text, ScrollView, ActivityIndicator, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from "@react-navigation/native";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import Header from "../../components/Header";
+import DiscoverCard from "../../components/DiscoverCard";
+import QuickActions from "../../components/QuickActions";
 
 const Home = () => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
   const [userName, setUserName] = useState("");
+
   useEffect(() => {
     const verificarPreferencias = async () => {
       const auth = getAuth();
       const db = getFirestore();
       const user = auth.currentUser;
+      
       if (user) {
         const userRef = doc(db, "users", user.uid);
         const userSnap = await getDoc(userRef);
+        
         if (userSnap.exists()) {
           const dados = userSnap.data();
           const perfil = dados.profile;
           const preferencias = dados.preferences;
+          
           if (dados.name) {
             setUserName(dados.name);
           }
+          
           if (perfil === "consumer" && (!preferencias || preferencias.length === 0)) {
             navigation.navigate("Preferences");
           }
@@ -33,8 +40,30 @@ const Home = () => {
       }
       setLoading(false);
     };
+    
     verificarPreferencias();
   }, []);
+
+  const handleDiscoverPress = () => {
+    navigation.navigate("WineList");
+  };
+
+  const handleExplorePress = () => {
+    navigation.navigate("StoreList");
+  };
+
+  const handleAddWine = () => {
+    navigation.navigate("AddWine");
+  };
+
+  const handleSearchStore = () => {
+    navigation.navigate("StoreList");
+  };
+
+  const handleViewProfessionals = () => {
+    navigation.navigate("Professionals");
+  };
+
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -44,10 +73,28 @@ const Home = () => {
   }
 
   return (
-    <View style={{ flex: 1 }}>
-      <Header name={userName} />
+    <View style={[styles.container, { paddingTop: insets.top }]}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <Header name={userName} />
+        <DiscoverCard onPress={handleDiscoverPress} />
+        <QuickActions 
+          onAddWine={handleAddWine}
+          onSearchStore={handleSearchStore}
+          onViewProfessionals={handleViewProfessionals}
+        />
+      </ScrollView>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  scrollContent: {
+    paddingBottom: 20,
+  },
+});
 
 export default Home;
