@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { View, Text, ScrollView, Keyboard, Platform, TouchableWithoutFeedback } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styles from "../../styles/authStyles";
@@ -31,7 +31,7 @@ export default function Login() {
   const [hasError, setHasError] = useState(false);
   const [rememberMe, setRememberMe] = useState(true)
   const authService = new UserAuthService();
-  useEffect(()=>{
+  useLayoutEffect(()=>{
     const carregarCredenciais = async () => {
       const saveEmail = await AsyncStorage.getItem('email');
       const savePassword = await AsyncStorage.getItem('password');
