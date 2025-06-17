@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, Alert } from 'react-native';
+import { View, ScrollView, Alert } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import AddInput from '../../components/AddInput';
 import DualOptionSelector from '../../components/StatusButton';
@@ -8,6 +8,7 @@ import StarRating from '../../components/StarRating';
 import SubTitle from '../../components/SubTitle';
 import { ConfirmButton } from '../../components/ConfirmButton';
 import { WineService, Wine } from '../../services/wineService';
+import { screenStyles } from '../../styles/screens';
 
 type AddWineScreenRouteParams = {
   wineToEdit?: Wine;
@@ -89,10 +90,10 @@ const AddWineScreen = () => {
 
   return (
     <ScrollView
-      contentContainerStyle={styles.scrollContainer}
+      contentContainerStyle={screenStyles.scrollContainer}
       keyboardShouldPersistTaps="handled"
     >
-      <View style={styles.formContainer}>
+      <View style={screenStyles.formContainer}>
         <SubTitle title="Nome do Vinho" />
         <AddInput
           placeholder='Ex: Chânteau Margaux 2015'
@@ -133,7 +134,7 @@ const AddWineScreen = () => {
         {status === 'experimented' && (
           <>
             <SubTitle title="Avaliação do Vinho" />
-            <View style={styles.ratingContainer}>
+            <View style={screenStyles.ratingContainer}>
               <StarRating
                 rating={rating || 0}
                 onRatingChange={setRating}
@@ -159,23 +160,5 @@ const AddWineScreen = () => {
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  scrollContainer: {
-    flexGrow: 1,
-    backgroundColor: '#fff',
-  },
-  formContainer: {
-    width: '90%',
-    alignSelf: 'center',
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-  },
-  ratingContainer: {
-    width: '100%',
-    alignItems: 'center',
-    marginVertical: 15,
-  },
-});
 
 export default AddWineScreen;

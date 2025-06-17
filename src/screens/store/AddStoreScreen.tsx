@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, StyleSheet, Alert } from 'react-native';
+import { View, ScrollView, Alert } from 'react-native';
 import AddInput from '../../components/AddInput';
 import Anotation from '../../components/Anotations';
 import { ConfirmButton } from '../../components/ConfirmButton';
@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import storeService, { StoreData } from '../../services/storeService';
 import { auth } from '../../firebase/firebaseConfig';
 import { RouteProp, useRoute } from '@react-navigation/native';
+import { screenStyles } from '../../styles/screens';
 
 type RouteParams = {
   storeToEdit?: StoreData;
@@ -83,10 +84,10 @@ const AddStoreScreen: React.FC = () => {
 
   return (
     <ScrollView
-      contentContainerStyle={styles.scrollContainer}
+      contentContainerStyle={screenStyles.scrollContainer}
       keyboardShouldPersistTaps="handled"
     >
-      <View style={styles.formContainer}>
+      <View style={screenStyles.formContainer}>
         <SubTitle title="Nome da Loja" />
         <AddInput
           placeholder="Digite o nome da loja"
@@ -134,18 +135,5 @@ const AddStoreScreen: React.FC = () => {
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  scrollContainer: {
-    flexGrow: 1,
-    backgroundColor: '#fff',
-  },
-  formContainer: {
-    width: '90%',
-    alignSelf: 'center',
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-  },
-});
 
 export default AddStoreScreen;

@@ -6,4 +6,8 @@ export type RootStackParamList = {
   'Adicionar Vinhos': { wineToEdit?: Wine };
   'Lista de Lojas': undefined;
   'Adicionar Lojas': { storeToEdit?: StoreData };
+  'Preferences': undefined;
+  'WineList': undefined;
+  'StoreList': undefined;
+  'Professionals': undefined;
 }; 

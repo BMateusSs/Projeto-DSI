@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, ActivityIndicator, StyleSheet } from "react-native";
+import { View, Text, ScrollView, ActivityIndicator, StyleSheet, Alert } from "react-native";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import Header from "../../components/Header";
 import DiscoverCard from "../../components/DiscoverCard";
 import QuickActions from "../../components/QuickActions";
+import { RootStackParamList } from '../../types/navigation';
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 const Home = () => {
   const insets = useSafeAreaInsets();
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
   const [loading, setLoading] = useState(true);
   const [userName, setUserName] = useState("");
 
@@ -45,23 +49,31 @@ const Home = () => {
   }, []);
 
   const handleDiscoverPress = () => {
-    navigation.navigate("WineList");
+    navigation.navigate({ name: "Lista de Vinhos", params: undefined });
   };
 
   const handleExplorePress = () => {
-    navigation.navigate("StoreList");
+    navigation.navigate({ name: "Lista de Lojas", params: undefined });
   };
 
   const handleAddWine = () => {
-    navigation.navigate("Adicionar Vinhos");
+    navigation.navigate({ name: "Adicionar Vinhos", params: { wineToEdit: undefined } });
+  };
+
+  const handleAddStore = () => {
+    navigation.navigate({ name: "Adicionar Lojas", params: { storeToEdit: undefined } });
+  };
+
+  const handleAddProfessional = () => {
+    Alert.alert('Em desenvolvimento', 'Funcionalidade em desenvolvimento');
   };
 
   const handleSearchStore = () => {
-    navigation.navigate("StoreList");
+    navigation.navigate({ name: "Lista de Lojas", params: undefined });
   };
 
   const handleViewProfessionals = () => {
-    navigation.navigate("Professionals");
+    navigation.navigate({ name: "Professionals", params: undefined });
   };
 
   if (loading) {
@@ -79,8 +91,8 @@ const Home = () => {
         <DiscoverCard onPress={handleDiscoverPress} />
         <QuickActions 
           onAddWine={handleAddWine}
-          onSearchStore={handleSearchStore}
-          onViewProfessionals={handleViewProfessionals}
+          onAddStore={handleAddStore}
+          onAddProfessional={handleAddProfessional}
         />
       </ScrollView>
     </View>
