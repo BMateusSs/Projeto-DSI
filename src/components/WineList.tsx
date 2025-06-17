@@ -16,7 +16,7 @@ const WineList: React.FC<WineListProps> = ({ wines, onDelete }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [wineIdToDelete, setWineIdToDelete] = useState<string | null>(null);
 
-  const limitText = (text: string, wordLimit: number = 6) => {
+  const limitText = (text: string, wordLimit: number = 5) => {
     const words = text.split(' ');
     if (words.length > wordLimit) {
       return words.slice(0, wordLimit).join(' ') + '...';
@@ -85,15 +85,14 @@ const WineList: React.FC<WineListProps> = ({ wines, onDelete }) => {
             <View style={styles.anotationContainer}>
               <Ionicons name="document-text-outline" size={18} color="#666666" />
               <Text style={styles.anotationText}>{limitText(item.anotation)}</Text>
+              <TouchableOpacity
+                onPress={() => confirmDelete(item.id!)}
+                style={styles.deleteButton}
+              >
+                <Ionicons name="trash-outline" size={18} color="#6B2737" />
+              </TouchableOpacity>
             </View>
           )}
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={{ marginTop: 10, alignSelf: 'flex-end' }}
-          onPress={() => confirmDelete(item.id!)}
-        >
-          <Ionicons name="trash-outline" size={24} color="#6B2737" />
         </TouchableOpacity>
       </Card>
     </View>
@@ -159,7 +158,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     marginTop: 10,
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
   },
   anotationText: {
     fontSize: 14,
@@ -167,6 +166,9 @@ const styles = StyleSheet.create({
     color: '#666666',
     marginLeft: 8,
     flex: 1,
+  },
+  deleteButton: {
+    marginLeft: 8,
   },
   listContent: {
     paddingBottom: 100,

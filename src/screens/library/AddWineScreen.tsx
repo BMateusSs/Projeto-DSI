@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Alert } from 'react-native';
+import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import AddInput from '../../components/AddInput';
 import DualOptionSelector from '../../components/StatusButton';
@@ -8,7 +8,6 @@ import StarRating from '../../components/StarRating';
 import SubTitle from '../../components/SubTitle';
 import { ConfirmButton } from '../../components/ConfirmButton';
 import { WineService, Wine } from '../../services/wineService';
-import { screenStyles } from '../../styles/screens';
 
 type AddWineScreenRouteParams = {
   wineToEdit?: Wine;
@@ -89,67 +88,71 @@ const AddWineScreen = () => {
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={screenStyles.scrollContainer}
-      keyboardShouldPersistTaps="handled"
-    >
-      <View style={screenStyles.formContainer}>
-        <SubTitle title="Nome do Vinho" />
-        <AddInput
-          placeholder='Ex: Chânteau Margaux 2015'
-          value={nome}
-          onChange={setNome}
-        />
+    <View style={{ flex: 1 }}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.formContainer}>
+          <SubTitle title="Nome do Vinho" />
+          <AddInput
+            placeholder='Ex: Chânteau Margaux 2015'
+            value={nome}
+            onChange={setNome}
+          />
 
-        <SubTitle title="Tipo do Vinho" />
-        <AddInput
-          placeholder='Ex: Tinto'
-          value={tipo}
-          onChange={setTipo}
-        />
+          <SubTitle title="Tipo do Vinho" />
+          <AddInput
+            placeholder='Ex: Tinto'
+            value={tipo}
+            onChange={setTipo}
+          />
 
-        <SubTitle title="Origem do Vinho" />
-        <AddInput
-          placeholder='Ex: Bordeaux, França'
-          value={regiao}
-          onChange={setRegiao}
-        />
+          <SubTitle title="Origem do Vinho" />
+          <AddInput
+            placeholder='Ex: Bordeaux, França'
+            value={regiao}
+            onChange={setRegiao}
+          />
 
-        <SubTitle title="Status do Vinho" />
-        <DualOptionSelector
-          options={[
-            { value: 'experimented', label: 'Experimentado' },
-            { value: 'desired', label: 'Desejado' }
-          ]}
-          onValueChange={(value: string | null) => {
-            if (value === 'experimented' || value === 'desired') {
-              setStatus(value);
-            } else {
-              setStatus('desired');
-            }
-          }}
-          initialValue={status}
-        />
+          <SubTitle title="Status do Vinho" />
+          <DualOptionSelector
+            options={[
+              { value: 'experimented', label: 'Experimentado' },
+              { value: 'desired', label: 'Desejado' }
+            ]}
+            onValueChange={(value: string | null) => {
+              if (value === 'experimented' || value === 'desired') {
+                setStatus(value);
+              } else {
+                setStatus('desired');
+              }
+            }}
+            initialValue={status}
+          />
 
-        {status === 'experimented' && (
-          <>
-            <SubTitle title="Avaliação do Vinho" />
-            <View style={screenStyles.ratingContainer}>
-              <StarRating
-                rating={rating || 0}
-                onRatingChange={setRating}
-              />
-            </View>
-          </>
-        )}
+          {status === 'experimented' && (
+            <>
+              <SubTitle title="Avaliação do Vinho" />
+              <View style={styles.ratingContainer}>
+                <StarRating
+                  rating={rating || 0}
+                  onRatingChange={setRating}
+                />
+              </View>
+            </>
+          )}
 
-        <SubTitle title="Anotações Pessoais" />
-        <Anotation
-          text='Digite suas observações sobre o vinho'
-          value={anotation}
-          onChange={setAnotation}
-        />
-
+          <SubTitle title="Anotações Pessoais" />
+          <Anotation
+            text='Digite suas observações sobre o vinho'
+            value={anotation}
+            onChange={setAnotation}
+          />
+        </View>
+      </ScrollView>
+      <View style={styles.buttonContainer}>
         <ConfirmButton
           title={wineToEdit ? 'Atualizar Vinho' : 'Adicionar Vinho'}
           onPress={handleSaveWine}
@@ -157,8 +160,31 @@ const AddWineScreen = () => {
           disabled={!isFormValid()}
         />
       </View>
-    </ScrollView>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+  },
+  formContainer: {
+    width: '90%',
+    alignSelf: 'center',
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+  },
+  ratingContainer: {
+    width: '100%',
+    alignItems: 'center',
+    marginVertical: 15,
+  },
+  buttonContainer: {
+    padding: 16,
+    backgroundColor: '#fff',
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
+  },
+});
 
 export default AddWineScreen;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Alert } from 'react-native';
+import { View, ScrollView, StyleSheet, Alert } from 'react-native';
 import AddInput from '../../components/AddInput';
 import Anotation from '../../components/Anotations';
 import { ConfirmButton } from '../../components/ConfirmButton';
@@ -9,7 +9,6 @@ import { useNavigation } from '@react-navigation/native';
 import storeService, { StoreData } from '../../services/storeService';
 import { auth } from '../../firebase/firebaseConfig';
 import { RouteProp, useRoute } from '@react-navigation/native';
-import { screenStyles } from '../../styles/screens';
 
 type RouteParams = {
   storeToEdit?: StoreData;
@@ -83,57 +82,79 @@ const AddStoreScreen: React.FC = () => {
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={screenStyles.scrollContainer}
-      keyboardShouldPersistTaps="handled"
-    >
-      <View style={screenStyles.formContainer}>
-        <SubTitle title="Nome da Loja" />
-        <AddInput
-          placeholder="Digite o nome da loja"
-          value={name}
-          onChange={setName}
-        />
+    <View style={{ flex: 1 }}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.formContainer}>
+          <SubTitle title="Nome da Loja" />
+          <AddInput
+            placeholder="Digite o nome da loja"
+            value={name}
+            onChange={setName}
+          />
 
-        <SubTitle title="Tipo" />
-        <DualOptionSelector
-          options={[
-            { label: 'Física', value: 'Física' },
-            { label: 'Online', value: 'Online' },
-          ]}
-          onValueChange={setType}
-          initialValue={type}
-        />
+          <SubTitle title="Tipo" />
+          <DualOptionSelector
+            options={[
+              { label: 'Física', value: 'Física' },
+              { label: 'Online', value: 'Online' },
+            ]}
+            onValueChange={setType}
+            initialValue={type}
+          />
 
-        <SubTitle title="Endereço" />
-        <AddInput
-          placeholder="Endereço/link do site"
-          value={address}
-          onChange={setAddress}
-        />
+          <SubTitle title="Endereço" />
+          <AddInput
+            placeholder="Endereço/link do site"
+            value={address}
+            onChange={setAddress}
+          />
 
-        <SubTitle title="Contato" />
-        <AddInput
-          placeholder="Email/Telefone"
-          value={contact}
-          onChange={setContact}
-        />
+          <SubTitle title="Contato" />
+          <AddInput
+            placeholder="Email/Telefone"
+            value={contact}
+            onChange={setContact}
+          />
 
-        <SubTitle title="Anotações" />
-        <Anotation
-          text="Anotações adicionais"
-          value={notes}
-          onChange={setNotes}
-        />
-
+          <SubTitle title="Anotações" />
+          <Anotation
+            text="Anotações adicionais"
+            value={notes}
+            onChange={setNotes}
+          />
+        </View>
+      </ScrollView>
+      <View style={styles.buttonContainer}>
         <ConfirmButton
           title={storeToEdit ? "Atualizar Loja" : "Adicionar Loja"}
           onPress={handleAddStore}
           disabled={!isFormValid()}
         />
       </View>
-    </ScrollView>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+  },
+  formContainer: {
+    width: '90%',
+    alignSelf: 'center',
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+  },
+  buttonContainer: {
+    padding: 16,
+    backgroundColor: '#fff',
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
+  },
+});
 
 export default AddStoreScreen;
