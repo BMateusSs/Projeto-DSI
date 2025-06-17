@@ -6,6 +6,7 @@ import Home from "../screens/auth/HomeScreen";
 import Library from "../screens/library/LibraryScreen";
 import Professionals from "../screens/ProfessionalsScreen";
 import Store from "../screens/store/StoreScreen";
+import {UserProfileScreen} from '../screens/UserProfile/UserProfileScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -54,6 +55,15 @@ export default function TabNavigation() {
         options={{
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="users" color={color} size={size} />
+          ),
+        }}
+      />
+    <Tab.Screen 
+        name="Perfil" 
+        component={UserProfileScreen} // Make sure this component exists
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome5 name="user-alt" color={color} size={size} />
           ),
         }}
       />
