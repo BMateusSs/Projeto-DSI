@@ -51,7 +51,7 @@ const MoneyInput: React.FC<MoneyInputProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 16,
+    margin: 16,
   },
   title: {
     fontSize: 16,
