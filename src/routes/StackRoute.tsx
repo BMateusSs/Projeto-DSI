@@ -10,6 +10,7 @@ import PreferencesScreen from "../screens/auth/Preferences";
 import TabNavigation from "./TabNavigation";
 import AddWineScreen from "../screens/library/AddWineScreen";
 import AddStoreScreen from "../screens/store/AddStoreScreen";
+import MapScreen from "../screens/map/MapScreen";
 import { Wine } from "../services/wineService";
 import { StoreData } from "../services/storeService";
 
@@ -23,6 +24,7 @@ type RootStackParamList = {
   'Home': undefined;
   'Adicionar Vinhos': { wineToEdit?: Wine };
   'Adicionar Lojas': { storeToEdit?: StoreData };
+  'Mapa': undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -52,14 +54,22 @@ function StackRoute() {
           headerTitleStyle: {fontWeight: 'bold'},
           title: route.params?.storeToEdit ? 'Atualizar Loja' : 'Adicionar Loja'
         })}/>
-        
+        <Stack.Screen 
+          name="Mapa" 
+          component={MapScreen}
+          options={{
+            headerShown: true,
+            headerStyle: {backgroundColor: '#6B2737'},
+            headerTintColor: 'white',
+            headerTitleStyle: {fontWeight: 'bold'},
+            title: 'Explorar Lojas'
+          }}
+        />
         <Stack.Screen 
           name="Home" 
           component={TabNavigation} 
           options={{ gestureEnabled: false, headerShown: false }}
         />
-
-
       </Stack.Navigator>
   );
 }

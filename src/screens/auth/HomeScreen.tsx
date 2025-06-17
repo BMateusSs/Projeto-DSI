@@ -8,6 +8,7 @@ import { getAuth } from "firebase/auth";
 import Header from "../../components/Header";
 import DiscoverCard from "../../components/DiscoverCard";
 import QuickActions from "../../components/QuickActions";
+import MapContainer from "../../components/MapContainer";
 import { RootStackParamList } from '../../types/navigation';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -94,6 +95,7 @@ const Home = () => {
           onAddStore={handleAddStore}
           onAddProfessional={handleAddProfessional}
         />
+        <MapContainer />
       </ScrollView>
     </View>
   );

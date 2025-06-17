@@ -14,12 +14,17 @@ import {
 export interface StoreData {
     id?: string;
     name: string;
-    type: string;
-    address?: string;
-    contact?: string;
-    notes?: string;
+    type: 'Física' | 'Online';
+    address: string;
+    contact: string;
+    notes: string;
     createdAt: Timestamp;
     createdBy: string;
+    userId: string;
+    coordinates?: {
+        latitude: number;
+        longitude: number;
+    };
 }
 const STORES_COLLECTION = 'stores';
 const addStore = async (store: Omit<StoreData, 'id' | 'createdAt'>): Promise<void> => {
