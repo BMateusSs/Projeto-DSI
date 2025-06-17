@@ -15,9 +15,9 @@ const AddInput: React.FC<AddInputProps> = ({placeholder, value, onChange}) => {
                 placeholder={placeholder}
                 value={value}
                 onChangeText={onChange}
+                style={styles.textInput}
                 />
             </View>
-            
         </View>
     )
 }
@@ -30,11 +30,14 @@ const styles = StyleSheet.create({
         height: 40,
         backgroundColor: '#F2E6E6',
         borderRadius: 8,
-        paddingStart: 5,
-        margin: 5
+        paddingHorizontal: 10,
+        marginVertical: 5
     },
     container: {
-        width: '90%'
+        width: '100%'
     },
-
+    textInput: {
+        flex: 1,
+        fontSize: 16,
+    }
 })

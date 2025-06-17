@@ -53,7 +53,7 @@ const Home = () => {
   };
 
   const handleAddWine = () => {
-    navigation.navigate("AddWine");
+    navigation.navigate("Adicionar Vinhos");
   };
 
   const handleSearchStore = () => {

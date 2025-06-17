@@ -3,11 +3,10 @@ import { View, ScrollView, StyleSheet, Alert } from 'react-native';
 import AddInput from '../../components/AddInput';
 import Anotation from '../../components/Anotations';
 import { ConfirmButton } from '../../components/ConfirmButton';
-import Card from '../../components/Card';
 import SubTitle from '../../components/SubTitle';
 import DualOptionSelector from '../../components/StatusButton';
 import { useNavigation } from '@react-navigation/native';
-import storeService from '../../services/storeService';
+import storeService, { StoreData } from '../../services/storeService';
 import { auth } from '../../firebase/firebaseConfig';
 import { RouteProp, useRoute } from '@react-navigation/native';
 
@@ -24,6 +23,7 @@ const AddStoreScreen: React.FC = () => {
   const [contact, setContact] = useState('');
   const [notes, setNotes] = useState('');
   const navigation = useNavigation();
+
   useEffect(() => {
     if (storeToEdit) {
       setName(storeToEdit.name);
@@ -33,19 +33,23 @@ const AddStoreScreen: React.FC = () => {
       setNotes(storeToEdit.notes ?? '');
     }
   }, [storeToEdit]);
+
   const isFormValid = () => {
     return name.trim().length > 0 && !!type;
   };
+
   const handleAddStore = async () => {
     if (!name || !type) {
       Alert.alert('Erro', 'Preencha ao menos o nome e o tipo da loja');
       return;
     }
+
     const user = auth.currentUser;
     if (!user) {
-        Alert.alert('Erro', 'Usuário não autenticado');
-        return;
+      Alert.alert('Erro', 'Usuário não autenticado');
+      return;
     }
+
     try {
       if (storeToEdit) {
         await storeService.updateStore({
@@ -76,12 +80,16 @@ const AddStoreScreen: React.FC = () => {
       console.error('Erro ao salvar loja:', error);
     }
   };
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Card>
+    <ScrollView
+      contentContainerStyle={styles.scrollContainer}
+      keyboardShouldPersistTaps="handled"
+    >
+      <View style={styles.formContainer}>
         <SubTitle title="Nome da Loja" />
         <AddInput
-          placeholder="Digite o nome"
+          placeholder="Digite o nome da loja"
           value={name}
           onChange={setName}
         />
@@ -116,22 +124,27 @@ const AddStoreScreen: React.FC = () => {
           value={notes}
           onChange={setNotes}
         />
-      </Card>
 
-      <ConfirmButton
-        title={storeToEdit ? "Atualizar Loja" : "Adicionar Loja"}
-        onPress={handleAddStore}
-        disabled={!isFormValid()}/>
+        <ConfirmButton
+          title={storeToEdit ? "Atualizar Loja" : "Adicionar Loja"}
+          onPress={handleAddStore}
+          disabled={!isFormValid()}
+        />
+      </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    paddingBottom: 30,
-    paddingTop: 20,
-    backgroundColor: '#fff'
+  scrollContainer: {
+    flexGrow: 1,
+    backgroundColor: '#fff',
+  },
+  formContainer: {
+    width: '90%',
+    alignSelf: 'center',
+    paddingVertical: 20,
+    paddingHorizontal: 20,
   },
 });
 

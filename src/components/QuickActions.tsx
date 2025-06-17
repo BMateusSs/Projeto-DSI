@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import IconButton from './IconButton';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-const QuickActions: React.FC = () => {
+const QuickActions: React.FC = ({}) => {
   const actions = [
     {
       iconName: 'plus',

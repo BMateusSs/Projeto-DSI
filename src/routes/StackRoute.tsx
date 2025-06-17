@@ -10,8 +10,22 @@ import PreferencesScreen from "../screens/auth/Preferences";
 import TabNavigation from "./TabNavigation";
 import AddWineScreen from "../screens/library/AddWineScreen";
 import AddStoreScreen from "../screens/store/AddStoreScreen";
+import { Wine } from "../services/wineService";
+import { StoreData } from "../services/storeService";
 
-const Stack = createNativeStackNavigator();
+type RootStackParamList = {
+  'Login': undefined;
+  'SignUp': undefined;
+  'Password': undefined;
+  'RecoveryCode': undefined;
+  'NewPassword': undefined;
+  'Preferences': undefined;
+  'Home': undefined;
+  'Adicionar Vinhos': { wineToEdit?: Wine };
+  'Adicionar Lojas': { storeToEdit?: StoreData };
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function StackRoute() {
   return (
@@ -23,17 +37,21 @@ function StackRoute() {
         <Stack.Screen name="NewPassword" component={NewPassword} />
         <Stack.Screen name="Preferences" component={PreferencesScreen} />
         <Stack.Screen name="Adicionar Vinhos" component={AddWineScreen} 
-        options={{headerShown: true, 
-                  headerStyle: {backgroundColor: '6B2737'},
-                  headerTintColor: 'white',
-                  headerTitleStyle: {fontWeight: 'bold'}
-                  }}/>
+        options={({ route }) => ({
+          headerShown: true, 
+          headerStyle: {backgroundColor: '#6B2737'},
+          headerTintColor: 'white',
+          headerTitleStyle: {fontWeight: 'bold'},
+          title: route.params?.wineToEdit ? 'Atualizar Vinho' : 'Adicionar Vinho'
+        })}/>
         <Stack.Screen name="Adicionar Lojas" component={AddStoreScreen}
-        options={{headerShown: true, 
-                  headerStyle: {backgroundColor: '6B2737'},
-                  headerTintColor: 'white',
-                  headerTitleStyle: {fontWeight: 'bold'}
-                  }}/>
+        options={({ route }) => ({
+          headerShown: true, 
+          headerStyle: {backgroundColor: '#6B2737'},
+          headerTintColor: 'white',
+          headerTitleStyle: {fontWeight: 'bold'},
+          title: route.params?.storeToEdit ? 'Atualizar Loja' : 'Adicionar Loja'
+        })}/>
         
         <Stack.Screen 
           name="Home" 

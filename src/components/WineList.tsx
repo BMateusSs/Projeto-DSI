@@ -16,6 +16,14 @@ const WineList: React.FC<WineListProps> = ({ wines, onDelete }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [wineIdToDelete, setWineIdToDelete] = useState<string | null>(null);
 
+  const limitText = (text: string, wordLimit: number = 6) => {
+    const words = text.split(' ');
+    if (words.length > wordLimit) {
+      return words.slice(0, wordLimit).join(' ') + '...';
+    }
+    return text;
+  };
+
   const handleEditWine = (wine: Wine) => {
     navigation.navigate('Adicionar Vinhos', { wineToEdit: wine });
   };
@@ -76,7 +84,7 @@ const WineList: React.FC<WineListProps> = ({ wines, onDelete }) => {
           {item.anotation && (
             <View style={styles.anotationContainer}>
               <Ionicons name="document-text-outline" size={18} color="#666666" />
-              <Text style={styles.anotationText}>{item.anotation}</Text>
+              <Text style={styles.anotationText}>{limitText(item.anotation)}</Text>
             </View>
           )}
         </TouchableOpacity>
