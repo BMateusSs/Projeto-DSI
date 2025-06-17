@@ -1,41 +1,55 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import Slider from '@react-native-community/slider';
-import { styles } from '../styles/preferenceStyles';
+import { globalStyles } from '../styles/preferenceStyles';
+import MoneyInput from './MoneySelector';
 
 interface PriceRangeSelectorProps {
-  max: number;
-  selectedMax: number;
-  onChangeMax: (value: number) => void;
+  minPrice: number;
+  setMinPrice: (value: number | null) => void;
+  maxPrice: number | null;
+  setMaxPrice: (value: number | null) => void;
 }
 
-const PriceRangeSelector: React.FC<PriceRangeSelectorProps> = ({
-  max,
-  selectedMax,
-  onChangeMax,
+const PriceRangeSection: React.FC<PriceRangeSelectorProps> = ({
+  minPrice,
+  setMinPrice,
+  maxPrice,
+  setMaxPrice,
 }) => {
   return (
-    <View style={styles.sectionContainer}>
-      <Text style={styles.sectionTitle}>Faixa de preço (R$)</Text>
+    <View style={globalStyles.sectionContainer}>
+      <Text style={globalStyles.sectionTitle}>Faixa de preço</Text>
       
-      <View style={styles.rangeContainer}>
-        <Text style={styles.rangeText}>R$ 0 - R$ {selectedMax}</Text>
+      <View style={globalStyles.rangeContainer}>
+        <Text style={globalStyles.rangeText}>
+          R$ {minPrice} - R$ {maxPrice !== null ? maxPrice : "---"}
+        </Text>
         
-        <Slider
-          style={styles.slider}
-          minimumValue={0}
-          maximumValue={max}
-          minimumTrackTintColor="#800020"
-          maximumTrackTintColor="#d3d3d3"
-          thumbTintColor="#800020"
-          value={selectedMax}
-          onValueChange={onChangeMax}
+        <MoneyInput
+          title="Valor máximo"
+          value={maxPrice}
+          onChangeValue={setMaxPrice}
         />
       </View>
       
-      <View style={styles.divider} />
+      <View style={globalStyles.divider} />
     </View>
   );
 };
 
-export default PriceRangeSelector;
+export default PriceRangeSection;
+
+import { StyleSheet } from 'react-native';
+
+ const preferenceStyles = StyleSheet.create({
+  // ...existing styles...
+  textInput: {
+    borderWidth: 1,
+    borderColor: '#d3d3d3',
+    borderRadius: 5,
+    padding: 10,
+    marginTop: 10,
+    fontSize: 16,
+    color: '#000',
+  },
+});
