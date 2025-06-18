@@ -2,9 +2,13 @@ import React, { useState} from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Card from './Card';
 import storeService, { StoreData } from '../services/storeService';
 import ConfirmPopup from './ConfirmPopup';
+import { RootStackParamList } from '../types/navigation';
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 interface StoreListProps {
   stores: StoreData[];
@@ -12,16 +16,27 @@ interface StoreListProps {
 }
 
 const StoreList: React.FC<StoreListProps> = ({ stores, onDelete }) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
   const [isModalVisible, setModalVisible] = useState(false);
   const [storeIdToDelete, setStoreIdToDelete] = useState<string | null>(null);
+
+  const limitText = (text: string, wordLimit: number = 5) => {
+    const words = text.split(' ');
+    if (words.length > wordLimit) {
+      return words.slice(0, wordLimit).join(' ') + '...';
+    }
+    return text;
+  };
+
   const handleEditStore = (store: StoreData) => {
     navigation.navigate('Adicionar Lojas', { storeToEdit: store });
   };
+
   const confirmDelete = (storeId: string) => {
     setStoreIdToDelete(storeId);
     setModalVisible(true);
   };
+
   const executeDelete = () => {
     if (storeIdToDelete) {
       onDelete(storeIdToDelete);
@@ -29,10 +44,12 @@ const StoreList: React.FC<StoreListProps> = ({ stores, onDelete }) => {
     }
     setModalVisible(false);
   };
+
   const cancelDelete = () => {
     setStoreIdToDelete(null);
     setModalVisible(false);
   };
+
   const renderStoreItem = ({ item }: { item: StoreData }) => (
     <View style={{ marginBottom: 10 }}>
       <Card>
@@ -61,16 +78,15 @@ const StoreList: React.FC<StoreListProps> = ({ stores, onDelete }) => {
           {item.notes ? (
             <View style={styles.notesContainer}>
               <Ionicons name="document-text-outline" size={18} color="#666666" />
-              <Text style={styles.notesText}>{item.notes}</Text>
+              <Text style={styles.notesText}>{limitText(item.notes)}</Text>
+              <TouchableOpacity
+                onPress={() => confirmDelete(item.id!)}
+                style={styles.deleteButton}
+              >
+                <Ionicons name="trash-outline" size={18} color="#6B2737" />
+              </TouchableOpacity>
             </View>
           ) : null}
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={{ marginTop: 10, alignSelf: 'flex-end' }}
-          onPress={() => confirmDelete(item.id!)}
-        >
-          <Ionicons name="trash-outline" size={24} color="#6B2737" />
         </TouchableOpacity>
       </Card>
     </View>
@@ -125,7 +141,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     marginTop: 10,
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
   },
   notesText: {
     fontSize: 14,
@@ -133,6 +149,9 @@ const styles = StyleSheet.create({
     color: '#666666',
     marginLeft: 8,
     flex: 1,
+  },
+  deleteButton: {
+    marginLeft: 8,
   },
   listContent: {
     paddingBottom: 100,

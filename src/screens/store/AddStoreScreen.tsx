@@ -3,11 +3,10 @@ import { View, ScrollView, StyleSheet, Alert } from 'react-native';
 import AddInput from '../../components/AddInput';
 import Anotation from '../../components/Anotations';
 import { ConfirmButton } from '../../components/ConfirmButton';
-import Card from '../../components/Card';
 import SubTitle from '../../components/SubTitle';
 import DualOptionSelector from '../../components/StatusButton';
 import { useNavigation } from '@react-navigation/native';
-import storeService from '../../services/storeService';
+import storeService, { StoreData } from '../../services/storeService';
 import { auth } from '../../firebase/firebaseConfig';
 import { RouteProp, useRoute } from '@react-navigation/native';
 
@@ -24,6 +23,7 @@ const AddStoreScreen: React.FC = () => {
   const [contact, setContact] = useState('');
   const [notes, setNotes] = useState('');
   const navigation = useNavigation();
+
   useEffect(() => {
     if (storeToEdit) {
       setName(storeToEdit.name);
@@ -33,19 +33,23 @@ const AddStoreScreen: React.FC = () => {
       setNotes(storeToEdit.notes ?? '');
     }
   }, [storeToEdit]);
+
   const isFormValid = () => {
     return name.trim().length > 0 && !!type;
   };
+
   const handleAddStore = async () => {
     if (!name || !type) {
       Alert.alert('Erro', 'Preencha ao menos o nome e o tipo da loja');
       return;
     }
+
     const user = auth.currentUser;
     if (!user) {
-        Alert.alert('Erro', 'Usuário não autenticado');
-        return;
+      Alert.alert('Erro', 'Usuário não autenticado');
+      return;
     }
+
     try {
       if (storeToEdit) {
         await storeService.updateStore({
@@ -76,62 +80,80 @@ const AddStoreScreen: React.FC = () => {
       console.error('Erro ao salvar loja:', error);
     }
   };
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Card>
-        <SubTitle title="Nome da Loja" />
-        <AddInput
-          placeholder="Digite o nome"
-          value={name}
-          onChange={setName}
-        />
+    <View style={{ flex: 1 }}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.formContainer}>
+          <SubTitle title="Nome da Loja" />
+          <AddInput
+            placeholder="Digite o nome da loja"
+            value={name}
+            onChange={setName}
+          />
 
-        <SubTitle title="Tipo" />
-        <DualOptionSelector
-          options={[
-            { label: 'Física', value: 'Física' },
-            { label: 'Online', value: 'Online' },
-          ]}
-          onValueChange={setType}
-          initialValue={type}
-        />
+          <SubTitle title="Tipo" />
+          <DualOptionSelector
+            options={[
+              { label: 'Física', value: 'Física' },
+              { label: 'Online', value: 'Online' },
+            ]}
+            onValueChange={setType}
+            initialValue={type}
+          />
 
-        <SubTitle title="Endereço" />
-        <AddInput
-          placeholder="Endereço/link do site"
-          value={address}
-          onChange={setAddress}
-        />
+          <SubTitle title="Endereço" />
+          <AddInput
+            placeholder="Endereço/link do site"
+            value={address}
+            onChange={setAddress}
+          />
 
-        <SubTitle title="Contato" />
-        <AddInput
-          placeholder="Email/Telefone"
-          value={contact}
-          onChange={setContact}
-        />
+          <SubTitle title="Contato" />
+          <AddInput
+            placeholder="Email/Telefone"
+            value={contact}
+            onChange={setContact}
+          />
 
-        <SubTitle title="Anotações" />
-        <Anotation
-          text="Anotações adicionais"
-          value={notes}
-          onChange={setNotes}
+          <SubTitle title="Anotações" />
+          <Anotation
+            text="Anotações adicionais"
+            value={notes}
+            onChange={setNotes}
+          />
+        </View>
+      </ScrollView>
+      <View style={styles.buttonContainer}>
+        <ConfirmButton
+          title={storeToEdit ? "Atualizar Loja" : "Adicionar Loja"}
+          onPress={handleAddStore}
+          disabled={!isFormValid()}
         />
-      </Card>
-
-      <ConfirmButton
-        title={storeToEdit ? "Atualizar Loja" : "Adicionar Loja"}
-        onPress={handleAddStore}
-        disabled={!isFormValid()}/>
-    </ScrollView>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    paddingBottom: 30,
-    paddingTop: 20,
-    backgroundColor: '#fff'
+  scrollContainer: {
+    flexGrow: 1,
+  },
+  formContainer: {
+    width: '90%',
+    alignSelf: 'center',
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+  },
+  buttonContainer: {
+    padding: 16,
+    backgroundColor: '#fff',
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
   },
 });
 

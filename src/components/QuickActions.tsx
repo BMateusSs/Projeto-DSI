@@ -3,25 +3,38 @@ import { View, Text, StyleSheet } from 'react-native';
 import IconButton from './IconButton';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-const QuickActions: React.FC = () => {
+interface QuickActionsProps {
+  onAddWine: () => void;
+  onAddStore: () => void;
+  onAddProfessional: () => void;
+}
+
+const QuickActions: React.FC<QuickActionsProps> = ({
+  onAddWine,
+  onAddStore,
+  onAddProfessional
+}) => {
   const actions = [
     {
-      iconName: 'add', // Changed to Ionicons' "add" icon
+      iconName: 'wine',
       buttonText: 'Adicionar vinho',
-      onPress: () => console.log('Adicionar vinho pressionado'),
+      onPress: onAddWine,
       iconColor: '#6B2737',
+      iconLib: 'Ionicons'
     },
     {
-      iconName: 'storefront', // Ionicons' "storefront" icon
-      buttonText: 'Procurar loja',
-      onPress: () => console.log('Procurar loja pressionado'),
+      iconName: 'storefront',
+      buttonText: 'Adicionar loja',
+      onPress: onAddStore,
       iconColor: '#6B2737',
+      iconLib: 'Ionicons'
     },
     {
-      iconName: 'people', // Ionicons' "people" icon
-      buttonText: 'Profissionais',
-      onPress: () => console.log('Profissionais pressionado'),
+      iconName: 'users',
+      buttonText: 'Adicionar profissional',
+      onPress: onAddProfessional,
       iconColor: '#6B2737',
+      iconLib: 'FontAwesome5'
     },
   ];
 
@@ -38,7 +51,7 @@ const QuickActions: React.FC = () => {
             iconSize={24}
             iconColor={action.iconColor}
             textColor="#333"
-            iconLib="Ionicons" // Explicitly set to Ionicons
+            iconLib={action.iconLib}
           />
         ))}
       </View>

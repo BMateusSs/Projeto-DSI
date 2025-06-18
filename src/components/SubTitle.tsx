@@ -15,7 +15,7 @@ const SubTitle: React.FC<SubTitleProps> = ({ title }) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: '90%',
+        width: '100%',
         marginBottom: 8,
         marginTop: 16,
     },

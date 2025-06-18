@@ -43,7 +43,7 @@ const StoreListScreen = () => {
   if (isLoading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color="#6B2737" />
         <Text>Carregando lojas...</Text>
       </View>
     );

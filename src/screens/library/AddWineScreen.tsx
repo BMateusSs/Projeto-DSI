@@ -39,6 +39,10 @@ const AddWineScreen = () => {
     }
   }, [wineToEdit]);
 
+  const isFormValid = () => {
+    return nome.trim().length > 0 && tipo.trim().length > 0 && regiao.trim().length > 0;
+  };
+
   const handleSaveWine = async () => {
     if (!nome.trim() || !tipo.trim() || !regiao.trim()) {
       Alert.alert('Atenção', 'Preencha todos os campos obrigatórios');
@@ -84,85 +88,102 @@ const AddWineScreen = () => {
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={styles.scrollContainer}
-      keyboardShouldPersistTaps="handled"
-    >
-      <SubTitle title="Nome do Vinho" />
-      <AddInput
-        placeholder='Ex: Chânteau Margaux 2015'
-        value={nome}
-        onChange={setNome}
-      />
+    <View style={{ flex: 1 }}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.formContainer}>
+          <SubTitle title="Nome do Vinho" />
+          <AddInput
+            placeholder='Ex: Chânteau Margaux 2015'
+            value={nome}
+            onChange={setNome}
+          />
 
-      <SubTitle title="Tipo do Vinho" />
-      <AddInput
-        placeholder='Ex: Tinto'
-        value={tipo}
-        onChange={setTipo}
-      />
+          <SubTitle title="Tipo do Vinho" />
+          <AddInput
+            placeholder='Ex: Tinto'
+            value={tipo}
+            onChange={setTipo}
+          />
 
-      <SubTitle title="Origem do Vinho" />
-      <AddInput
-        placeholder='Ex: Bordeaux, França'
-        value={regiao}
-        onChange={setRegiao}
-      />
+          <SubTitle title="Origem do Vinho" />
+          <AddInput
+            placeholder='Ex: Bordeaux, França'
+            value={regiao}
+            onChange={setRegiao}
+          />
 
-      <SubTitle title="Status do Vinho" />
-      <DualOptionSelector
-        options={[
-          { value: 'experimented', label: 'Experimentado' },
-          { value: 'desired', label: 'Desejado' }
-        ]}
-        onValueChange={(value: string | null) => {
-          if (value === 'experimented' || value === 'desired') {
-            setStatus(value);
-          } else {
-            setStatus('desired');
-          }
-        }}
-        initialValue={status}
-      />
+          <SubTitle title="Status do Vinho" />
+          <DualOptionSelector
+            options={[
+              { value: 'experimented', label: 'Experimentado' },
+              { value: 'desired', label: 'Desejado' }
+            ]}
+            onValueChange={(value: string | null) => {
+              if (value === 'experimented' || value === 'desired') {
+                setStatus(value);
+              } else {
+                setStatus('desired');
+              }
+            }}
+            initialValue={status}
+          />
 
-      {status === 'experimented' && (
-        <>
-          <SubTitle title="Avaliação do Vinho" />
-          <View style={styles.ratingContainer}>
-            <StarRating
-              rating={rating || 0}
-              onRatingChange={setRating}
-            />
-          </View>
-        </>
-      )}
+          {status === 'experimented' && (
+            <>
+              <SubTitle title="Avaliação do Vinho" />
+              <View style={styles.ratingContainer}>
+                <StarRating
+                  rating={rating || 0}
+                  onRatingChange={setRating}
+                />
+              </View>
+            </>
+          )}
 
-      <SubTitle title="Anotações Pessoais" />
-      <Anotation
-        text='Digite suas observações sobre o vinho'
-        value={anotation}
-        onChange={setAnotation}
-      />
-
-      <ConfirmButton
-        title={wineToEdit ? 'Atualizar Vinho' : 'Adicionar Vinho'}
-        onPress={handleSaveWine}
-        loading={isLoading}
-      />
-    </ScrollView>
+          <SubTitle title="Anotações Pessoais" />
+          <Anotation
+            text='Digite suas observações sobre o vinho'
+            value={anotation}
+            onChange={setAnotation}
+          />
+        </View>
+      </ScrollView>
+      <View style={styles.buttonContainer}>
+        <ConfirmButton
+          title={wineToEdit ? 'Atualizar Vinho' : 'Adicionar Vinho'}
+          onPress={handleSaveWine}
+          loading={isLoading}
+          disabled={!isFormValid()}
+        />
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    padding: 20,
-    backgroundColor: '#fff',
     flexGrow: 1,
+  },
+  formContainer: {
+    width: '90%',
+    alignSelf: 'center',
+    paddingVertical: 20,
+    paddingHorizontal: 20,
   },
   ratingContainer: {
     width: '100%',
     alignItems: 'center',
     marginVertical: 15,
+  },
+  buttonContainer: {
+    padding: 16,
+    backgroundColor: '#fff',
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
   },
 });
 
