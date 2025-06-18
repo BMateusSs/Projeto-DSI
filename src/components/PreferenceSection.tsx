@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { styles } from '../styles/preferenceStyles';
+import { globalStyles } from '../styles/preferenceStyles';
 
 interface PreferenceSectionProps {
   title: string;
@@ -44,23 +44,23 @@ const PreferenceSection: React.FC<PreferenceSectionProps> = ({
   };
 
   return (
-    <View style={styles.sectionContainer}>
-      <Text style={styles.sectionTitle}>{title}</Text>
-      {subtitle && <Text style={styles.sectionSubtitle}>{subtitle}</Text>}
+    <View style={globalStyles.sectionContainer}>
+      <Text style={globalStyles.sectionTitle}>{title}</Text>
+      {subtitle && <Text style={globalStyles.sectionSubtitle}>{subtitle}</Text>}
       
-      <View style={styles.optionsContainer}>
+      <View style={globalStyles.optionsContainer}>
         {options.map((option, index) => (
           <TouchableOpacity
             key={index}
             style={[
-              styles.optionButton,
-              isSelected(option) && styles.optionButtonSelected
+              globalStyles.optionButton,
+              isSelected(option) && globalStyles.optionButtonSelected
             ]}
             onPress={() => toggleOption(option)}
           >
             <Text style={[
-              styles.optionText,
-              isSelected(option) && styles.optionTextSelected
+              globalStyles.optionText,
+              isSelected(option) && globalStyles.optionTextSelected
             ]}>
               {option}
             </Text>
@@ -68,7 +68,7 @@ const PreferenceSection: React.FC<PreferenceSectionProps> = ({
         ))}
       </View>
       
-      <View style={styles.divider} />
+      <View style={globalStyles.divider} />
     </View>
   );
 };
