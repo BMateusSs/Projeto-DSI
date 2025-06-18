@@ -7,6 +7,7 @@ import Library from "../screens/library/LibraryScreen";
 import Professionals from "../screens/ProfessionalsScreen";
 import Store from "../screens/store/StoreScreen";
 import { UserProfileScreen } from '../screens/UserProfile/UserProfileScreen';
+import ProfessionaisScreen from '../screens/professionais/ProfessionaisScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -50,8 +51,8 @@ export default function TabNavigation() {
         }}
       />
       <Tab.Screen 
-        name="Profissionais" 
-        component={Professionals} 
+        name="Professionais" 
+        component={ProfessionaisScreen} 
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="people-outline" color={color} size={size} />
