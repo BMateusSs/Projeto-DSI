@@ -6,25 +6,22 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 const QuickActions: React.FC = () => {
   const actions = [
     {
-      iconName: 'plus',
+      iconName: 'add', // Changed to Ionicons' "add" icon
       buttonText: 'Adicionar vinho',
       onPress: () => console.log('Adicionar vinho pressionado'),
       iconColor: '#6B2737',
-      iconLib: 'FontAwesome5'
     },
     {
-      iconName: 'storefront',
+      iconName: 'storefront', // Ionicons' "storefront" icon
       buttonText: 'Procurar loja',
       onPress: () => console.log('Procurar loja pressionado'),
       iconColor: '#6B2737',
-      iconLib: 'Ionicons'
     },
     {
-      iconName: 'users',
+      iconName: 'people', // Ionicons' "people" icon
       buttonText: 'Profissionais',
       onPress: () => console.log('Profissionais pressionado'),
       iconColor: '#6B2737',
-      iconLib: 'FontAwesome5'
     },
   ];
 
@@ -41,7 +38,7 @@ const QuickActions: React.FC = () => {
             iconSize={24}
             iconColor={action.iconColor}
             textColor="#333"
-            iconLib={action.iconLib}
+            iconLib="Ionicons" // Explicitly set to Ionicons
           />
         ))}
       </View>
