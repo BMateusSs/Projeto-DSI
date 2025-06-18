@@ -11,6 +11,8 @@ import TabNavigation from "./TabNavigation";
 import AddWineScreen from "../screens/library/AddWineScreen";
 import AddStoreScreen from "../screens/store/AddStoreScreen";
 import ProfessionaisScreen from "../screens/professionais/ProfessionaisScreen";
+import ProfessionalDetailsScreen from "../screens/professionais/ProfessionalDetailsScreen"; // Importa a nova tela
+
 export const ROUTE_NAMES = {
   LOGIN: "Login",
   SIGN_UP: "SignUp",
@@ -20,7 +22,7 @@ export const ROUTE_NAMES = {
   PREFERENCES: "Preferences",
   ADD_WINE: "Adicionar Vinhos",
   ADD_STORE: "Adicionar Lojas",
-  ADD_PROFESSIONALS: "Adicionar Profissionais",
+  PROFESSIONALS: "Profissionais",
   PROFESSIONAL_DETAILS: "Detalhes Profissional", // Nova rota
   HOME_TABS: "Home",
 } as const;
@@ -34,7 +36,7 @@ export type RootStackParamList = {
   [ROUTE_NAMES.PREFERENCES]: undefined;
   [ROUTE_NAMES.ADD_WINE]: undefined;
   [ROUTE_NAMES.ADD_STORE]: undefined;
-  [ROUTE_NAMES.ADD_PROFESSIONALS]: undefined;
+  [ROUTE_NAMES.PROFESSIONALS]: undefined;
   [ROUTE_NAMES.PROFESSIONAL_DETAILS]: { professionalId: string }; // Aceita o ID do profissional
   [ROUTE_NAMES.HOME_TABS]: undefined;
 };
@@ -42,7 +44,7 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>(); // Use the typed Stack
 function StackRoute() {
   return (
-    <Stack.Navigator initialRouteName={ROUTE_NAMES.LOGIN} screenOptions={{ headerShown: false }}>
+    <Stack.Navigator initialRouteName={ROUTE_NAMES.HOME_TABS} screenOptions={{ headerShown: false }}>
       <Stack.Screen name={ROUTE_NAMES.LOGIN} component={Login} />
       <Stack.Screen name={ROUTE_NAMES.SIGN_UP} component={SignUp} />
       <Stack.Screen name={ROUTE_NAMES.PASSWORD_RECOVERY} component={Password} />
@@ -51,7 +53,6 @@ function StackRoute() {
       <Stack.Screen name={ROUTE_NAMES.PREFERENCES} component={PreferencesScreen} />
       <Stack.Screen name={ROUTE_NAMES.ADD_WINE} component={AddWineScreen} />
       <Stack.Screen name={ROUTE_NAMES.ADD_STORE} component={AddStoreScreen} />
-      <Stack.Screen name={ROUTE_NAMES.ADD_PROFESSIONALS} component={ProfessionaisScreen} />
       <Stack.Screen
         name={ROUTE_NAMES.PROFESSIONAL_DETAILS}
         component={ProfessionalDetailsScreen} // Nova tela registrada

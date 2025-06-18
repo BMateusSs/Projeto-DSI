@@ -6,7 +6,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'; // I
 import { auth } from "../../firebase/firebaseConfig"; // Adjust path if necessary
 // Adjust the path to your routeNames.ts file
 import { VinicotecaTheme } from "../../styles/colors";
-import { RootStackParamList, ROUTE_NAMES } from "../../routes/ProfessionalDetailsScreen";
+import { RootStackParamList, ROUTE_NAMES } from "../../routes/RouteNames";
 
 // Define the type for the navigation prop.
 // Since UserProfileScreen is likely part of TabNavigation, which is nested in the Stack,

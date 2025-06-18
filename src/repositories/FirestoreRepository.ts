@@ -7,7 +7,7 @@ import {
     updateDoc,
     deleteDoc,
   } from "firebase/firestore";
-  import { db } from "../config/firebaseConfig";
+  import { db } from "../firebase/firebaseConfig";
   
   export class FirestoreRepository<T> {
     constructor(private collectionName: string) {}
