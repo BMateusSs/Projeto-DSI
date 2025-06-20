@@ -121,6 +121,14 @@ const ProfileScreen = () => {
             <Text style={styles.statLabel}>Profissionais</Text>
           </View>
         </View>
+        <TouchableOpacity 
+          style={styles.preferenceButton}
+          onPress={() => navigation.navigate('Preferences')}
+          activeOpacity={0.8}
+        >
+          <Ionicons name="settings-outline" size={20} color="#fff" style={{ marginRight: 8 }} />
+          <Text style={styles.preferenceButtonText}>Minhas Preferências</Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.footer}>
@@ -221,6 +229,29 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  preferenceButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#6B2737',
+    borderRadius: 10,
+    paddingVertical: 12,
+    marginTop: 18,
+    marginBottom: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2,
+    width: '90%',
+    alignSelf: 'center',
+  },
+  preferenceButtonText: {
+    color: '#fff',
+    fontSize: 17,
+    fontWeight: 'bold',
+    letterSpacing: 0.5,
   },
 });
 

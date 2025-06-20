@@ -18,7 +18,7 @@ const AddStoreScreen: React.FC = () => {
   const route = useRoute<RouteProp<{ params: RouteParams }, 'params'>>();
   const storeToEdit = route.params?.storeToEdit;
   const [name, setName] = useState('');
-  const [type, setType] = useState<string | null>(null);
+  const [type, setType] = useState<'Física' | 'Online' | null>(null);
   const [address, setAddress] = useState('');
   const [contact, setContact] = useState('');
   const [notes, setNotes] = useState('');
@@ -27,7 +27,7 @@ const AddStoreScreen: React.FC = () => {
   useEffect(() => {
     if (storeToEdit) {
       setName(storeToEdit.name);
-      setType(storeToEdit.type);
+      setType(storeToEdit.type as 'Física' | 'Online');
       setAddress(storeToEdit.address ?? '');
       setContact(storeToEdit.contact ?? '');
       setNotes(storeToEdit.notes ?? '');
@@ -50,11 +50,14 @@ const AddStoreScreen: React.FC = () => {
       return;
     }
 
+    const userId = user.uid;
+
     try {
       if (storeToEdit) {
         await storeService.updateStore({
           id: storeToEdit.id,
           createdBy: user.uid,
+          userId,
           name,
           type,
           address,
@@ -66,6 +69,7 @@ const AddStoreScreen: React.FC = () => {
       } else {
         await storeService.addStore({
           createdBy: user.uid,
+          userId,
           name,
           type,
           address,
@@ -102,7 +106,7 @@ const AddStoreScreen: React.FC = () => {
               { label: 'Física', value: 'Física' },
               { label: 'Online', value: 'Online' },
             ]}
-            onValueChange={setType}
+            onValueChange={(value) => setType(value === 'Física' || value === 'Online' ? value : null)}
             initialValue={type}
           />
 
@@ -154,6 +158,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderTopWidth: 1,
     borderTopColor: '#eee',
+    alignItems: 'center',
   },
 });
 

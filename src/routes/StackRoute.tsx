@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from "../screens/auth/LoginScreen";
@@ -13,6 +13,10 @@ import AddStoreScreen from "../screens/store/AddStoreScreen";
 import MapScreen from "../screens/map/MapScreen";
 import { Wine } from "../services/wineService";
 import { StoreData } from "../services/storeService";
+import RecommendationScreen from "../screens/recomendations/RecomendationScreen";
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { ActivityIndicator, View } from 'react-native';
 
 type RootStackParamList = {
   'Login': undefined;
@@ -25,52 +29,105 @@ type RootStackParamList = {
   'Adicionar Vinhos': { wineToEdit?: Wine };
   'Adicionar Lojas': { storeToEdit?: StoreData };
   'Mapa': undefined;
+  'Recomendados': undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function StackRoute() {
+  const [initialRoute, setInitialRoute] = useState<keyof RootStackParamList | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const checkPreferences = async () => {
+      const auth = getAuth();
+      onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+          setInitialRoute('Login');
+          setLoading(false);
+          return;
+        }
+        const db = getFirestore();
+        const userRef = doc(db, 'users', user.uid);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          const dados = userSnap.data();
+          const perfil = dados.profile;
+          const preferencias = dados.preferences;
+          if (perfil === 'consumer' && (!preferencias || Object.keys(preferencias).length === 0)) {
+            setInitialRoute('Preferences');
+          } else {
+            setInitialRoute('Home');
+          }
+        } else {
+          setInitialRoute('Preferences');
+        }
+        setLoading(false);
+      });
+    };
+    checkPreferences();
+  }, []);
+
+  if (loading || !initialRoute) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#800000" />
+      </View>
+    );
+  }
+
   return (
-      <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="SignUp" component={SignUp} />
-        <Stack.Screen name="Password" component={Password} />
-        <Stack.Screen name="RecoveryCode" component={PasswordRecoveryCode} />
-        <Stack.Screen name="NewPassword" component={NewPassword} />
-        <Stack.Screen name="Preferences" component={PreferencesScreen} />
-        <Stack.Screen name="Adicionar Vinhos" component={AddWineScreen} 
-        options={({ route }) => ({
-          headerShown: true, 
+    <Stack.Navigator initialRouteName={initialRoute ?? 'Login'} screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="Password" component={Password} />
+      <Stack.Screen name="RecoveryCode" component={PasswordRecoveryCode} />
+      <Stack.Screen name="NewPassword" component={NewPassword} />
+      <Stack.Screen name="Preferences" component={PreferencesScreen} />
+      <Stack.Screen name="Adicionar Vinhos" component={AddWineScreen} 
+      options={({ route }) => ({
+        headerShown: true, 
+        headerStyle: {backgroundColor: '#6B2737'},
+        headerTintColor: 'white',
+        headerTitleStyle: {fontWeight: 'bold'},
+        title: route.params?.wineToEdit ? 'Atualizar Vinho' : 'Adicionar Vinho'
+      })}/>
+      <Stack.Screen name="Adicionar Lojas" component={AddStoreScreen}
+      options={({ route }) => ({
+        headerShown: true, 
+        headerStyle: {backgroundColor: '#6B2737'},
+        headerTintColor: 'white',
+        headerTitleStyle: {fontWeight: 'bold'},
+        title: route.params?.storeToEdit ? 'Atualizar Loja' : 'Adicionar Loja'
+      })}/>
+      <Stack.Screen 
+        name="Recomendados" 
+        component={RecommendationScreen}
+        options={{
+          headerShown: true,
           headerStyle: {backgroundColor: '#6B2737'},
           headerTintColor: 'white',
           headerTitleStyle: {fontWeight: 'bold'},
-          title: route.params?.wineToEdit ? 'Atualizar Vinho' : 'Adicionar Vinho'
-        })}/>
-        <Stack.Screen name="Adicionar Lojas" component={AddStoreScreen}
-        options={({ route }) => ({
-          headerShown: true, 
+          title: 'Recomendações'
+        }}
+      />
+      <Stack.Screen 
+        name="Mapa" 
+        component={MapScreen}
+        options={{
+          headerShown: true,
           headerStyle: {backgroundColor: '#6B2737'},
           headerTintColor: 'white',
           headerTitleStyle: {fontWeight: 'bold'},
-          title: route.params?.storeToEdit ? 'Atualizar Loja' : 'Adicionar Loja'
-        })}/>
-        <Stack.Screen 
-          name="Mapa" 
-          component={MapScreen}
-          options={{
-            headerShown: true,
-            headerStyle: {backgroundColor: '#6B2737'},
-            headerTintColor: 'white',
-            headerTitleStyle: {fontWeight: 'bold'},
-            title: 'Explorar Lojas'
-          }}
-        />
-        <Stack.Screen 
-          name="Home" 
-          component={TabNavigation} 
-          options={{ gestureEnabled: false, headerShown: false }}
-        />
-      </Stack.Navigator>
+          title: 'Explorar Lojas'
+        }}
+      />
+      <Stack.Screen 
+        name="Home" 
+        component={TabNavigation} 
+        options={{ gestureEnabled: false, headerShown: false }}
+      />
+    </Stack.Navigator>
   );
 }
 

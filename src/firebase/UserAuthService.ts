@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, User, sendEmailVerification } from "firebase/auth";
-import { doc, setDoc, collection, getDocs, query, where, Timestamp } from "firebase/firestore";
+import { doc, setDoc, collection, getDocs, query, where, Timestamp, getDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebaseConfig";
 
 export class UserAuthService {
@@ -60,4 +60,12 @@ export class UserAuthService {
       return null;
     }
   }
+  async getUserPreferences(uid: string) {
+    const userRef = doc(db, "users", uid);
+    const userSnap = await getDoc(userRef);
+    if (userSnap.exists()) {
+      return userSnap.data().preferences || null;
+    }
+    return null;
   }
+}
