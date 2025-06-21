@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, TouchableOpacity, Text, Alert, View , StyleSheet} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PreferenceSection from '../../components/PreferenceSection';
@@ -18,6 +18,26 @@ const PreferencesScreen: React.FC = () => {
   const [minPrice, setMinPrice] = useState<number| null>(0);
   const [maxPrice, setMaxPrice] = useState<number | null >(1000);
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
+
+  useEffect(() => {
+    const fetchPreferences = async () => {
+      const user = auth.currentUser;
+      if (!user) return;
+      const userAuthService = new UserAuthService();
+      const prefs = await userAuthService.getUserPreferences(user.uid);
+      if (prefs) {
+        setTypes(prefs.types || []);
+        setFlavors(prefs.flavors || []);
+        setRegions(prefs.regions || []);
+        setPairings(prefs.pairings || []);
+        setAlcoholContent(prefs.alcoholContent || null);
+        setMinPrice(prefs.minPrice ?? 50);
+        setMaxPrice(prefs.maxPrice ?? 1000);
+      }
+    };
+    fetchPreferences();
+  }, []);
 
   const handleSave = async () => {
     try {
@@ -56,7 +76,7 @@ const PreferencesScreen: React.FC = () => {
             options={['Tinto', 'Branco', 'Rosé', 'Espumante']}
             multiSelect
             selected={types}
-            onChange={setTypes}
+            onChange={value => setTypes(Array.isArray(value) ? value : [value])}
           />
 
           <PreferenceSection 
@@ -64,30 +84,30 @@ const PreferencesScreen: React.FC = () => {
             options={['Seco', 'Doce', 'Frutado', 'Terroso', 'Madeira', 'Especiado']}
             multiSelect
             selected={flavors}
-            onChange={setFlavors}
+            onChange={value => setFlavors(Array.isArray(value) ? value : [value])}
           />
 
           <PreferenceSection 
             title="Regiões preferidas"
-            options={['Rioja', 'Douro', 'Cava', 'Bordeaux', 'Toscana']}
+            options={['Itália', 'França', 'Brasil', 'EUA', 'Espanha', 'Chile', 'Argentina', 'Portugal']}
             multiSelect
             selected={regions}
-            onChange={setRegions}
+            onChange={value => setRegions(Array.isArray(value) ? value : [value])}
           />
 
           <PreferenceSection 
             title="Teor alcoólico"
             options={['Baixo (-12%)', 'Médio (12-14%)', 'Alto (+14%)']}
             selected={alcoholContent}
-            onChange={setAlcoholContent}
+            onChange={value => setAlcoholContent(typeof value === 'string' ? value : (value[0] || null))}
           />
 
           <PreferenceSection 
             title="Harmonizar com"
-            options={['Carnes', 'Peixes', 'Queijos', 'Massas']}
+            options={['Carnes', 'Peixes', 'Queijos', 'Massas', 'Comida asática', 'Frutas']}
             multiSelect
             selected={pairings}
-            onChange={setPairings}
+            onChange={value => setPairings(Array.isArray(value) ? value : [value])}
           />
 
           <PriceRangeSection

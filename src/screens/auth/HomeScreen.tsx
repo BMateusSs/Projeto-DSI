@@ -50,11 +50,7 @@ const Home = () => {
   }, []);
 
   const handleDiscoverPress = () => {
-    navigation.navigate({ name: "Lista de Vinhos", params: undefined });
-  };
-
-  const handleExplorePress = () => {
-    navigation.navigate({ name: "Lista de Lojas", params: undefined });
+    navigation.navigate({ name: "Recomendados", params: undefined });
   };
 
   const handleAddWine = () => {
@@ -67,14 +63,6 @@ const Home = () => {
 
   const handleAddProfessional = () => {
     Alert.alert('Em desenvolvimento', 'Funcionalidade em desenvolvimento');
-  };
-
-  const handleSearchStore = () => {
-    navigation.navigate({ name: "Lista de Lojas", params: undefined });
-  };
-
-  const handleViewProfessionals = () => {
-    navigation.navigate({ name: "Professionals", params: undefined });
   };
 
   if (loading) {
