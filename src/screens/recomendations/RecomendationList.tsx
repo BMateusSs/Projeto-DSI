@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, ActivityIndicator, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import styles from '../../styles/recomendationStyles';
+import { UserAuthService } from '../../firebase/UserAuthService';
+import { auth } from '../../firebase/firebaseConfig';
 
 const API_URL = 'https://68547dca6a6ef0ed662f3b6b.mockapi.io/api/v1/wines';
 
@@ -67,15 +69,52 @@ const RecomendationsList = () => {
   const [wines, setWines] = useState<WineRecommendation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [preferences, setPreferences] = useState<any>(null);
 
   useEffect(() => {
-    const fetchRecommendations = async () => {
+    const fetchPreferencesAndRecommendations = async () => {
       setIsLoading(true);
       setError(null);
       try {
+        let prefs = null;
+        const user = auth.currentUser;
+        if (user) {
+          const userAuthService = new UserAuthService();
+          prefs = await userAuthService.getUserPreferences(user.uid);
+        }
+        setPreferences(prefs);
         const response = await fetch(API_URL);
         if (!response.ok) throw new Error('Erro ao buscar recomendações');
-        const data = await response.json();
+        let data = await response.json();
+        if (prefs) {
+          data = data.sort((a: WineRecommendation, b: WineRecommendation) => {
+            let scoreA = 0;
+            let scoreB = 0;
+            if (prefs.types && prefs.types.includes(a.tipo)) scoreA++;
+            if (prefs.flavors && prefs.flavors.some((f: string) => a.descricao?.toLowerCase().includes(f.toLowerCase()))) scoreA++;
+            if (prefs.regions && prefs.regions.includes(a.regiao_vinicola)) scoreA++;
+            if (prefs.pairings && a.harmonizacao && a.harmonizacao.some((h: string) => prefs.pairings.includes(h))) scoreA++;
+            if (prefs.alcoholContent && a.teor_alcoolico) {
+              if (
+                (prefs.alcoholContent === 'Baixo (-12%)' && a.teor_alcoolico < 12) ||
+                (prefs.alcoholContent === 'Médio (12-14%)' && a.teor_alcoolico >= 12 && a.teor_alcoolico <= 14) ||
+                (prefs.alcoholContent === 'Alto (+14%)' && a.teor_alcoolico > 14)
+              ) scoreA++;
+            }
+            if (prefs.types && prefs.types.includes(b.tipo)) scoreB++;
+            if (prefs.flavors && prefs.flavors.some((f: string) => b.descricao?.toLowerCase().includes(f.toLowerCase()))) scoreB++;
+            if (prefs.regions && prefs.regions.includes(b.regiao_vinicola)) scoreB++;
+            if (prefs.pairings && b.harmonizacao && b.harmonizacao.some((h: string) => prefs.pairings.includes(h))) scoreB++;
+            if (prefs.alcoholContent && b.teor_alcoolico) {
+              if (
+                (prefs.alcoholContent === 'Baixo (-12%)' && b.teor_alcoolico < 12) ||
+                (prefs.alcoholContent === 'Médio (12-14%)' && b.teor_alcoolico >= 12 && b.teor_alcoolico <= 14) ||
+                (prefs.alcoholContent === 'Alto (+14%)' && b.teor_alcoolico > 14)
+              ) scoreB++;
+            }
+            return scoreB - scoreA;
+          });
+        }
         setWines(data);
       } catch (err) {
         setError('Erro ao carregar recomendações.');
@@ -83,7 +122,7 @@ const RecomendationsList = () => {
         setIsLoading(false);
       }
     };
-    fetchRecommendations();
+    fetchPreferencesAndRecommendations();
   }, []);
 
   if (isLoading) {

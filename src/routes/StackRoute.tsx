@@ -83,7 +83,15 @@ function StackRoute() {
       <Stack.Screen name="Password" component={Password} />
       <Stack.Screen name="RecoveryCode" component={PasswordRecoveryCode} />
       <Stack.Screen name="NewPassword" component={NewPassword} />
-      <Stack.Screen name="Preferences" component={PreferencesScreen} />
+      <Stack.Screen name="Preferences" component={PreferencesScreen}
+        options={{
+          headerShown: true,
+          headerStyle: {backgroundColor: '#6B2737'},
+          headerTintColor: 'white',
+          headerTitleStyle: {fontWeight: 'bold'},
+          title: 'Suas Preferências'
+        }}
+      />
       <Stack.Screen name="Adicionar Vinhos" component={AddWineScreen} 
       options={({ route }) => ({
         headerShown: true, 

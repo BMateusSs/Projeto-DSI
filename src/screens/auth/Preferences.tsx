@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, TouchableOpacity, Text, Alert, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PreferenceSection from '../../components/PreferenceSection';
-import PriceRangeSelector from '../../components/PriceRangeSelector';
 import { styles } from '../../styles/preferenceStyles';
 import { auth } from '../../firebase/firebaseConfig';
 import { UserAuthService } from '../../firebase/UserAuthService';
@@ -14,8 +13,6 @@ const PreferencesScreen: React.FC = () => {
   const [regions, setRegions] = useState<string[]>([]);
   const [pairings, setPairings] = useState<string[]>([]);
   const [alcoholContent, setAlcoholContent] = useState<string | null>(null);
-  const [minPrice, setMinPrice] = useState<number>(50);
-  const [maxPrice, setMaxPrice] = useState<number>(1000);
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
 
@@ -31,8 +28,6 @@ const PreferencesScreen: React.FC = () => {
         setRegions(prefs.regions || []);
         setPairings(prefs.pairings || []);
         setAlcoholContent(prefs.alcoholContent || null);
-        setMinPrice(prefs.minPrice ?? 50);
-        setMaxPrice(prefs.maxPrice ?? 1000);
       }
     };
     fetchPreferences();
@@ -52,8 +47,6 @@ const PreferencesScreen: React.FC = () => {
         regions,
         pairings,
         alcoholContent,
-        minPrice,
-        maxPrice,
       });
       Alert.alert("Sucesso", "Preferências salvas com sucesso!");
       navigation.navigate("Home");
@@ -67,16 +60,11 @@ const PreferencesScreen: React.FC = () => {
       <ScrollView 
         style={{ flex: 1, backgroundColor: "white" }}
         contentContainerStyle={{
-          paddingTop: insets.top + 15,
-          paddingBottom: 70 + insets.bottom 
+          paddingBottom: 100 + insets.bottom
         }}
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.container}>
-          <View style={styles.containerTitle}>
-            <Text style={styles.title}>Suas preferências</Text>
-          </View>
-
           <PreferenceSection 
             title="Tipos preferidos"
             options={['Tinto', 'Branco', 'Rosé', 'Espumante']}
@@ -115,13 +103,13 @@ const PreferencesScreen: React.FC = () => {
             selected={pairings}
             onChange={value => setPairings(Array.isArray(value) ? value : [value])}
           />
-
-          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-            <Text style={styles.saveButtonText}>Salvar preferências</Text>
-          </TouchableOpacity>
         </View>
       </ScrollView>
-
+      <View style={{position: 'absolute', left: 0, right: 0, bottom: 0, padding: 10, paddingBottom: 10 + insets.bottom, backgroundColor: 'white', borderTopWidth: 1, borderColor: '#eee'}}>
+        <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+          <Text style={styles.saveButtonText}>Salvar preferências</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
