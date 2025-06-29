@@ -53,7 +53,7 @@ export default function Login() {
       return;
     }
     try {
-      await authService.signIn(email.trim(), senha.trim());
+      const user = await authService.signIn(email.trim(), senha.trim());
       if (rememberMe){
         await AsyncStorage.setItem('email', email);
         await AsyncStorage.setItem('password', senha);

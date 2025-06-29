@@ -1,18 +1,22 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, User, sendEmailVerification } from "firebase/auth";
 import { doc, setDoc, collection, getDocs, query, where, Timestamp, getDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebaseConfig";
+import { AppUser } from "./AppUser";
 
 export class UserAuthService {
-  async signUp(email: string, password: string, name: string): Promise<User> {
+  async signUp(email: string, password: string, name: string): Promise<AppUser> {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
     await this.createUserDocument(user.uid, email, name);
     await updateProfile(user, { displayName: name });
-    return user;
+    const appUser = await AppUser.create(user, {});
+    return appUser;
   }
-  async signIn(email: string, password: string): Promise<User> {
+  async signIn(email: string, password: string): Promise<AppUser> {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    return userCredential.user;
+    const user = userCredential.user;
+    const appUser = await AppUser.create(user);
+    return appUser;
   }
   private async createUserDocument(uid: string, email: string, name: string) {
     await setDoc(doc(db, "users", uid), {
