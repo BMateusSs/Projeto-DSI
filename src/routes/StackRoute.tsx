@@ -11,14 +11,14 @@ import TabNavigation from "./TabNavigation";
 import AddWineScreen from "../screens/library/AddWineScreen";
 import AddStoreScreen from "../screens/store/AddStoreScreen";
 import MapScreen from "../screens/map/MapScreen";
-import { Wine } from "../services/wineService";
-import { StoreData } from "../services/storeService";
+import { WineClass } from "../services/wineClass";
+import { StoreClass } from "../services/storeClass";
 import RecommendationScreen from "../screens/recomendations/RecomendationScreen";
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { ActivityIndicator, View } from 'react-native';
 
-type RootStackParamList = {
+export type RootStackParamList = {
   'Login': undefined;
   'SignUp': undefined;
   'Password': undefined;
@@ -26,8 +26,8 @@ type RootStackParamList = {
   'NewPassword': undefined;
   'Preferences': undefined;
   'Home': undefined;
-  'Adicionar Vinhos': { wineToEdit?: Wine };
-  'Adicionar Lojas': { storeToEdit?: StoreData };
+  'Adicionar Vinhos': { wineToEdit?: WineClass };
+  'Adicionar Lojas': { storeToEdit?: StoreClass };
   'Mapa': undefined;
   'Recomendados': undefined;
 };

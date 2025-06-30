@@ -53,7 +53,7 @@ const StoreList: React.FC<StoreListProps> = ({ stores, onDelete }) => {
   const renderStoreItem = ({ item }: { item: StoreData }) => (
   <View style={{ marginBottom: 10 }}>
     <Card>
-      <View style={styles.cardContent}>
+      <View style={styles.cardContentColumn}>
         <TouchableOpacity
           style={styles.infoContainer}
           onPress={() => handleEditStore(item)}
@@ -78,25 +78,22 @@ const StoreList: React.FC<StoreListProps> = ({ stores, onDelete }) => {
               <Text style={styles.detailText}>{item.contact}</Text>
             </View>
           ) : null}
-
-          {item.notes ? (
-            <View style={styles.detailRow}>
-              <Ionicons name="document-text-outline" size={18} color="#666666" />
-              <Text style={styles.notesText}>{limitText(item.notes)}</Text>
-            </View>
-          ) : null}
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => confirmDelete(item.id!)}
-          style={styles.deleteButtonAlways}
-        >
-          <Ionicons name="trash-outline" size={22} color="#6B2737" />
-        </TouchableOpacity>
+        <View style={styles.notesContainer}>
+          <Ionicons name="document-text-outline" size={18} color="#666666" />
+          <Text style={styles.notesText}>{item.notes ? limitText(item.notes) : ''}</Text>
+          <TouchableOpacity
+            onPress={() => confirmDelete(item.id!)}
+            style={styles.deleteButton}
+          >
+            <Ionicons name="trash-outline" size={18} color="#6B2737" />
+          </TouchableOpacity>
+        </View>
       </View>
-      </Card>
-      </View>
-      );
+    </Card>
+  </View>
+  );
 
   return (
     <>
@@ -175,9 +172,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   cardContent: {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'flex-start',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  cardContentColumn: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
   },
   infoContainer: {
     flex: 1,
