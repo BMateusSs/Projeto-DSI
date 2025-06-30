@@ -32,8 +32,6 @@ const PreferencesScreen: React.FC = () => {
         setRegions(prefs.regions || []);
         setPairings(prefs.pairings || []);
         setAlcoholContent(prefs.alcoholContent || null);
-        setMinPrice(prefs.minPrice ?? 50);
-        setMaxPrice(prefs.maxPrice ?? 1000);
       }
     };
     fetchPreferences();
@@ -53,11 +51,9 @@ const PreferencesScreen: React.FC = () => {
         regions,
         pairings,
         alcoholContent,
-        minPrice,
-        maxPrice,
       });
       Alert.alert("Sucesso", "Preferências salvas com sucesso!");
-      navigation.navigate("Home");
+      navigation.navigate(ROUTE_NAMES.HOME_TABS);
     } catch (error) {
       console.error("Erro ao salvar preferências:", error);
       Alert.alert("Erro", "Não foi possível salvar as preferências.");
