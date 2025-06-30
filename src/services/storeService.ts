@@ -19,6 +19,7 @@ class StoreService {
     await addDoc(collection(db, STORES_COLLECTION), {
       ...store,
       createdAt: Timestamp.fromDate(store.createdAt),
+      coordinates: store.coordinates ?? null,
     });
   }
 
@@ -47,6 +48,7 @@ class StoreService {
       contact: store.contact,
       notes: store.notes,
       createdAt: Timestamp.fromDate(store.createdAt),
+      coordinate: store.coordinates ?? null,
     });
   }
 

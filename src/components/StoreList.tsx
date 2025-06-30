@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Card from './Card';
-import storeService, { StoreData } from '../services/storeService';
+import { StoreClass as StoreData } from '../services/storeClass';
 import ConfirmPopup from './ConfirmPopup';
 import { RootStackParamList } from '../types/navigation';
 
@@ -51,9 +51,13 @@ const StoreList: React.FC<StoreListProps> = ({ stores, onDelete }) => {
   };
 
   const renderStoreItem = ({ item }: { item: StoreData }) => (
-    <View style={{ marginBottom: 10 }}>
-      <Card>
-        <TouchableOpacity onPress={() => handleEditStore(item)}>
+  <View style={{ marginBottom: 10 }}>
+    <Card>
+      <View style={styles.cardContent}>
+        <TouchableOpacity
+          style={styles.infoContainer}
+          onPress={() => handleEditStore(item)}
+        >
           <Text style={styles.storeName}>{item.name}</Text>
 
           <View style={styles.detailRow}>
@@ -76,21 +80,23 @@ const StoreList: React.FC<StoreListProps> = ({ stores, onDelete }) => {
           ) : null}
 
           {item.notes ? (
-            <View style={styles.notesContainer}>
+            <View style={styles.detailRow}>
               <Ionicons name="document-text-outline" size={18} color="#666666" />
               <Text style={styles.notesText}>{limitText(item.notes)}</Text>
-              <TouchableOpacity
-                onPress={() => confirmDelete(item.id!)}
-                style={styles.deleteButton}
-              >
-                <Ionicons name="trash-outline" size={18} color="#6B2737" />
-              </TouchableOpacity>
             </View>
           ) : null}
         </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => confirmDelete(item.id!)}
+          style={styles.deleteButtonAlways}
+        >
+          <Ionicons name="trash-outline" size={22} color="#6B2737" />
+        </TouchableOpacity>
+      </View>
       </Card>
-    </View>
-  );
+      </View>
+      );
 
   return (
     <>
@@ -167,6 +173,17 @@ const styles = StyleSheet.create({
     color: '#888',
     textAlign: 'center',
     marginHorizontal: 20,
+  },
+  cardContent: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'flex-start',
+  },
+  infoContainer: {
+    flex: 1,
+  },
+  deleteButtonAlways: {
+    padding: 8,
   },
 });
 

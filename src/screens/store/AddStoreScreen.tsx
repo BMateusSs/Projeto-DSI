@@ -104,9 +104,9 @@ const AddStoreScreen: React.FC = () => {
             initialValue={type}
           />
 
-          <SubTitle title="Endereço" />
+          <SubTitle title={type === 'Online' ? 'Endereço online' : 'Endereço físico'} />
           <AddInput
-            placeholder="Endereço/link do site"
+            placeholder={type === 'Online' ? 'Link' : 'Rua, Cidade'}
             value={address}
             onChange={setAddress}
           />
