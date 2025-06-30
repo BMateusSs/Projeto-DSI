@@ -23,6 +23,6 @@ export type TabParamList = {
   Home: undefined;
   Biblioteca: undefined;
   Lojas: undefined;
-  Explorar: undefined;
+  Professionais: undefined;
   Perfil: undefined;
-}; 
+};

@@ -6,8 +6,8 @@ import Home from "../screens/auth/HomeScreen";
 import Library from "../screens/library/LibraryScreen";
 import Professionals from "../screens/ProfessionalsScreen";
 import Store from "../screens/store/StoreScreen";
-import { UserProfileScreen } from '../screens/UserProfile/UserProfileScreen';
 import ProfessionaisScreen from '../screens/professionais/ProfessionaisScreen';
+import ProfileScreen from '../screens/profile/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -61,7 +61,7 @@ export default function TabNavigation() {
       />
       <Tab.Screen 
         name="Perfil" 
-        component={UserProfileScreen} 
+        component={ProfileScreen} 
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person-outline" color={color} size={size} />

@@ -7,6 +7,7 @@ import {ConfirmButton} from "../../components/ConfirmButton";
 import { CertificacaoVinho } from "../../constants/CertificacoesVinho";
 import { EnologoRepository } from "../../repositories/EnologoRepository";
 import CancelButton from "../../components/CancelButtons";
+import { RootStackParamList } from "../../types/navigation";
 
 type ProfessionalDetailsRouteProp = RouteProp<RootStackParamList, typeof ROUTE_NAMES.PROFESSIONAL_DETAILS>;
 
@@ -23,23 +24,23 @@ const ProfessionalDetailsScreen: React.FC = () => {
 
   const enologoRepository = new EnologoRepository();
 
-//   useEffect(() => {
-//     if (professionalId !== "new") {
-//       // Carregar dados do profissional existente
-//       enologoRepository.read(professionalId).then((data) => {
-//         if (data) {
-//           setName(data.profissional.nome);
-//           setEmail(data.profissional.email);
-//           setTelephone(data.profissional.telefone);
-//           setAcademicFormation(data.formacaoAcademica);
-//           setCertifications(data.profissional.certificacoes || []);
-//         } else {
-//           Alert.alert("Erro", "Profissional não encontrado.");
-//           navigation.goBack();
-//         }
-//       });
-//     }
-//   }, [professionalId]);
+  useEffect(() => {
+    if (professionalId !== "new") {
+      // Carregar dados do profissional existente
+      enologoRepository.read(professionalId).then((data) => {
+        if (data) {
+          setName(data.profissional.nome);
+          setEmail(data.profissional.email);
+          setTelephone(data.profissional.telefone);
+          setAcademicFormation(data.formacaoAcademica);
+          setCertifications(data.profissional.certificacoes || []);
+        } else {
+          Alert.alert("Erro", "Profissional não encontrado.");
+          navigation.goBack();
+        }
+      });
+    }
+  }, [professionalId]);
 
   const handleSave = async () => {
     if (!name || !email || !telephone || !academicFormation) {
@@ -50,27 +51,27 @@ const ProfessionalDetailsScreen: React.FC = () => {
     try {
       if (professionalId === "new") {
         // Criar novo profissional
-        // await enologoRepository.create({
-        //   profissional: {
-        //     nome: name,
-        //     email,
-        //     telefone: telephone,
-        //     certificacoes: certifications as CertificacaoVinho[],
-        //   },
-        //   formacaoAcademica: academicFormation,
-        // });
+        await enologoRepository.create({
+          profissional: {
+            nome: name,
+            email,
+            telefone: telephone,
+            certificacoes: certifications as CertificacaoVinho[],
+          },
+          formacaoAcademica: academicFormation,
+        });
         Alert.alert("Sucesso", "Profissional adicionado com sucesso.");
       } else {
         // Atualizar profissional existente
-        // await enologoRepository.update(professionalId, {
-        //   profissional: {
-        //     nome: name,
-        //     email,
-        //     telefone: telephone,
-        //     certificacoes: certifications as CertificacaoVinho[],
-        //   },
-        //   formacaoAcademica: academicFormation,
-        // });
+        await enologoRepository.update(professionalId, {
+          profissional: {
+            nome: name,
+            email,
+            telefone: telephone,
+            certificacoes: certifications as CertificacaoVinho[],
+          },
+          formacaoAcademica: academicFormation,
+        });
         Alert.alert("Sucesso", "Profissional atualizado com sucesso.");
       }
       navigation.goBack();

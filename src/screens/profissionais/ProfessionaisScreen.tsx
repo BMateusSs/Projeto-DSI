@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, FlatList, Alert } from "react-native";
+import { View, Text, StyleSheet, FlatList, Alert, ActivityIndicator } from "react-native";
 import SearchBar from "../../components/SearchBar";
 import AddButton from "../../components/AddButton";
 import { useNavigation } from "@react-navigation/native";
@@ -9,12 +9,14 @@ import { Enologo } from "../../entities/Enologo";
 import ProfessionalCard from "../../components/ProfessionalCard";
 import { VinicotecaTheme } from "../../styles/colors";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { FirebaseError } from "firebase/app";
 
 type NavigationProps = NativeStackNavigationProp<RootStackParamList>;
 
 const ProfessionaisScreen = () => {
   const [searchText, setSearchText] = useState("");
   const [enologos, setEnologos] = useState<Enologo[]>([]);
+  const [loading, setLoading] = useState(true);
   const navigation = useNavigation<NavigationProps>();
   const enologoRepository = new EnologoRepository();
 
@@ -23,12 +25,25 @@ const ProfessionaisScreen = () => {
   }, []);
 
   const fetchEnologos = async () => {
+    setLoading(true);
     try {
       const data = await enologoRepository.readAll();
       setEnologos(data);
     } catch (error) {
-      Alert.alert("Erro", "Não foi possível carregar os enólogos.");
+      let errorMessage = "Não foi possível carregar os enólogos.";
+      
+      if (error instanceof FirebaseError) {
+        if (error.code === "permission-denied") {
+          errorMessage = "Você não tem permissão para acessar esses dados. Verifique seu login ou contate o administrador.";
+        } else {
+          errorMessage = `Erro no Firebase: ${error.message}`;
+        }
+      }
+      
+      Alert.alert("Erro", errorMessage);
       console.error("Erro ao buscar enólogos:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -44,7 +59,13 @@ const ProfessionaisScreen = () => {
       setEnologos((prev) => prev.filter((enologo) => enologo.id !== id));
       Alert.alert("Sucesso", "Enólogo excluído com sucesso.");
     } catch (error) {
-      Alert.alert("Erro", "Não foi possível excluir o enólogo.");
+      let errorMessage = "Não foi possível excluir o enólogo.";
+      
+      if (error instanceof FirebaseError && error.code === "permission-denied") {
+        errorMessage = "Você não tem permissão para excluir este enólogo.";
+      }
+      
+      Alert.alert("Erro", errorMessage);
       console.error("Erro ao excluir enólogo:", error);
     }
   };
@@ -63,22 +84,31 @@ const ProfessionaisScreen = () => {
         />
       </View>
       <View style={styles.content}>
-        <FlatList
-          data={filteredEnologos}
-          keyExtractor={(item) => item.id!}
-          renderItem={({ item }) => (
-            <ProfessionalCard
-              name={item.profissional.nome}
-              email={item.profissional.email}
-              onDelete={() => deleteEnologo(item.id!)}
-            />
-          )}
-          ListEmptyComponent={
-            <View style={styles.emptyContainer}>
-              <Text style={styles.emptyText}>Nenhum enólogo encontrado.</Text>
-            </View>
-          }
-        />
+        {loading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={VinicotecaTheme.primaryColor} />
+            <Text style={styles.loadingText}>Carregando enólogos...</Text>
+          </View>
+        ) : (
+          <FlatList
+            data={filteredEnologos}
+            keyExtractor={(item) => item.id!}
+            renderItem={({ item }) => (
+              <ProfessionalCard
+                name={item.profissional.nome}
+                email={item.profissional.email}
+                onDelete={() => deleteEnologo(item.id!)}
+              />
+            )}
+            ListEmptyComponent={
+              <View style={styles.emptyContainer}>
+                <Text style={styles.emptyText}>Nenhum enólogo encontrado.</Text>
+              </View>
+            }
+            onRefresh={fetchEnologos}
+            refreshing={loading}
+          />
+        )}
       </View>
       <View style={styles.addButtonContainer}>
         <AddButton onPress={addProfessional} />
@@ -110,6 +140,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   emptyText: {
+    fontSize: 16,
+    color: "#666",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loadingText: {
+    marginTop: 10,
     fontSize: 16,
     color: "#666",
   },
