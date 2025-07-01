@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, FlatList, Alert } from "react-native";
 import SearchBar from "../../components/SearchBar";
 import AddButton from "../../components/AddButton";
 import { useNavigation } from "@react-navigation/native";
-import { RootStackParamList, ROUTE_NAMES } from "../../routes/RouteNames";
+import { RootStackParamList } from "../../types/navigation";
 import { EnologoRepository } from "../../repositories/EnologoRepository";
 import { Enologo } from "../../entities/Enologo";
 import ProfessionalCard from "../../components/ProfessionalCard";
@@ -33,7 +33,7 @@ const ProfessionaisScreen = () => {
   };
 
   const addProfessional = () => {
-    navigation.navigate(ROUTE_NAMES.PROFESSIONAL_DETAILS, {
+    navigation.navigate('Detalhes Profissional', {
       professionalId: "new",
     });
   };
@@ -50,7 +50,7 @@ const ProfessionaisScreen = () => {
   };
 
   const filteredEnologos = enologos.filter((enologo) =>
-    enologo.profissional.nome.toLowerCase().includes(searchText.toLowerCase())
+    (enologo.profissional.nome || '').toLowerCase().includes(searchText.toLowerCase())
   );
 
   return (

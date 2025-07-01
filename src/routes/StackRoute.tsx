@@ -17,6 +17,8 @@ import RecommendationScreen from "../screens/recomendations/RecomendationScreen"
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { ActivityIndicator, View } from 'react-native';
+import ProfessionaisScreen from "../screens/professionais/ProfessionaisScreen";
+import ProfessionalDetailsScreen from "../screens/professionais/ProfessionalDetailsScreen";
 
 type RootStackParamList = {
   'Login': undefined;
@@ -30,6 +32,8 @@ type RootStackParamList = {
   'Adicionar Lojas': { storeToEdit?: StoreData };
   'Mapa': undefined;
   'Recomendados': undefined;
+  'Profissionais': undefined;
+  'Detalhes Profissional': { professionalId: string };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -134,6 +138,28 @@ function StackRoute() {
         name="Home" 
         component={TabNavigation} 
         options={{ gestureEnabled: false, headerShown: false }}
+      />
+      <Stack.Screen 
+        name="Profissionais" 
+        component={ProfessionaisScreen}
+        options={{
+          headerShown: true,
+          headerStyle: {backgroundColor: '#6B2737'},
+          headerTintColor: 'white',
+          headerTitleStyle: {fontWeight: 'bold'},
+          title: 'Profissionais'
+        }}
+      />
+      <Stack.Screen 
+        name="Detalhes Profissional" 
+        component={ProfessionalDetailsScreen}
+        options={{
+          headerShown: true,
+          headerStyle: {backgroundColor: '#6B2737'},
+          headerTintColor: 'white',
+          headerTitleStyle: {fontWeight: 'bold'},
+          title: 'Detalhes do Profissional'
+        }}
       />
     </Stack.Navigator>
   );

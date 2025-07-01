@@ -1,7 +1,7 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 
-import StackRoute from "../routes/RouteNames";
+import StackRoute from "../routes/StackRoute";
 
 function App() {
   return (
