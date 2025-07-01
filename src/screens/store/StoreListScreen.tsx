@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, Alert } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { auth } from '../../firebase/firebaseConfig';
-import storeService, { StoreData } from '../../services/storeService';
+import storeService from '../../services/storeService';
+import { StoreClass as StoreData } from '../../services/storeClass';
 import StoreList from '../../components/StoreList';
 import FilterSelector from '../../components/FilterSelector';
 

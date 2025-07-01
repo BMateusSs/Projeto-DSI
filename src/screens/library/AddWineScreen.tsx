@@ -7,10 +7,12 @@ import Anotation from '../../components/Anotations';
 import StarRating from '../../components/StarRating';
 import SubTitle from '../../components/SubTitle';
 import { ConfirmButton } from '../../components/ConfirmButton';
-import { WineService, Wine } from '../../services/wineService';
+import wineService from '../../services/wineService';
+import { WineClass } from '../../services/wineClass';
+import { auth } from '../../firebase/firebaseConfig';
 
 type AddWineScreenRouteParams = {
-  wineToEdit?: Wine;
+  wineToEdit?: WineClass;
 };
 
 type AddWineScreenRouteProp = RouteProp<{ AddWineScreen: AddWineScreenRouteParams }, 'AddWineScreen'>;
@@ -48,26 +50,35 @@ const AddWineScreen = () => {
       Alert.alert('Atenção', 'Preencha todos os campos obrigatórios');
       return;
     }
+    
+    const user = auth.currentUser;
+    if (!user) {
+      Alert.alert('Erro', 'Usuário não autenticado');
+      return;
+    }
 
     setIsLoading(true);
 
-    try {
-      const wineData = {
-        nome: nome.trim(),
-        tipo: tipo.trim(),
-        regiao: regiao.trim(),
-        status,
-        rating: status === 'experimented' ? rating || 0 : null,
-        anotation: anotation.trim() || null,
-      };
+    const wine = new WineClass(
+      nome.trim(),
+      tipo.trim(),
+      regiao.trim(),
+      status,
+      user.uid,
+      status === 'experimented' ? (rating ?? 0) : null,
+      anotation.trim() || null,
+      wineToEdit?.id,
+      wineToEdit?.createdAt
+    );
 
+    try {
       if (wineToEdit && wineToEdit.id) {
-        await WineService.updateWine(wineToEdit.id, wineData);
+        await wineService.updateWine(wine);
         Alert.alert('Sucesso', 'Vinho atualizado com sucesso!', [
           { text: 'OK', onPress: () => navigation.goBack() }
         ]);
       } else {
-        await WineService.addWine(wineData);
+        await wineService.addWine(wine);
         Alert.alert('Sucesso', 'Vinho adicionado com sucesso!', [
           { text: 'OK', onPress: () => navigation.goBack() }
         ]);

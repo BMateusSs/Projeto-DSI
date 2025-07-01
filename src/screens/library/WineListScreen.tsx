@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, Alert } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
-import { WineService, Wine } from '../../services/wineService';
+import wineService from '../../services/wineService';
+import { WineClass as Wine } from '../../services/wineClass';
 import { auth } from "../../firebase/firebaseConfig";
 import WineList from '../../components/WineList';
 import FilterSelector from '../../components/FilterSelector';
@@ -23,7 +24,7 @@ const WineListScreen = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const userWines = await WineService.getWinesByUser(auth.currentUser.uid);
+      const userWines = await wineService.getWinesByUser(auth.currentUser.uid);
       setWines(userWines);
     } catch (err) {
       console.error("Erro ao buscar vinhos do usuário:", err);
@@ -47,7 +48,7 @@ const WineListScreen = () => {
 
   const handleDelete = async (deletedId: string) => {
     try {
-      await WineService.deleteWine(deletedId);
+      await wineService.deleteWine(deletedId);
       setWines((prevWines) => prevWines.filter(wine => wine.id !== deletedId));
     } catch (error) {
       Alert.alert('Erro', 'Não foi possível deletar o vinho');

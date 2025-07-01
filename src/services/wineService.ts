@@ -1,103 +1,61 @@
-import { doc, setDoc, collection, getDocs, query, where, updateDoc, deleteDoc } from "firebase/firestore";
+import { doc, setDoc, collection, getDocs, query, where, updateDoc, deleteDoc, Timestamp } from "firebase/firestore";
 import { db, auth } from "../firebase/firebaseConfig";
+import { WineClass } from "./wineClass";
 
-export interface Wine {
-  id?: string;
-  nome: string;
-  tipo: string;
-  regiao: string;
-  status: 'experimented' | 'desired';
-  rating: number | null;
-  anotation: string | null;
-  createdAt: Date;
-  createdBy: string;
-}
+const WINES_COLLECTION = 'wines';
 
-export class WineService {
-  private static readonly COLLECTION_NAME = "wines";
+class WineService {
+  async addWine(wine: WineClass): Promise<void> {
+    wine.validate();
 
-  static async addWine(wineData: Omit<Wine, 'id' | 'createdAt' | 'createdBy'>): Promise<string> {
-    try {
-      if (!auth.currentUser) {
-        throw new Error("Usuário não autenticado");
-      }
+    const wineRef = doc(collection(db, WINES_COLLECTION));
+    wine.id = wineRef.id;
 
-      const wine: Wine = {
-        ...wineData,
-        id: '',
-        createdAt: new Date(),
-        createdBy: auth.currentUser.uid,
-        rating: wineData.rating ?? null,
-        anotation: wineData.anotation ?? null
-      };
-
-      const winesCollection = collection(db, this.COLLECTION_NAME);
-      const newWineRef = doc(winesCollection);
-      wine.id = newWineRef.id;
-      
-      await setDoc(newWineRef, wine);
-      return wine.id;
-    } catch (error) {
-      console.error("Erro ao adicionar vinho:", error);
-      throw error;
-    }
+    await setDoc(wineRef, {
+      ...wine,
+      createdAt: Timestamp.fromDate(wine.createdAt),
+    });
   }
 
-  static async updateWine(wineId: string, wineData: Partial<Omit<Wine, 'id' | 'createdAt' | 'createdBy'>>): Promise<void> {
-    try {
-      if (!auth.currentUser) {
-        throw new Error("Usuário não autenticado");
-      }
+  async updateWine(wine: WineClass): Promise<void> {
+    wine.validate();
 
-      const wineRef = doc(db, this.COLLECTION_NAME, wineId);
-      
-      const updatedFields: Partial<Wine> = {
-        nome: wineData.nome,
-        tipo: wineData.tipo,
-        regiao: wineData.regiao,
-        status: wineData.status,
-        rating: wineData.rating,
-        anotation: wineData.anotation,
-      };
-
-      await updateDoc(wineRef, updatedFields);
-      console.log("Vinho atualizado com sucesso!");
-    } catch (error) {
-      console.error(`Erro ao atualizar vinho com ID ${wineId}:`, error);
-      throw error;
-    }
+    const wineRef = doc(db, WINES_COLLECTION, wine.id!);
+    await updateDoc(wineRef, {
+      nome: wine.nome,
+      tipo: wine.tipo,
+      regiao: wine.regiao,
+      status: wine.status,
+      rating: wine.rating,
+      anotation: wine.anotation,
+    });
   }
 
-  static async getWinesByUser(userId: string): Promise<Wine[]> {
-    try {
-      const q = query(
-        collection(db, this.COLLECTION_NAME),
-        where("createdBy", "==", userId)
+  async getWinesByUser(userId: string): Promise<WineClass[]> {
+    const wineQuery = query(collection(db, WINES_COLLECTION), where('createdBy', '==', userId));
+    const snapshot = await getDocs(wineQuery);
+
+    return snapshot.docs.map(doc => {
+      const data = doc.data();
+      return new WineClass(
+        data.nome,
+        data.tipo,
+        data.regiao,
+        data.status,
+        data.createdBy,
+        data.rating ?? null,
+        data.anotation ?? null,
+        doc.id,
+        data.createdAt?.toDate()
       );
-
-      const querySnapshot = await getDocs(q);
-      return querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }) as Wine);
-    } catch (error) {
-      console.error("Erro ao buscar vinhos:", error);
-      throw error;
-    }
+    });
   }
 
-  static async deleteWine(wineId: string): Promise<void> {
-    try {
-      if (!auth.currentUser) {
-        throw new Error("Usuário não autenticado");
-      }
-
-      const wineRef = doc(db, this.COLLECTION_NAME, wineId);
-      await deleteDoc(wineRef);
-      console.log("Vinho deletado com sucesso!");
-    } catch (error) {
-      console.error(`Erro ao deletar vinho com ID ${wineId}:`, error);
-      throw error;
-    }
+  async deleteWine(wineId: string): Promise<void> {
+    const wineRef = doc(db, WINES_COLLECTION, wineId);
+    await deleteDoc(wineRef);
   }
 }
+
+const wineService = new WineService();
+export default wineService;
