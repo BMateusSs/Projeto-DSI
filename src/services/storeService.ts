@@ -56,6 +56,12 @@ class StoreService {
     const storeRef = doc(db, STORES_COLLECTION, storeId);
     await deleteDoc(storeRef);
   }
+
+  async storeExists(place_id: string, userId: string): Promise<boolean> {
+    const storeQuery = query(collection(db, STORES_COLLECTION), where('place_id', '==', place_id), where('createdBy', '==', userId));
+    const snapshot = await getDocs(storeQuery);
+    return !snapshot.empty;
+  }
 }
 
 const storeService = new StoreService();

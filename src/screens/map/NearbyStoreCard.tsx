@@ -1,15 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import styles from '../styles/mapStyles';
-import { Place, LocationCoords } from '../screens/map/types';
-
-interface NearbyStoreCardProps {
-  store: Place;
-  initialRegion: LocationCoords | null;
-  onPress: (store: Place) => void;
-  GOOGLE_PLACES_API_KEY: string;
-}
+import styles from '../../styles/mapStyles';
+import { Place, LocationCoords } from './types';
 
 function getDistanceFromLatLonInKm(lat1: number, lon1: number, lat2: number, lon2: number) {
   const R = 6371;
@@ -23,6 +16,13 @@ function getDistanceFromLatLonInKm(lat1: number, lon1: number, lat2: number, lon
   return R * c;
 }
 
+interface NearbyStoreCardProps {
+  store: Place;
+  initialRegion: LocationCoords | null;
+  onPress: (store: Place) => void;
+  GOOGLE_PLACES_API_KEY: string;
+}
+
 const NearbyStoreCard: React.FC<NearbyStoreCardProps> = ({ store, initialRegion, onPress, GOOGLE_PLACES_API_KEY }) => {
   let distance = null;
   if (initialRegion) {
@@ -33,19 +33,14 @@ const NearbyStoreCard: React.FC<NearbyStoreCardProps> = ({ store, initialRegion,
       store.geometry.location.lng
     );
   }
-  const hasPhoto = Array.isArray(store.photos) && store.photos.length > 0 && store.photos[0].photo_reference;
   return (
     <TouchableOpacity key={store.place_id} style={styles.storeCardVertical} onPress={() => onPress(store)} activeOpacity={0.85}>
-      {hasPhoto ? (
+      {store.photos && store.photos.length > 0 && (
         <Image
-          source={{ uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${store.photos && store.photos[0].photo_reference}&key=${GOOGLE_PLACES_API_KEY}` }}
+          source={{ uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${store.photos[0].photo_reference}&key=${GOOGLE_PLACES_API_KEY}` }}
           style={styles.storeImage}
           resizeMode="cover"
         />
-      ) : (
-        <View style={[styles.storeImage, {backgroundColor: '#e0e0e0', alignItems: 'center', justifyContent: 'center'}]}>
-          <Ionicons name="storefront" size={48} color="#888" />
-        </View>
       )}
       <View style={{paddingHorizontal: 18, paddingBottom: 18, width: '100%'}}>
         <Text style={styles.storeName}>{store.name}</Text>
@@ -61,7 +56,7 @@ const NearbyStoreCard: React.FC<NearbyStoreCardProps> = ({ store, initialRegion,
             return parts[0];
           })()}</Text>
         </View>
-        {distance !== null && !isNaN(distance) && (
+        {distance !== null && (
           <View style={styles.rowInfo}>
             <Ionicons name="navigate" size={16} color="#6B2737" style={{marginRight: 4}} />
             <Text style={styles.storeDistance}>Distância: {distance.toFixed(2)} km</Text>

@@ -13,6 +13,7 @@ export class StoreClass {
     latitude: number;
     longitude: number;
   };
+  place_id?: string;
 
   constructor(
     name: string,
@@ -22,7 +23,8 @@ export class StoreClass {
     notes: string,
     createdBy: string,
     userId: string,
-    id?: string
+    id?: string,
+    place_id?: string
   ) {
     this.name = name;
     this.type = type;
@@ -33,6 +35,7 @@ export class StoreClass {
     this.userId = userId;
     this.createdAt = new Date();
     if (id) this.id = id;
+    if (place_id) this.place_id = place_id;
   }
 
   validate() {
