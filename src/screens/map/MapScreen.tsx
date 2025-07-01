@@ -1,32 +1,29 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import Map from 'react-native-maps';
 
-const MapScreen = () => {
+export default function App() {
   return (
     <View style={styles.container}>
-      <View style={styles.placeholder}>
-        <Text style={styles.placeholderText}>Mapa em desenvolvimento</Text>
+      <View style={styles.mapContainer}>
+        <Map style={StyleSheet.absoluteFillObject} />
+      </View>
+      <View style={styles.restOfScreen}>
       </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
   },
-  placeholder: {
+  mapContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f8f1e9',
   },
-  placeholderText: {
-    fontSize: 18,
-    color: '#6B2737',
-    fontWeight: '500',
+  restOfScreen: {
+    flex: 1,
+    backgroundColor: 'lightblue',
   },
 });
-
-export default MapScreen; 

@@ -6,12 +6,13 @@ import { ConfirmButton } from '../../components/ConfirmButton';
 import SubTitle from '../../components/SubTitle';
 import DualOptionSelector from '../../components/StatusButton';
 import { useNavigation } from '@react-navigation/native';
-import storeService, { StoreData } from '../../services/storeService';
+import storeService from '../../services/storeService';
+import { StoreClass } from '../../services/storeClass';
 import { auth } from '../../firebase/firebaseConfig';
 import { RouteProp, useRoute } from '@react-navigation/native';
 
 type RouteParams = {
-  storeToEdit?: StoreData;
+  storeToEdit?: StoreClass;
 };
 
 const AddStoreScreen: React.FC = () => {
@@ -51,31 +52,24 @@ const AddStoreScreen: React.FC = () => {
     }
 
     const userId = user.uid;
+    const storeData = new StoreClass(
+    name,
+    type,
+    address,
+    contact,
+    notes,
+    user.uid,
+    userId     
+  );
 
     try {
       if (storeToEdit) {
-        await storeService.updateStore({
-          id: storeToEdit.id,
-          createdBy: user.uid,
-          userId,
-          name,
-          type,
-          address,
-          contact,
-          notes,
-          createdAt: storeToEdit.createdAt,
-        });
+        storeData.id = storeToEdit.id;
+        storeData.createdAt = storeToEdit.createdAt;
+        await storeService.updateStore(storeData);
         Alert.alert('Sucesso', 'Loja atualizada com sucesso');
       } else {
-        await storeService.addStore({
-          createdBy: user.uid,
-          userId,
-          name,
-          type,
-          address,
-          contact,
-          notes,
-        });
+        await storeService.addStore(storeData);
         Alert.alert('Sucesso', 'Loja adicionada com sucesso');
       }
       navigation.goBack();
@@ -110,9 +104,9 @@ const AddStoreScreen: React.FC = () => {
             initialValue={type}
           />
 
-          <SubTitle title="Endereço" />
+          <SubTitle title={type === 'Online' ? 'Endereço online' : 'Endereço físico'} />
           <AddInput
-            placeholder="Endereço/link do site"
+            placeholder={type === 'Online' ? 'Link' : 'Rua, Cidade'}
             value={address}
             onChange={setAddress}
           />
