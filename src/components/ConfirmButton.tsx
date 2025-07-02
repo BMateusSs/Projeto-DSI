@@ -1,4 +1,5 @@
 import React from 'react';
+import { StyleProp, ViewStyle } from 'react-native';
 import { TouchableOpacity, Text, ActivityIndicator, StyleSheet, Dimensions } from 'react-native';
 
 interface ConfirmButtonProps {
@@ -6,6 +7,7 @@ interface ConfirmButtonProps {
   onPress: () => void;
   loading?: boolean;
   disabled?: boolean;
+  styles?: StyleProp<ViewStyle>;
 }
 
 const { width, height } = Dimensions.get('window');
@@ -15,13 +17,15 @@ export function ConfirmButton({
   onPress,
   loading = false,
   disabled = false,
+  styles,
 }: ConfirmButtonProps) {
   return (
     <TouchableOpacity
       style={[
-        styles.button,
-        (disabled || loading) && styles.buttonDisabled,
+        localStyles.button,
+        (disabled || loading) && localStyles.buttonDisabled,
         { width: width * 0.8, height: height * 0.07 },
+        styles
       ]}
       onPress={onPress}
       activeOpacity={0.8}
@@ -30,26 +34,26 @@ export function ConfirmButton({
       {loading ? (
         <ActivityIndicator color="#fff" />
       ) : (
-        <Text style={styles.text}>{title}</Text>
+        <Text style={localStyles.text}>{title}</Text>
       )}
     </TouchableOpacity>
   );
 }
 
-const styles = StyleSheet.create({
+const localStyles = StyleSheet.create({
   button: {
     backgroundColor: '#6B2737',
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 32,
+    marginBottom: 35,
   },
   buttonDisabled: {
     backgroundColor: '#9E9E9E',
   },
   text: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
   },
 });

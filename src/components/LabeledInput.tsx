@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, StyleProp, ViewStyle } from "react-native";
 import SubTitle from "./SubTitle";
 import AddInput from "./AddInput";
 
@@ -8,11 +8,12 @@ interface LabeledInputProps {
   placeholder: string;
   value: string;
   onChange: (text: string) => void;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
-const LabeledInput: React.FC<LabeledInputProps> = ({ title, placeholder, value, onChange }) => {
+const LabeledInput: React.FC<LabeledInputProps> = ({ title, placeholder, value, onChange, containerStyle }) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       <SubTitle title={title} />
       <AddInput placeholder={placeholder} value={value} onChange={onChange} />
     </View>
@@ -21,7 +22,6 @@ const LabeledInput: React.FC<LabeledInputProps> = ({ title, placeholder, value, 
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 16, // Espaçamento entre os campos
   },
 });
 

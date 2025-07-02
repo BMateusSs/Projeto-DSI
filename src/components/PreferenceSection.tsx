@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { globalStyles } from '../styles/preferenceStyles';
+import { View, Text, TouchableOpacity, StyleProp, ViewStyle, StyleSheet } from 'react-native';
 
 interface PreferenceSectionProps {
   title: string;
@@ -9,6 +8,7 @@ interface PreferenceSectionProps {
   selected: string[] | string | null;
   onChange: (value: string[] | string) => void;
   multiSelect?: boolean;
+  styles?: StyleProp<ViewStyle>;
 }
 
 const PreferenceSection: React.FC<PreferenceSectionProps> = ({
@@ -18,6 +18,7 @@ const PreferenceSection: React.FC<PreferenceSectionProps> = ({
   selected,
   onChange,
   multiSelect = false,
+  styles
 }) => {
   const toggleOption = (option: string) => {
     if (multiSelect) {
@@ -44,33 +45,71 @@ const PreferenceSection: React.FC<PreferenceSectionProps> = ({
   };
 
   return (
-    <View style={globalStyles.sectionContainer}>
-      <Text style={globalStyles.sectionTitle}>{title}</Text>
-      {subtitle && <Text style={globalStyles.sectionSubtitle}>{subtitle}</Text>}
+    <View style={[localStyles.sectionContainer, styles]}>
+      <Text style={localStyles.sectionTitle}>{title}</Text>
+      {subtitle && <Text style={localStyles.sectionSubtitle}>{subtitle}</Text>}
       
-      <View style={globalStyles.optionsContainer}>
+      <View style={localStyles.optionsContainer}>
         {options.map((option, index) => (
           <TouchableOpacity
             key={index}
             style={[
-              globalStyles.optionButton,
-              isSelected(option) && globalStyles.optionButtonSelected
+              localStyles.optionButton,
+              isSelected(option) && localStyles.optionButtonSelected
             ]}
             onPress={() => toggleOption(option)}
           >
             <Text style={[
-              globalStyles.optionText,
-              isSelected(option) && globalStyles.optionTextSelected
+              localStyles.optionText,
+              isSelected(option) && localStyles.optionTextSelected
             ]}>
               {option}
             </Text>
           </TouchableOpacity>
         ))}
       </View>
-      
-      <View style={globalStyles.divider} />
     </View>
   );
 };
 
+const localStyles = StyleSheet.create({
+  sectionContainer: {
+    marginBottom: 8,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: '#800020',
+  },
+  sectionSubtitle: {
+    fontSize: 16,
+    marginBottom: 10,
+    color: '#666',
+  },
+  optionsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 15,
+  },
+  optionButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#800020',
+    marginRight: 10,
+    marginBottom: 10,
+    backgroundColor: 'white',
+  },
+  optionButtonSelected: {
+    backgroundColor: '#800020',
+  },
+  optionText: {
+    color: '#800020',
+  },
+  optionTextSelected: {
+    color: 'white',
+  },
+});
 export default PreferenceSection;

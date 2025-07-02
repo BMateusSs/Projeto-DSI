@@ -92,18 +92,21 @@ const ProfessionalDetailsScreen: React.FC = () => {
         placeholder="Digite o nome"
         value={name}
         onChange={setName}
+        containerStyle={styles.inputContainer}
       />
       <LabeledInput
         title="Email"
         placeholder="Digite o email"
         value={email}
         onChange={setEmail}
+        containerStyle={styles.inputContainer}
       />
       <LabeledInput
         title="Telefone"
         placeholder="Digite o telefone"
         value={telephone}
         onChange={setTelephone}
+
       />
       <LabeledInput
         title="Formação Acadêmica"
@@ -118,27 +121,32 @@ const ProfessionalDetailsScreen: React.FC = () => {
         selected={certifications}
         onChange={(value) => setCertifications(Array.isArray(value) ? value : [value])}
         multiSelect={true}
+        styles={styles.preferencesContainer}
       />
-      <View style={styles.buttonContainer}>
         <ConfirmButton title="Salvar" onPress={handleSave} />
-        <CancelButton title="Cancelar" onPress={handleCancel} />
-      </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  preferencesContainer: {
+    paddingTop: 16,
+  },
+  inputContainer: {
+    padding: 1,
+  },
   container: {
-    justifyContent: "center",
+    justifyContent: "flex-start",
     flex: 1,
-    padding: 16,
+    paddingStart:14,
+    paddingEnd: 14,
     backgroundColor: "#fff",
   },
   buttonContainer: {
-    flex: 1,
+    flex: 0,
     flexDirection: "column",
-    justifyContent: "space-between",
-    marginTop: 16,
+    justifyContent: "center",
+    marginTop: 2,
   },
 });
 
