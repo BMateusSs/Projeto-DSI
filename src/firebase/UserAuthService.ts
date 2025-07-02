@@ -7,7 +7,6 @@ export class UserAuthService {
   async signUp(email: string, password: string, name: string): Promise<AppUser> {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
-    await this.createUserDocument(user.uid, email, name);
     await updateProfile(user, { displayName: name });
     const appUser = await AppUser.create(user, {});
     return appUser;

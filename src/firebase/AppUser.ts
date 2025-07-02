@@ -7,11 +7,19 @@ export class AppUser {
   email: string;
   name: string;
   preferences: any;
-  constructor(user: FirebaseUser, preferences: any = {}) {
-    this.uid = user.uid;
-    this.email = user.email || '';
-    this.name = user.displayName || '';
+  profilePicture: string | null;
+  constructor(
+    uid: string,
+    email: string,
+    name: string,
+    preferences: any = {},
+    profilePicture: string | null = null
+  ) {
+    this.uid = uid;
+    this.email = email;
+    this.name = name;
     this.preferences = preferences;
+    this.profilePicture = profilePicture;
   }
 
   async savePreferences() {
@@ -30,6 +38,15 @@ export class AppUser {
     await updateDoc(userRef, {
       name: newName,
     });
+    this.name = newName;
+  }
+
+  async updateProfilePicture(url: string) {
+    const userRef = doc(db, 'users', this.uid);
+    await updateDoc(userRef, {
+      profilePicture: url,
+    });
+    this.profilePicture = url;
   }
 
   static async loadPreferences(uid: string) {
@@ -43,15 +60,28 @@ export class AppUser {
     }
   }
 
-  static async create(user: FirebaseUser, preferences: any = {}) {
-    const appUser = new AppUser(user, preferences);
-    await setDoc(doc(db, 'users', user.uid), {
-      uid: user.uid,
-      email: user.email,
-      name: user.displayName,
-      createdAt: new Date(),
-      preferences,
-    });
-    return appUser;
+  static async create(user: FirebaseUser) {
+    const userRef = doc(db, 'users', user.uid);
+    const userSnap = await getDoc(userRef);
+    if (userSnap.exists()) {
+      const data = userSnap.data();
+      return new AppUser(
+        user.uid,
+        data.email || user.email || '',
+        data.name || user.displayName || '',
+        data.preferences || {},
+        data.profilePicture || null
+      );
+    } else {
+      await setDoc(userRef, {
+        uid: user.uid,
+        email: user.email,
+        name: user.displayName || '',
+        createdAt: new Date(),
+        preferences: {},
+        profilePicture: null,
+      });
+      return new AppUser(user.uid, user.email || '', user.displayName || '', {}, null);
+    }
   }
 }
