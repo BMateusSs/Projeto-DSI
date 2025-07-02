@@ -123,12 +123,15 @@ const ProfessionalDetailsScreen: React.FC = () => {
         multiSelect={true}
         styles={styles.preferencesContainer}
       />
-        <ConfirmButton title="Salvar" onPress={handleSave} />
+        <ConfirmButton title="Salvar" onPress={handleSave} styles={styles.confirmButton}/>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  confirmButton:{
+    width: "100%"
+  },
   preferencesContainer: {
     paddingTop: 16,
   },
