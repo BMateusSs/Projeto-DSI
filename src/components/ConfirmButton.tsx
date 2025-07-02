@@ -46,7 +46,7 @@ const localStyles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 35,
+    marginBottom: 8,
   },
   buttonDisabled: {
     backgroundColor: '#9E9E9E',

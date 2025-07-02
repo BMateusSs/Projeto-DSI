@@ -27,7 +27,7 @@ export type RootStackParamList = {
   'RecoveryCode': undefined;
   'NewPassword': undefined;
   'Preferences': undefined;
-  'TabNavigation': undefined;
+  'TabNavigation': {screen: string} | undefined;
   'Adicionar Vinhos': { wineToEdit?: WineClass };
   'Adicionar Lojas': { storeToEdit?: StoreClass };
   'Mapa': undefined;

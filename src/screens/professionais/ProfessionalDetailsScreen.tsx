@@ -86,20 +86,20 @@ const ProfessionalDetailsScreen: React.FC = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+       <ScrollView contentContainerStyle={localStyles.screenContainer}>
       <LabeledInput
         title="Nome do Enólogo"
         placeholder="Digite o nome"
         value={name}
         onChange={setName}
-        containerStyle={styles.inputContainer}
+        containerStyle={localStyles.inputContainer}
       />
       <LabeledInput
         title="Email"
         placeholder="Digite o email"
         value={email}
         onChange={setEmail}
-        containerStyle={styles.inputContainer}
+        containerStyle={localStyles.inputContainer}
       />
       <LabeledInput
         title="Telefone"
@@ -121,14 +121,15 @@ const ProfessionalDetailsScreen: React.FC = () => {
         selected={certifications}
         onChange={(value) => setCertifications(Array.isArray(value) ? value : [value])}
         multiSelect={true}
-        styles={styles.preferencesContainer}
+        styles={localStyles.preferencesContainer}
       />
-        <ConfirmButton title="Salvar" onPress={handleSave} styles={styles.confirmButton}/>
+        <ConfirmButton title="Salvar" onPress={handleSave} styles={localStyles.confirmButton}/>
+        <CancelButton title="Cancelar" onPress={handleCancel}/>
     </ScrollView>
   );
 };
 
-const styles = StyleSheet.create({
+const localStyles = StyleSheet.create({
   confirmButton:{
     width: "100%"
   },
@@ -138,18 +139,20 @@ const styles = StyleSheet.create({
   inputContainer: {
     padding: 1,
   },
-  container: {
+  screenContainer: {
     justifyContent: "flex-start",
     flex: 1,
     paddingStart:14,
     paddingEnd: 14,
     backgroundColor: "#fff",
-  },
+    paddingTop: 8,
+    paddingBottom: 32,
+    },
   buttonContainer: {
     flex: 0,
     flexDirection: "column",
     justifyContent: "center",
-    marginTop: 2,
+    marginTop: 2
   },
 });
 
