@@ -1,12 +1,21 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import Map from 'react-native-maps';
+import React, { Suspense} from 'react';
+import { StyleSheet, View, Platform, Text } from 'react-native';
+
+const Map = Platform.OS !== 'web' ? React.lazy(() => import('react-native-maps')) : null;
 
 export default function App() {
   return (
     <View style={styles.container}>
       <View style={styles.mapContainer}>
-        <Map style={StyleSheet.absoluteFillObject} />
+        {Platform.OS === 'web' ? (
+          <View style={styles.webFallback}>
+            <Text>Mapa não disponível na web.</Text>
+          </View>
+        ) : (
+          <Suspense fallback={<Text>Carregando mapa...</Text>}>
+            <Map style={StyleSheet.absoluteFillObject} />
+          </Suspense>
+        )}
       </View>
       <View style={styles.restOfScreen}>
       </View>
@@ -25,5 +34,10 @@ const styles = StyleSheet.create({
   restOfScreen: {
     flex: 1,
     backgroundColor: 'lightblue',
+  },
+  webFallback: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
