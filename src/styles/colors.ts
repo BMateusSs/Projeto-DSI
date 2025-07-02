@@ -9,6 +9,7 @@ export const VinicotecaTheme = {
         white: "#fefefe",
         black: "#010101",
         disabledButton: "#666666",
+        secondaryButtonBackground:"#F2E6E6", 
         redError: '#ff3333',
         greenSuccess: "#00FF00",
 }
