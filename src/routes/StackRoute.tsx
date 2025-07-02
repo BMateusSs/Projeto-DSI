@@ -27,7 +27,7 @@ export type RootStackParamList = {
   'RecoveryCode': undefined;
   'NewPassword': undefined;
   'Preferences': undefined;
-  'Home': undefined;
+  'TabNavigation': undefined;
   'Adicionar Vinhos': { wineToEdit?: WineClass };
   'Adicionar Lojas': { storeToEdit?: StoreClass };
   'Mapa': undefined;
@@ -61,7 +61,7 @@ function StackRoute() {
           if (perfil === 'consumer' && (!preferencias || Object.keys(preferencias).length === 0)) {
             setInitialRoute('Preferences');
           } else {
-            setInitialRoute('Home');
+            setInitialRoute('TabNavigation');
           }
         } else {
           setInitialRoute('Preferences');
@@ -135,7 +135,7 @@ function StackRoute() {
         }}
       />
       <Stack.Screen 
-        name="Home" 
+        name="TabNavigation" 
         component={TabNavigation} 
         options={{ gestureEnabled: false, headerShown: false }}
       />
@@ -154,7 +154,7 @@ function StackRoute() {
         name="Detalhes Profissional" 
         component={ProfessionalDetailsScreen}
         options={{
-          headerShown: true,
+          headerShown: false,
           headerStyle: {backgroundColor: '#6B2737'},
           headerTintColor: 'white',
           headerTitleStyle: {fontWeight: 'bold'},
