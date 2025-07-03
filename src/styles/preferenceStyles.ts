@@ -22,11 +22,6 @@ export const globalStyles = StyleSheet.create({
     marginBottom: 10,
     color: '#666',
   },
-  optionsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginBottom: 15,
-  },
   optionButton: {
     paddingVertical: 8,
     paddingHorizontal: 15,

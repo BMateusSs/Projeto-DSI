@@ -4,12 +4,13 @@ import SearchBar from "../../components/SearchBar";
 import AddButton from "../../components/AddButton";
 import { CurrentRenderContext, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "../../types/navigation";
-import { ProfissionaisRepository } from "../../repositories/ProfessionalsRepository";
+import { ProfissionaisRepository } from "../../repositories/ProfissionaisRepository";
 import { Profissional } from "../../entities/Professional";
 import ProfessionalCard from "../../components/ProfessionalCard";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Modal } from "react-native";
 import { TouchableOpacity } from "react-native";
+import { ROUTE_NAMES } from "../../routes/StackRoute";
 
 type NavigationProps = NativeStackNavigationProp<RootStackParamList>;
 
@@ -24,12 +25,6 @@ const ProfessionaisScreen = () => {
     fetchProfissionais();
   }, []);
 
-  const handleSelectType = (type: "Sommelier" | "Enólogo") => {
-    setShowDropdown(false);
-    navigation.navigate('Detalhes Enologo', {
-      professionalId: "new",
-    });
-  };
   const fetchProfissionais = async () => {
     try {
       const data = await profissionaisRepository.readAll();
@@ -39,25 +34,27 @@ const ProfessionaisScreen = () => {
       console.error("Erro ao buscar enólogos:", error);
     }
   };
-
   const addEnologo = () => {
-    navigation.navigate('Detalhes Enologo', {
+    navigation.navigate(ROUTE_NAMES.SOMMELIER_DETAILS, {
       professionalId: "new",
     });
   };
-
-  const deleteEnologo = async (id: string) => {
+  const addSommelier = () => {
+    navigation.navigate(ROUTE_NAMES.ENOLOGO_DETAILS, {
+      professionalId: "new",
+    })
+  }
+  const deleteProfissional = async (id: string) => {
     try {
       await profissionaisRepository.delete(id);
-      setProfissionais((prev) => prev.filter((enologo) => enologo.id !== id));
+      setProfissionais((prev) => prev.filter((profissional) => profissional.id !== id));
       Alert.alert("Sucesso", "Enólogo excluído com sucesso.");
     } catch (error) {
       Alert.alert("Erro", "Não foi possível excluir o enólogo.");
       console.error("Erro ao excluir enólogo:", error);
     }
   };
-
-  const filteredEnologos = profissionais.filter((profissional) =>
+  const filteredProfissionais = profissionais.filter((profissional) =>
     (profissional.nome || '').toLowerCase().includes(searchText.toLowerCase())
   );
 
@@ -72,13 +69,13 @@ const ProfessionaisScreen = () => {
       </View>
       <View style={styles.content}>
         <FlatList
-          data={filteredEnologos}
+          data={filteredProfissionais}
           keyExtractor={(item) => item.id!}
           renderItem={({ item }) => (
             <ProfessionalCard
               name={item.nome}
               email={item.email}
-              onDelete={() => deleteEnologo(item.id!)}
+              onDelete={() => deleteProfissional(item.id!)}
             />
           )}
           ListEmptyComponent={
@@ -100,13 +97,13 @@ const ProfessionaisScreen = () => {
             <View style={styles.dropdownContainer}>
               <TouchableOpacity
                 style={styles.dropdownButton}
-                onPress={() => handleSelectType("Sommelier")}
+                onPress={addSommelier}
               >
                 <Text style={styles.dropdownText}>Sommelier</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.dropdownButton}
-                onPress={() => handleSelectType("Enólogo")}
+                onPress={addEnologo}
               >
                 <Text style={styles.dropdownText}>Enólogo</Text>
               </TouchableOpacity>

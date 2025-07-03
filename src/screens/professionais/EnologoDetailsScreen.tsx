@@ -8,6 +8,7 @@ import { CertificacaoVinho } from "../../constants/CertificacoesVinho";
 import { EnologoRepository } from "../../repositories/EnologoRepository";
 import CancelButton from "../../components/CancelButtons";
 import { RootStackParamList } from "../../types/navigation";
+import { ROUTE_NAMES } from "../../routes/StackRoute";
 
 type ProfessionalDetailsRouteProp = RouteProp<RootStackParamList, typeof ROUTE_NAMES.ENOLOGO_DETAILS>;
 

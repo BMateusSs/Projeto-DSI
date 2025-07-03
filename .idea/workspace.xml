@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="54248801-d136-4bd0-a813-51239f3dc329" name="Changes" comment="create the variables for colors.ts">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/StackRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/StackRoute.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/profissionais/ProfessionaisScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/profissionais/ProfessionaisScreen.tsx" afterDir="false" />
     </list>
     <list id="271af2f5-cdd9-406c-b2d1-ceb5a8ea566b" name="Changes by albet" comment="" />
     <list id="b1abd318-4518-4d44-bc66-672ea4fccdaf" name="Changes by MariaClara" comment="" />
@@ -126,6 +127,7 @@
       <workItem from="1746305029650" duration="14282000" />
       <workItem from="1746364861831" duration="3578000" />
       <workItem from="1750125059098" duration="107000" />
+      <workItem from="1751551654340" duration="532000" />
     </task>
     <task id="LOCAL-00001" summary="change the directories of the file and use typescript">
       <option name="closed" value="true" />
@@ -194,7 +196,24 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="false" />
+                </map>
+              </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/sommeliers-crud" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>

@@ -9,6 +9,7 @@ import { UserAuthService } from '../../firebase/UserAuthService';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAvoidingView } from 'react-native';
 import { ScrollScreen } from '../../components/ScrollScreen';
+import { ROUTE_NAMES } from '../../routes/StackRoute';
 const PreferencesScreen: React.FC = () => {
   const [types, setTypes] = useState<string[]>([]);
   const [flavors, setFlavors] = useState<string[]>([]);

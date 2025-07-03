@@ -20,20 +20,38 @@ import { ActivityIndicator, View } from 'react-native';
 import ProfessionaisScreen from "../screens/professionais/ProfessionaisScreen";
 import EnologoDetailsScreen from "../screens/professionais/EnologoDetailsScreen";
 
+
+export enum ROUTE_NAMES {
+  LOGIN = "Login",
+  SIGN_UP = "SignUp",
+  PASSWORD = "Password",
+  RECOVERY_CODE = "RecoveryCode",
+  NEW_PASSWORD = "NewPassword",
+  PREFERENCES = "Preferences",
+  TAB_NAVIGATION = "TabNavigation",
+  ADD_WINE = "Adicionar Vinhos",
+  ADD_STORE = "Adicionar Lojas",
+  MAP = "Mapa",
+  RECOMMENDED = "Recomendados",
+  PROFESSIONALS = "Profissionais",
+  ENOLOGO_DETAILS = "Detalhes Enologo",
+  SOMMELIER_DETAILS = "Detalhes Sommelier"
+}
 export type RootStackParamList = {
-  'Login': undefined;
-  'SignUp': undefined;
-  'Password': undefined;
-  'RecoveryCode': undefined;
-  'NewPassword': undefined;
-  'Preferences': undefined;
-  'TabNavigation': {screen: string} | undefined;
-  'Adicionar Vinhos': { wineToEdit?: WineClass };
-  'Adicionar Lojas': { storeToEdit?: StoreClass };
-  'Mapa': undefined;
-  'Recomendados': undefined;
-  'Profissionais': undefined;
-  'Detalhes Enologo': { professionalId: string, professionalType: 'Sommelier' | 'Enólogo' };
+  [ROUTE_NAMES.LOGIN]: undefined;
+  [ROUTE_NAMES.SIGN_UP]: undefined;
+  [ROUTE_NAMES.PASSWORD]: undefined;
+  [ROUTE_NAMES.RECOVERY_CODE]: undefined;
+  [ROUTE_NAMES.NEW_PASSWORD]: undefined;
+  [ROUTE_NAMES.PREFERENCES]: undefined;
+  [ROUTE_NAMES.TAB_NAVIGATION]: { screen: String } | undefined;
+  [ROUTE_NAMES.ADD_WINE]: { wineToEdit?: WineClass };
+  [ROUTE_NAMES.ADD_STORE]: { storeToEdit?: StoreClass };
+  [ROUTE_NAMES.MAP]: undefined;
+  [ROUTE_NAMES.RECOMMENDED]: undefined;
+  [ROUTE_NAMES.PROFESSIONALS]: undefined;
+  [ROUTE_NAMES.ENOLOGO_DETAILS]: { professionalId: String };
+  [ROUTE_NAMES.SOMMELIER_DETAILS]: { professionalId: String}
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
