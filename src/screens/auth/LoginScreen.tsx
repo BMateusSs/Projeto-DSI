@@ -63,7 +63,7 @@ export default function Login() {
         await AsyncStorage.removeItem('password');
         await AsyncStorage.setItem('remember', 'false');
       }
-      navigation.navigate("Home")
+      navigation.navigate('TabNavigation', { screen: 'Home' });
     } catch (error) {
       setErrorMessage("E-mail ou senha inválidos");
       setHasError(true);

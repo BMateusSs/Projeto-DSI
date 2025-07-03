@@ -1,12 +1,13 @@
 import React from 'react';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { MaterialIcons, FontAwesome5, Ionicons } from '@expo/vector-icons';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 import Home from "../screens/auth/HomeScreen";
 import Library from "../screens/library/LibraryScreen";
-import Store from "../screens/store/StoreScreen";
 import Professionals from "../screens/ProfessionalsScreen";
-import ProfileScreen from "../screens/profile/ProfileScreen";
+import Store from "../screens/store/StoreScreen";
+import ProfessionaisScreen from '../screens/professionais/ProfessionaisScreen';
+import ProfileScreen from '../screens/profile/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -26,7 +27,7 @@ export default function TabNavigation() {
         component={Home} 
         options={{
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome5 name="home" color={color} size={size} />
+            <Ionicons name="home-outline" color={color} size={size} />
           ),
           headerShown: false
         }}
@@ -36,7 +37,7 @@ export default function TabNavigation() {
         component={Library} 
         options={{
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome5 name="book-open" color={color} size={size} />
+            <Ionicons name="book-outline" color={color} size={size} />
           ),
         }}
       />
@@ -45,16 +46,16 @@ export default function TabNavigation() {
         component={Store} 
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="storefront" color={color} size={size} />
+            <Ionicons name="storefront-outline" color={color} size={size} />
           ),
         }}
       />
       <Tab.Screen 
-        name="Profissionais" 
-        component={Professionals} 
+        name="Professionais" 
+        component={ProfessionaisScreen} 
         options={{
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome5 name="users" color={color} size={size} />
+            <Ionicons name="people-outline" color={color} size={size} />
           ),
         }}
       />
@@ -63,7 +64,7 @@ export default function TabNavigation() {
         component={ProfileScreen} 
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person" color={color} size={size} />
+            <Ionicons name="person-outline" color={color} size={size} />
           ),
         }}
       />

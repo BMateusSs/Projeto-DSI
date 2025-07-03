@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, TouchableOpacity, Text, Alert, View } from 'react-native';
+import { ScrollView, TouchableOpacity, Text, Alert, View , StyleSheet} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PreferenceSection from '../../components/PreferenceSection';
-import { styles } from '../../styles/preferenceStyles';
+import PriceRangeSection from '../../components/PriceRangeSelector';
+import { globalStyles } from '../../styles/preferenceStyles';
 import { auth } from '../../firebase/firebaseConfig';
 import { UserAuthService } from '../../firebase/UserAuthService';
 import { useNavigation } from '@react-navigation/native';
-
+import { KeyboardAvoidingView } from 'react-native';
+import { ScrollScreen } from '../../components/ScrollScreen';
 const PreferencesScreen: React.FC = () => {
   const [types, setTypes] = useState<string[]>([]);
   const [flavors, setFlavors] = useState<string[]>([]);
   const [regions, setRegions] = useState<string[]>([]);
   const [pairings, setPairings] = useState<string[]>([]);
   const [alcoholContent, setAlcoholContent] = useState<string | null>(null);
+  const [minPrice, setMinPrice] = useState<number| null>(0);
+  const [maxPrice, setMaxPrice] = useState<number | null >(1000);
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
 
@@ -49,7 +53,7 @@ const PreferencesScreen: React.FC = () => {
         alcoholContent,
       });
       Alert.alert("Sucesso", "Preferências salvas com sucesso!");
-      navigation.navigate("Home");
+      navigation.navigate(ROUTE_NAMES.HOME_TABS);
     } catch (error) {
       console.error("Erro ao salvar preferências:", error);
       Alert.alert("Erro", "Não foi possível salvar as preferências.");
@@ -57,14 +61,12 @@ const PreferencesScreen: React.FC = () => {
   };
   return (
     <View style={{ flex: 1 }}>
-      <ScrollView 
-        style={{ flex: 1, backgroundColor: "white" }}
-        contentContainerStyle={{
-          paddingBottom: 100 + insets.bottom
-        }}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.container}>
+      <ScrollScreen>  
+        <View style={globalStyles.container}>
+          <View style={globalStyles.containerTitle}>
+            <Text style={globalStyles.title}>Suas preferências</Text>
+          </View>
+
           <PreferenceSection 
             title="Tipos preferidos"
             options={['Tinto', 'Branco', 'Rosé', 'Espumante']}
@@ -103,15 +105,27 @@ const PreferencesScreen: React.FC = () => {
             selected={pairings}
             onChange={value => setPairings(Array.isArray(value) ? value : [value])}
           />
+
+          <PriceRangeSection
+            minPrice={minPrice}
+            setMinPrice={setMinPrice}
+            maxPrice={maxPrice}
+            setMaxPrice={setMaxPrice}
+          />
+
+          <TouchableOpacity style={globalStyles.saveButton} onPress={handleSave}>
+            <Text style={globalStyles.saveButtonText}>Salvar preferências</Text>
+          </TouchableOpacity>
         </View>
-      </ScrollView>
-      <View style={{position: 'absolute', left: 0, right: 0, bottom: 0, padding: 10, paddingBottom: 10 + insets.bottom, backgroundColor: 'white', borderTopWidth: 1, borderColor: '#eee'}}>
-        <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-          <Text style={styles.saveButtonText}>Salvar preferências</Text>
-        </TouchableOpacity>
-      </View>
+    </ScrollScreen>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  screen : {
+    flex: 1
+  }
+})
 
 export default PreferencesScreen;
