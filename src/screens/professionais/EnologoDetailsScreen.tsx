@@ -9,9 +9,9 @@ import { EnologoRepository } from "../../repositories/EnologoRepository";
 import CancelButton from "../../components/CancelButtons";
 import { RootStackParamList } from "../../types/navigation";
 
-type ProfessionalDetailsRouteProp = RouteProp<RootStackParamList, typeof ROUTE_NAMES.PROFESSIONAL_DETAILS>;
+type ProfessionalDetailsRouteProp = RouteProp<RootStackParamList, typeof ROUTE_NAMES.ENOLOGO_DETAILS>;
 
-const ProfessionalDetailsScreen: React.FC = () => {
+const EnologoDetailsScreen: React.FC = () => {
   const route = useRoute<ProfessionalDetailsRouteProp>();
   const navigation = useNavigation();
   const professionalId = route.params.professionalId;
@@ -156,4 +156,4 @@ const localStyles = StyleSheet.create({
   },
 });
 
-export default ProfessionalDetailsScreen;
+export default EnologoDetailsScreen;

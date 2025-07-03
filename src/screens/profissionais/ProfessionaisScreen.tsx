@@ -48,7 +48,7 @@ const ProfessionaisScreen = () => {
   };
 
   const addProfessional = () => {
-    navigation.navigate(ROUTE_NAMES.PROFESSIONAL_DETAILS, {
+    navigation.navigate(ROUTE_NAMES.ENOLOGO_DETAILS, {
       professionalId: "new",
     });
   };

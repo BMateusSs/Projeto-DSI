@@ -18,7 +18,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { ActivityIndicator, View } from 'react-native';
 import ProfessionaisScreen from "../screens/professionais/ProfessionaisScreen";
-import ProfessionalDetailsScreen from "../screens/professionais/ProfessionalDetailsScreen";
+import EnologoDetailsScreen from "../screens/professionais/EnologoDetailsScreen";
 
 export type RootStackParamList = {
   'Login': undefined;
@@ -33,7 +33,7 @@ export type RootStackParamList = {
   'Mapa': undefined;
   'Recomendados': undefined;
   'Profissionais': undefined;
-  'Detalhes Profissional': { professionalId: string, professionalType: 'Sommelier' | 'Enólogo' };
+  'Detalhes Enologo': { professionalId: string, professionalType: 'Sommelier' | 'Enólogo' };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -151,8 +151,8 @@ function StackRoute() {
         }}
       />
       <Stack.Screen 
-        name="Detalhes Profissional" 
-        component={ProfessionalDetailsScreen}
+        name="Detalhes Enologo" 
+        component={EnologoDetailsScreen}
         options={{
           headerShown: false,
           headerStyle: {backgroundColor: '#6B2737'},

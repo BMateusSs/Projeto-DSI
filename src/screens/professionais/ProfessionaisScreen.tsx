@@ -27,9 +27,8 @@ const ProfessionaisScreen = () => {
 
   const handleSelectType = (type: "Sommelier" | "Enólogo") => {
     setShowDropdown(false);
-    navigation.navigate('Detalhes Profissional', {
+    navigation.navigate('Detalhes Enologo', {
       professionalId: "new",
-      professionalType: type,
     });
   };
   const fetchEnologos = async () => {
@@ -43,7 +42,7 @@ const ProfessionaisScreen = () => {
   };
 
   const addProfessional = () => {
-    navigation.navigate('Detalhes Profissional', {
+    navigation.navigate('Detalhes Enologo', {
       professionalId: "new",
     });
   };
