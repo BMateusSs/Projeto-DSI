@@ -9,6 +9,8 @@ import { Enologo } from "../../entities/Enologo";
 import ProfessionalCard from "../../components/ProfessionalCard";
 import { VinicotecaTheme } from "../../styles/colors";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { Modal } from "react-native";
+import { TouchableOpacity } from "react-native";
 
 type NavigationProps = NativeStackNavigationProp<RootStackParamList>;
 
@@ -17,11 +19,19 @@ const ProfessionaisScreen = () => {
   const [enologos, setEnologos] = useState<Enologo[]>([]);
   const navigation = useNavigation<NavigationProps>();
   const enologoRepository = new EnologoRepository();
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     fetchEnologos();
   }, []);
 
+  const handleSelectType = (type: "Sommelier" | "Enólogo") => {
+    setShowDropdown(false);
+    navigation.navigate('Detalhes Profissional', {
+      professionalId: "new",
+      professionalType: type,
+    });
+  };
   const fetchEnologos = async () => {
     try {
       const data = await enologoRepository.readAll();
@@ -82,12 +92,71 @@ const ProfessionaisScreen = () => {
       </View>
       <View style={styles.addButtonContainer}>
         <AddButton onPress={addProfessional} />
+        <Modal
+          visible={showDropdown}
+          transparent
+          animationType="fade"
+          onRequestClose={() => setShowDropdown(false)}
+        >
+          <TouchableOpacity style={styles.overlay} onPress={() => setShowDropdown(false)}>
+            <View style={styles.dropdownContainer}>
+              <TouchableOpacity
+                style={styles.dropdownButton}
+                onPress={() => handleSelectType("Sommelier")}
+              >
+                <Text style={styles.dropdownText}>Sommelier</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.dropdownButton}
+                onPress={() => handleSelectType("Enólogo")}
+              >
+                <Text style={styles.dropdownText}>Enólogo</Text>
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
+        </Modal>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  addButtonContainer: {
+    position: "absolute",
+    bottom: 20,
+    right: 20,
+    paddingBottom: 16,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.2)",
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+  },
+  dropdownContainer: {
+    marginRight: 20,
+    marginBottom: 80,
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    padding: 8,
+    elevation: 4,
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 2 },
+  },
+  dropdownButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    alignItems: "center",
+  },
+  dropdownText: {
+    fontSize: 16,
+    color: "#800020",
+    fontWeight: "bold",
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",

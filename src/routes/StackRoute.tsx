@@ -33,7 +33,7 @@ export type RootStackParamList = {
   'Mapa': undefined;
   'Recomendados': undefined;
   'Profissionais': undefined;
-  'Detalhes Profissional': { professionalId: string };
+  'Detalhes Profissional': { professionalId: string, professionalType: 'Sommelier' | 'Enólogo' };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
