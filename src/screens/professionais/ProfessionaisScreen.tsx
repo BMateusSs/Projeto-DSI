@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, FlatList, Alert } from "react-native";
 import SearchBar from "../../components/SearchBar";
 import AddButton from "../../components/AddButton";
-import { useNavigation } from "@react-navigation/native";
+import { CurrentRenderContext, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "../../types/navigation";
 import { EnologoRepository } from "../../repositories/EnologoRepository";
 import { Enologo } from "../../entities/Enologo";
@@ -90,8 +90,8 @@ const ProfessionaisScreen = () => {
         />
       </View>
       <View style={styles.addButtonContainer}>
-        <AddButton onPress={addProfessional} />
-        <Modal
+      <Modal
+      style={styles.modal}
           visible={showDropdown}
           transparent
           animationType="fade"
@@ -114,25 +114,32 @@ const ProfessionaisScreen = () => {
             </View>
           </TouchableOpacity>
         </Modal>
+        <AddButton onPress={() => { setShowDropdown(curr => !curr)}} simbol={showDropdown? "x" : "+"} />
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  modal: {
+    paddingBottom: 16,
+    paddingTop: 16
+  },
   addButtonContainer: {
+    flexDirection: "column",
     position: "absolute",
     bottom: 20,
     right: 20,
     paddingBottom: 16,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
   },
   overlay: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.2)",
     justifyContent: "flex-end",
     alignItems: "flex-end",
+    paddingBottom: 100
   },
   dropdownContainer: {
     marginRight: 20,
@@ -147,8 +154,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
   },
   dropdownButton: {
-    paddingVertical: 12,
-    paddingHorizontal: 24,
+    paddingVertical: 24,
+    paddingHorizontal: 48,
     alignItems: "center",
   },
   dropdownText: {
@@ -165,12 +172,6 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-  },
-  addButtonContainer: {
-    position: "absolute",
-    bottom: 20,
-    right: 20,
-    paddingBottom: 16,
   },
   emptyContainer: {
     flex: 1,
