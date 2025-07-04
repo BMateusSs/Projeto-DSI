@@ -9,6 +9,10 @@ import { EnologoRepository } from "../../repositories/EnologoRepository";
 import CancelButton from "../../components/CancelButtons";
 import { RootStackParamList } from "../../types/navigation";
 import { ROUTE_NAMES } from "../../routes/StackRoute";
+import { Profissional } from "../../entities/Professional";
+import { ProfissionaisRepository } from "../../repositories/ProfissionaisRepository";
+import { analytics } from "../../firebase/firebaseConfig";
+import {getCrashlytics} from '@react-native-firebase/crashlytics';
 
 type ProfessionalDetailsRouteProp = RouteProp<RootStackParamList, typeof ROUTE_NAMES.ENOLOGO_DETAILS>;
 
@@ -16,29 +20,34 @@ const EnologoDetailsScreen: React.FC = () => {
   const route = useRoute<ProfessionalDetailsRouteProp>();
   const navigation = useNavigation();
   const professionalId = route.params.professionalId;
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [telephone, setTelephone] = useState("");
   const [academicFormation, setAcademicFormation] = useState("");
   const [certifications, setCertifications] = useState<string[]>([]);
-
+  const professionalRepository = new ProfissionaisRepository();
   const enologoRepository = new EnologoRepository();
 
   useEffect(() => {
     if (professionalId !== "new") {
       // Carregar dados do profissional existente
-      enologoRepository.read(professionalId).then((data) => {
-        if (data) {
-          setName(data.profissional.nome);
-          setEmail(data.profissional.email);
-          setTelephone(data.profissional.telefone);
-          setAcademicFormation(data.formacaoAcademica);
-          setCertifications(data.profissional.certificacoes || []);
-        } else {
-          Alert.alert("Erro", "Profissional não encontrado.");
-          navigation.goBack();
-        }
+      enologoRepository.read(professionalId).then((enologo) => {
+        professionalRepository.read(professionalId).then((profissional) => {
+          if (profissional) {
+            if (enologo) {
+              setName(profissional.nome);
+              setEmail(profissional.email);
+              setTelephone(profissional.telefone);
+              setAcademicFormation(enologo.formacaoAcademica);
+              setCertifications(profissional.certificacoes || []);
+            } else {
+              Alert.alert("Erro", "Profissional não encontrado.");
+              navigation.goBack();
+            }
+          } else {
+            getCrashlytics().log(`Enologo Inconsistente: idEnologo=${enologo?.id}`)
+          }
+        })
       });
     }
   }, [professionalId]);
@@ -52,25 +61,17 @@ const EnologoDetailsScreen: React.FC = () => {
     try {
       if (professionalId === "new") {
         // Criar novo profissional
+        const professional = new Profissional(name, email, telephone, certifications as CertificacaoVinho[]);
+        const professionalId = await professionalRepository.create(professional); 
         await enologoRepository.create({
-          profissional: {
-            nome: name,
-            email,
-            telefone: telephone,
-            certificacoes: certifications as CertificacaoVinho[],
-          },
+          profissionalId: professionalId,
           formacaoAcademica: academicFormation,
         });
         Alert.alert("Sucesso", "Profissional adicionado com sucesso.");
       } else {
         // Atualizar profissional existente
         await enologoRepository.update(professionalId, {
-          profissional: {
-            nome: name,
-            email,
-            telefone: telephone,
-            certificacoes: certifications as CertificacaoVinho[],
-          },
+          profissionalId: professionalId,
           formacaoAcademica: academicFormation,
         });
         Alert.alert("Sucesso", "Profissional atualizado com sucesso.");

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, FlatList, Alert } from "react-native";
 import SearchBar from "../../components/SearchBar";
 import AddButton from "../../components/AddButton";
-import { CurrentRenderContext, useNavigation } from "@react-navigation/native";
+import { CurrentRenderContext, useFocusEffect, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "../../types/navigation";
 import { ProfissionaisRepository } from "../../repositories/ProfissionaisRepository";
 import { Profissional } from "../../entities/Professional";
@@ -21,9 +21,9 @@ const ProfessionaisScreen = () => {
   const profissionaisRepository = new ProfissionaisRepository();
   const [showDropdown, setShowDropdown] = useState(false);
 
-  useEffect(() => {
+  useFocusEffect(() => {
     fetchProfissionais();
-  }, []);
+  });
 
   const fetchProfissionais = async () => {
     try {
@@ -35,14 +35,16 @@ const ProfessionaisScreen = () => {
     }
   };
   const addEnologo = () => {
-    navigation.navigate(ROUTE_NAMES.SOMMELIER_DETAILS, {
-      professionalId: "new",
-    });
-  };
-  const addSommelier = () => {
     navigation.navigate(ROUTE_NAMES.ENOLOGO_DETAILS, {
       professionalId: "new",
+    });
+    setShowDropdown(false);
+  };
+  const addSommelier = () => {
+    navigation.navigate(ROUTE_NAMES.SOMMELIER_DETAILS, {
+      professionalId: "new",
     })
+    setShowDropdown(false);
   }
   const deleteProfissional = async (id: string) => {
     try {

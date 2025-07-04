@@ -2,7 +2,7 @@ import { Profissional } from "./Professional";
 
 export class Enologo {
     constructor(
-        public profissional: Profissional,
+        public profissionalId: string,
         public formacaoAcademica: string,
         public id?: string,
     ) {}
