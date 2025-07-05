@@ -1,25 +1,7 @@
-import { StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-interface Styles {
-  container: ViewStyle;
-  title: TextStyle;
-  sectionContainer: ViewStyle;
-  sectionTitle: TextStyle;
-  sectionSubtitle: TextStyle;
-  optionsContainer: ViewStyle;
-  optionButton: ViewStyle;
-  optionButtonSelected: ViewStyle;
-  optionText: TextStyle;
-  optionTextSelected: TextStyle;
-  divider: ViewStyle;
-  rangeContainer: ViewStyle;
-  rangeText: TextStyle;
-  slider: ViewStyle;
-  saveButton: ViewStyle;
-  saveButtonText: TextStyle;
-}
 
-export const styles = StyleSheet.create<Styles>({
+export const globalStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',

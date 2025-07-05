@@ -6,12 +6,14 @@ import storeService from '../../services/storeService';
 import { StoreClass as StoreData } from '../../services/storeClass';
 import StoreList from '../../components/StoreList';
 import FilterSelector from '../../components/FilterSelector';
+import SearchBar from '../../components/SearchBar';
 
 const StoreListScreen = () => {
   const [stores, setStores] = useState<StoreData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<'all' | 'Física' | 'Online'>('all');
+  const [searchText, setSearchText] = useState('');
   const isFocused = useIsFocused();
   const fetchStores = async () => {
     if (!auth.currentUser) {
@@ -37,9 +39,10 @@ const StoreListScreen = () => {
       fetchStores();
     }
   }, [isFocused]);
-  const filteredStores = stores.filter((stores) => {
-    if (filter === 'all') return true;
-    return stores.type === filter;
+  const filteredStores = stores.filter((store) => {
+    const matchesFilter = filter === 'all' || store.type === filter;
+    const matchesSearch = store.name.toLowerCase().includes(searchText.toLowerCase());
+    return matchesFilter && matchesSearch;
   });
   if (isLoading) {
     return (
@@ -66,6 +69,12 @@ const StoreListScreen = () => {
   };
   return (
     <View style={styles.container}>
+      <SearchBar
+        value={searchText}
+        onChangeText={setSearchText}
+        placeholder='Pesquisar por nome da loja'
+        autoCapitalize='none'
+      />
       <FilterSelector
         options={[
             { label: 'Todas', value: 'all' },
