@@ -8,13 +8,14 @@ import { UserAuthService } from '../../firebase/UserAuthService';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAvoidingView } from 'react-native';
 import { ScrollScreen } from '../../components/ScrollScreen';
-
 const PreferencesScreen: React.FC = () => {
   const [types, setTypes] = useState<string[]>([]);
   const [flavors, setFlavors] = useState<string[]>([]);
   const [regions, setRegions] = useState<string[]>([]);
   const [pairings, setPairings] = useState<string[]>([]);
   const [alcoholContent, setAlcoholContent] = useState<string | null>(null);
+  const [minPrice, setMinPrice] = useState<number| null>(0);
+  const [maxPrice, setMaxPrice] = useState<number | null >(1000);
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
 
