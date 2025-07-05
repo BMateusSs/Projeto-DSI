@@ -3,28 +3,11 @@ import { View, TextInput, StyleSheet, TextInputProps } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { VinicotecaTheme } from "../styles/colors";
 
-<<<<<<< HEAD
-interface SearchBarProps {
-  text: string;
-=======
 interface SearchBarProps extends TextInputProps {
->>>>>>> main
   value: string;
   onChangeText: (text: string) => void;
 }
 
-<<<<<<< HEAD
-const SearchBar: React.FC<SearchBarProps> = ({ text, value, onChangeText }) => {
-  return (
-    <View style={styles.containerSearch}>
-      <Icon name="search" size={24} color="#6B7280" style={{ marginRight: 8 }} />
-      <TextInput 
-        style={styles.textInput}
-        placeholder={text}
-        placeholderTextColor="#6B7280"
-        value={value}
-        onChangeText={onChangeText}
-=======
 const SearchBar: React.FC<SearchBarProps> = ({ value, onChangeText, ...props }) => {
   return (
     <View style={styles.container}>
@@ -38,7 +21,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ value, onChangeText, ...props }) 
         value={value}
         onChangeText={onChangeText}
         {...props}
->>>>>>> main
       />
     </View>
   );
@@ -52,6 +34,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 10,
     height: 40,
+    width: "90%",
+    alignSelf: "center",
   },
   iconContainer: {
     backgroundColor: VinicotecaTheme.colors.primary,

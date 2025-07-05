@@ -36,5 +36,6 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
-src/config/googleApiKey.ts
+# API Keys
+src/config/apiKeys.ts
 

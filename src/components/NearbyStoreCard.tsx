@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../styles/mapStyles';
 import { Place, LocationCoords } from '../screens/map/types';
+import { isGoogleApiKeyAvailable } from '../config/apiKeys';
 
 interface NearbyStoreCardProps {
   store: Place;
@@ -33,10 +34,13 @@ const NearbyStoreCard: React.FC<NearbyStoreCardProps> = ({ store, initialRegion,
       store.geometry.location.lng
     );
   }
+  
   const hasPhoto = Array.isArray(store.photos) && store.photos.length > 0 && store.photos[0].photo_reference;
+  const canLoadPhoto = hasPhoto && isGoogleApiKeyAvailable() && GOOGLE_PLACES_API_KEY;
+  
   return (
     <TouchableOpacity key={store.place_id} style={styles.storeCardVertical} onPress={() => onPress(store)} activeOpacity={0.85}>
-      {hasPhoto ? (
+      {canLoadPhoto ? (
         <Image
           source={{ uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${store.photos && store.photos[0].photo_reference}&key=${GOOGLE_PLACES_API_KEY}` }}
           style={styles.storeImage}

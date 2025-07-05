@@ -96,11 +96,7 @@ const ProfileScreen = () => {
     <View style={styles.container}>
       <View style={styles.content}>
         <View style={styles.profileContainer}>
-          <TouchableOpacity
-            onPress={handleProfilePictureChange}
-            style={styles.avatarContainer}
-            activeOpacity={0.8}
-          >
+          <View style={styles.avatarContainer}>
             {profilePicture ? (
               <Image
                 source={{ uri: profilePicture }}
@@ -109,7 +105,14 @@ const ProfileScreen = () => {
             ) : (
               <Text style={styles.avatarText}>{getInitial()}</Text>
             )}
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleProfilePictureChange}
+              style={styles.cameraButton}
+              activeOpacity={0.8}
+            >
+              <Ionicons name="camera" size={20} color="#fff" />
+            </TouchableOpacity>
+          </View>
           <Text style={styles.userName}>{userName}</Text>
           <Text style={styles.userEmail}>{userEmail}</Text>
         </View>
@@ -179,6 +182,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
+    position: 'relative',
   },
   avatarText: {
     fontSize: 48,
@@ -189,6 +193,24 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     borderRadius: 60,
+  },
+  cameraButton: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    backgroundColor: '#6B2737',
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 6,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3.84,
+    borderWidth: 3,
+    borderColor: '#fff',
   },
   userName: {
     fontSize: 24,

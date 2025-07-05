@@ -2,36 +2,39 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, TouchableOpacity, Text, Alert, View , StyleSheet} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PreferenceSection from '../../components/PreferenceSection';
-import PriceRangeSection from '../../components/PriceRangeSelector';
 import { globalStyles } from '../../styles/preferenceStyles';
 import { auth } from '../../firebase/firebaseConfig';
 import { UserAuthService } from '../../firebase/UserAuthService';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAvoidingView } from 'react-native';
 import { ScrollScreen } from '../../components/ScrollScreen';
+
 const PreferencesScreen: React.FC = () => {
   const [types, setTypes] = useState<string[]>([]);
   const [flavors, setFlavors] = useState<string[]>([]);
   const [regions, setRegions] = useState<string[]>([]);
   const [pairings, setPairings] = useState<string[]>([]);
   const [alcoholContent, setAlcoholContent] = useState<string | null>(null);
-  const [minPrice, setMinPrice] = useState<number| null>(0);
-  const [maxPrice, setMaxPrice] = useState<number | null >(1000);
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
 
   useEffect(() => {
     const fetchPreferences = async () => {
-      const user = auth.currentUser;
-      if (!user) return;
-      const userAuthService = new UserAuthService();
-      const prefs = await userAuthService.getUserPreferences(user.uid);
-      if (prefs) {
-        setTypes(prefs.types || []);
-        setFlavors(prefs.flavors || []);
-        setRegions(prefs.regions || []);
-        setPairings(prefs.pairings || []);
-        setAlcoholContent(prefs.alcoholContent || null);
+      try {
+        const user = auth.currentUser;
+        if (!user) return;
+        const userAuthService = new UserAuthService();
+        const prefs = await userAuthService.getUserPreferences(user.uid);
+        if (prefs) {
+          setTypes(prefs.types || []);
+          setFlavors(prefs.flavors || []);
+          setRegions(prefs.regions || []);
+          setPairings(prefs.pairings || []);
+          setAlcoholContent(prefs.alcoholContent || null);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar dados do usuário:", error);
+        // Não mostrar alerta aqui para não interromper o fluxo
       }
     };
     fetchPreferences();
@@ -53,12 +56,13 @@ const PreferencesScreen: React.FC = () => {
         alcoholContent,
       });
       Alert.alert("Sucesso", "Preferências salvas com sucesso!");
-      navigation.navigate(ROUTE_NAMES.HOME_TABS);
+      navigation.goBack();
     } catch (error) {
       console.error("Erro ao salvar preferências:", error);
       Alert.alert("Erro", "Não foi possível salvar as preferências.");
     }
   };
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollScreen>  
@@ -104,13 +108,6 @@ const PreferencesScreen: React.FC = () => {
             multiSelect
             selected={pairings}
             onChange={value => setPairings(Array.isArray(value) ? value : [value])}
-          />
-
-          <PriceRangeSection
-            minPrice={minPrice}
-            setMinPrice={setMinPrice}
-            maxPrice={maxPrice}
-            setMaxPrice={setMaxPrice}
           />
 
           <TouchableOpacity style={globalStyles.saveButton} onPress={handleSave}>

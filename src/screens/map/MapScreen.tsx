@@ -9,8 +9,7 @@ import SearchBar from '../../components/SearchBar';
 import styles from '../../styles/mapStyles';
 import NearbyStoreCard from '../../components/NearbyStoreCard';
 import StoreDetailModal from './StoreDetailModal';
-import GOOGLE_PLACES_API_KEY from '../../config/googleApiKey';
-
+import { GOOGLE_PLACES_API_KEY } from '../../config/apiKeys';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -111,8 +110,8 @@ export default function MapScreen() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
-      <View style={{alignItems: 'center', width: '100%', marginTop: 10}}>
-        <SearchBar text="Pesquisar loja de vinhos" value={search} onChangeText={setSearch} />
+      <View style={{alignItems: 'center', width: '100%', marginTop: 10, marginBottom: 5}}>
+        <SearchBar value={search} onChangeText={setSearch} placeholder="Pesquisar loja de vinhos" />
       </View>
       <View style={styles.mapContainerHalf}>
         <MapView
