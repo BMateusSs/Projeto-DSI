@@ -3,6 +3,7 @@ import { View, Text, FlatList, ActivityIndicator, StyleSheet, Image, TouchableOp
 import styles from '../../styles/recomendationStyles';
 import { UserAuthService } from '../../firebase/UserAuthService';
 import { auth } from '../../firebase/firebaseConfig';
+import SearchBar from '../../components/SearchBar';
 
 const API_URL = 'https://68547dca6a6ef0ed662f3b6b.mockapi.io/api/v1/wines';
 
@@ -67,9 +68,11 @@ function WineRecommendationCard({ wine }: { wine: WineRecommendation }) {
 
 const RecomendationsList = () => {
   const [wines, setWines] = useState<WineRecommendation[]>([]);
+  const [filteredWines, setFilteredWines] = useState<WineRecommendation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [preferences, setPreferences] = useState<any>(null);
+  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
     const fetchPreferencesAndRecommendations = async () => {
@@ -116,6 +119,7 @@ const RecomendationsList = () => {
           });
         }
         setWines(data);
+        setFilteredWines(data);
       } catch (err) {
         setError('Erro ao carregar recomendações.');
       } finally {
@@ -124,6 +128,21 @@ const RecomendationsList = () => {
     };
     fetchPreferencesAndRecommendations();
   }, []);
+
+  useEffect(() => {
+    if (searchText.trim().length > 0) {
+      const filtered = wines.filter(wine =>
+        (wine.nome?.toLowerCase() || '').includes(searchText.toLowerCase()) ||
+        (wine.tipo?.toLowerCase() || '').includes(searchText.toLowerCase()) ||
+        (wine.regiao_vinicola?.toLowerCase() || '').includes(searchText.toLowerCase()) ||
+        (wine.produtor?.toLowerCase() || '').includes(searchText.toLowerCase()) ||
+        (wine.pais?.toLowerCase() || '').includes(searchText.toLowerCase())
+      );
+      setFilteredWines(filtered);
+    } else {
+      setFilteredWines(wines);
+    }
+  }, [searchText, wines]);
 
   if (isLoading) {
     return (
@@ -143,13 +162,22 @@ const RecomendationsList = () => {
   }
 
   return (
-    <FlatList
-      data={wines}
-      keyExtractor={item => item.id}
-      renderItem={({ item }) => <WineRecommendationCard wine={item} />}
-      contentContainerStyle={styles.listContent}
-      showsVerticalScrollIndicator={false}
-    />
+    <View style={styles.container}>
+      <View style={styles.searchBarContainer}>
+        <SearchBar
+          value={searchText}
+          onChangeText={setSearchText}
+          placeholder="Pesquisar vinhos recomendados..."
+        />
+      </View>
+      <FlatList
+        data={filteredWines}
+        keyExtractor={item => item.id}
+        renderItem={({ item }) => <WineRecommendationCard wine={item} />}
+        contentContainerStyle={styles.listContent}
+        showsVerticalScrollIndicator={false}
+      />
+    </View>
   );
 };
 

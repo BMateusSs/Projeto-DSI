@@ -9,12 +9,14 @@ export type RootStackParamList = {
   'NewPassword': undefined;
   'Preferences': undefined;
   'Home': undefined;
-  'Adicionar Vinhos': { wineToEdit?: Wine };
-  'Adicionar Lojas': { storeToEdit?: StoreData };
+  'Adicionar Vinhos': { wineToEdit?: any };
+  'Adicionar Lojas': { storeToEdit?: any };
   'Mapa': undefined;
+  'Recomendados': undefined;
+  'Profissionais': undefined;
+  'Detalhes Enologo': { professionalId: string };
   'Lista de Vinhos': undefined;
   'Lista de Lojas': undefined;
-  'Professionals': undefined;
   'WineDetails': { wineId: string };
   'StoreDetails': { storeId: string };
 };
@@ -23,6 +25,6 @@ export type TabParamList = {
   Home: undefined;
   Biblioteca: undefined;
   Lojas: undefined;
-  Explorar: undefined;
+  Professionais: undefined;
   Perfil: undefined;
-}; 
+};

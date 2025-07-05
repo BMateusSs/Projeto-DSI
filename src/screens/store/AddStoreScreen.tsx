@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet, Alert } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AddInput from '../../components/AddInput';
 import Anotation from '../../components/Anotations';
 import { ConfirmButton } from '../../components/ConfirmButton';
@@ -18,6 +19,7 @@ type RouteParams = {
 const AddStoreScreen: React.FC = () => {
   const route = useRoute<RouteProp<{ params: RouteParams }, 'params'>>();
   const storeToEdit = route.params?.storeToEdit;
+  const insets = useSafeAreaInsets();
   const [name, setName] = useState('');
   const [type, setType] = useState<'Física' | 'Online' | null>(null);
   const [address, setAddress] = useState('');
@@ -126,7 +128,7 @@ const AddStoreScreen: React.FC = () => {
           />
         </View>
       </ScrollView>
-      <View style={styles.buttonContainer}>
+      <View style={[styles.buttonContainer, { paddingBottom: Math.max(16, insets.bottom) }]}>
         <ConfirmButton
           title={storeToEdit ? "Atualizar Loja" : "Adicionar Loja"}
           onPress={handleAddStore}
@@ -140,6 +142,7 @@ const AddStoreScreen: React.FC = () => {
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
+    paddingBottom: 20,
   },
   formContainer: {
     width: '90%',
@@ -149,6 +152,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     padding: 16,
+    paddingTop: 12,
     backgroundColor: '#fff',
     borderTopWidth: 1,
     borderTopColor: '#eee',

@@ -3,15 +3,16 @@ import { View, TouchableOpacity, StyleSheet, Text } from 'react-native'
 
 interface AddButtonProps {
     onPress: () => void;
+    simbol?: string;
 }
 
-const AddButton: React.FC<AddButtonProps> = ({onPress}) => {
+const AddButton: React.FC<AddButtonProps> = ({onPress, simbol="+"}) => {
     return(
         <TouchableOpacity
             onPress={onPress}
             style={styles.button}
         >
-            <Text style={styles.text}>+</Text>
+            <Text style={styles.text}>{simbol}</Text>
         </TouchableOpacity>
     )
 }

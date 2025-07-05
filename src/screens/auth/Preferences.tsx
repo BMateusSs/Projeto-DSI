@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, TouchableOpacity, Text, Alert, View } from 'react-native';
+import { ScrollView, TouchableOpacity, Text, Alert, View , StyleSheet} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PreferenceSection from '../../components/PreferenceSection';
-import { styles } from '../../styles/preferenceStyles';
+import { globalStyles } from '../../styles/preferenceStyles';
 import { auth } from '../../firebase/firebaseConfig';
 import { UserAuthService } from '../../firebase/UserAuthService';
 import { useNavigation } from '@react-navigation/native';
+import { KeyboardAvoidingView } from 'react-native';
+import { ScrollScreen } from '../../components/ScrollScreen';
 
 const PreferencesScreen: React.FC = () => {
   const [types, setTypes] = useState<string[]>([]);
@@ -18,16 +20,21 @@ const PreferencesScreen: React.FC = () => {
 
   useEffect(() => {
     const fetchPreferences = async () => {
-      const user = auth.currentUser;
-      if (!user) return;
-      const userAuthService = new UserAuthService();
-      const prefs = await userAuthService.getUserPreferences(user.uid);
-      if (prefs) {
-        setTypes(prefs.types || []);
-        setFlavors(prefs.flavors || []);
-        setRegions(prefs.regions || []);
-        setPairings(prefs.pairings || []);
-        setAlcoholContent(prefs.alcoholContent || null);
+      try {
+        const user = auth.currentUser;
+        if (!user) return;
+        const userAuthService = new UserAuthService();
+        const prefs = await userAuthService.getUserPreferences(user.uid);
+        if (prefs) {
+          setTypes(prefs.types || []);
+          setFlavors(prefs.flavors || []);
+          setRegions(prefs.regions || []);
+          setPairings(prefs.pairings || []);
+          setAlcoholContent(prefs.alcoholContent || null);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar dados do usuário:", error);
+        // Não mostrar alerta aqui para não interromper o fluxo
       }
     };
     fetchPreferences();
@@ -49,22 +56,21 @@ const PreferencesScreen: React.FC = () => {
         alcoholContent,
       });
       Alert.alert("Sucesso", "Preferências salvas com sucesso!");
-      navigation.navigate("Home");
+      navigation.goBack();
     } catch (error) {
       console.error("Erro ao salvar preferências:", error);
       Alert.alert("Erro", "Não foi possível salvar as preferências.");
     }
   };
+
   return (
     <View style={{ flex: 1 }}>
-      <ScrollView 
-        style={{ flex: 1, backgroundColor: "white" }}
-        contentContainerStyle={{
-          paddingBottom: 100 + insets.bottom
-        }}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.container}>
+      <ScrollScreen>  
+        <View style={globalStyles.container}>
+          <View style={globalStyles.containerTitle}>
+            <Text style={globalStyles.title}>Suas preferências</Text>
+          </View>
+
           <PreferenceSection 
             title="Tipos preferidos"
             options={['Tinto', 'Branco', 'Rosé', 'Espumante']}
@@ -103,15 +109,20 @@ const PreferencesScreen: React.FC = () => {
             selected={pairings}
             onChange={value => setPairings(Array.isArray(value) ? value : [value])}
           />
+
+          <TouchableOpacity style={globalStyles.saveButton} onPress={handleSave}>
+            <Text style={globalStyles.saveButtonText}>Salvar preferências</Text>
+          </TouchableOpacity>
         </View>
-      </ScrollView>
-      <View style={{position: 'absolute', left: 0, right: 0, bottom: 0, padding: 10, paddingBottom: 10 + insets.bottom, backgroundColor: 'white', borderTopWidth: 1, borderColor: '#eee'}}>
-        <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-          <Text style={styles.saveButtonText}>Salvar preferências</Text>
-        </TouchableOpacity>
-      </View>
+    </ScrollScreen>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  screen : {
+    flex: 1
+  }
+})
 
 export default PreferencesScreen;

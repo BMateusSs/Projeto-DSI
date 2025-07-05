@@ -7,9 +7,8 @@ export class UserAuthService {
   async signUp(email: string, password: string, name: string): Promise<AppUser> {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
-    await this.createUserDocument(user.uid, email, name);
     await updateProfile(user, { displayName: name });
-    const appUser = await AppUser.create(user, {});
+    const appUser = await AppUser.create(user);
     return appUser;
   }
   async signIn(email: string, password: string): Promise<AppUser> {
@@ -34,11 +33,16 @@ export class UserAuthService {
     );
   }
   async updateUserPreferences(uid: string, preferencesData: any) {
-    await setDoc(
-      doc(db, "users", uid),
-      { preferences: preferencesData },
-      { merge: true }
-    );
+    try {
+      await setDoc(
+        doc(db, "users", uid),
+        { preferences: preferencesData },
+        { merge: true }
+      );
+    } catch (error) {
+      console.error("Erro ao atualizar preferências:", error);
+      throw error;
+    }
   }
   async checkIfEmailExists(email: string): Promise<boolean> {
     const usersRef = collection(db, "users");
@@ -65,11 +69,17 @@ export class UserAuthService {
     }
   }
   async getUserPreferences(uid: string) {
-    const userRef = doc(db, "users", uid);
-    const userSnap = await getDoc(userRef);
-    if (userSnap.exists()) {
-      return userSnap.data().preferences || null;
+    try {
+      const userRef = doc(db, "users", uid);
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        return userSnap.data().preferences || null;
+      }
+      return null;
+    } catch (error) {
+      console.error("Erro ao buscar preferências do usuário:", error);
+      // Retorna null em caso de erro para não quebrar o app
+      return null;
     }
-    return null;
   }
 }

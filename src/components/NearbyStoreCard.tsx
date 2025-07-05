@@ -1,82 +1,80 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { StoreData } from '../services/storeService';
+import styles from '../styles/mapStyles';
+import { Place, LocationCoords } from '../screens/map/types';
+import { isGoogleApiKeyAvailable } from '../config/apiKeys';
 
 interface NearbyStoreCardProps {
-  store: StoreData;
-  onPress: () => void;
-  distance: number;
+  store: Place;
+  initialRegion: LocationCoords | null;
+  onPress: (store: Place) => void;
+  GOOGLE_PLACES_API_KEY: string;
 }
 
-const NearbyStoreCard = ({ store, onPress, distance }: NearbyStoreCardProps) => {
-  const formatDistance = (distance: number) => {
-    if (distance < 1) {
-      return `${Math.round(distance * 1000)}m`;
-    }
-    return `${distance.toFixed(1)}km`;
-  };
+function getDistanceFromLatLonInKm(lat1: number, lon1: number, lat2: number, lon2: number) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
 
+const NearbyStoreCard: React.FC<NearbyStoreCardProps> = ({ store, initialRegion, onPress, GOOGLE_PLACES_API_KEY }) => {
+  let distance = null;
+  if (initialRegion) {
+    distance = getDistanceFromLatLonInKm(
+      initialRegion.latitude,
+      initialRegion.longitude,
+      store.geometry.location.lat,
+      store.geometry.location.lng
+    );
+  }
+  
+  const hasPhoto = Array.isArray(store.photos) && store.photos.length > 0 && store.photos[0].photo_reference;
+  const canLoadPhoto = hasPhoto && isGoogleApiKeyAvailable() && GOOGLE_PLACES_API_KEY;
+  
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
-      <View style={styles.iconContainer}>
-        <Ionicons name="storefront" size={24} color="#6B2737" />
+    <TouchableOpacity key={store.place_id} style={styles.storeCardVertical} onPress={() => onPress(store)} activeOpacity={0.85}>
+      {canLoadPhoto ? (
+        <Image
+          source={{ uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${store.photos && store.photos[0].photo_reference}&key=${GOOGLE_PLACES_API_KEY}` }}
+          style={styles.storeImage}
+          resizeMode="cover"
+        />
+      ) : (
+        <View style={[styles.storeImage, {backgroundColor: '#e0e0e0', alignItems: 'center', justifyContent: 'center'}]}>
+          <Ionicons name="storefront" size={48} color="#888" />
+        </View>
+      )}
+      <View style={{paddingHorizontal: 18, paddingBottom: 18, width: '100%'}}>
+        <Text style={styles.storeName}>{store.name}</Text>
+        <View style={styles.rowInfo}>
+          <Ionicons name="location-outline" size={18} color="#6B2737" style={{marginRight: 4}} />
+          <Text style={styles.storeAddress}>{(() => {
+            const address = store.vicinity || store.formatted_address || '';
+            if (!address) return 'Endereço não disponível';
+            const parts = address.split(',').map(p => p.trim());
+            if (parts.length >= 2) {
+              return parts[0] + ', ' + parts[1];
+            }
+            return parts[0];
+          })()}</Text>
+        </View>
+        {distance !== null && !isNaN(distance) && (
+          <View style={styles.rowInfo}>
+            <Ionicons name="navigate" size={16} color="#6B2737" style={{marginRight: 4}} />
+            <Text style={styles.storeDistance}>Distância: {distance.toFixed(2)} km</Text>
+          </View>
+        )}
       </View>
-      <View style={styles.infoContainer}>
-        <Text style={styles.name} numberOfLines={1}>{store.name}</Text>
-        <Text style={styles.address} numberOfLines={1}>{store.address}</Text>
-        <Text style={styles.distance}>{formatDistance(distance)}</Text>
-      </View>
+      <View style={styles.cardBottomBar} />
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 12,
-    marginRight: 12,
-    width: 200,
-    flexDirection: 'row',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  iconContainer: {
-    backgroundColor: '#f8f1e9',
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  infoContainer: {
-    flex: 1,
-  },
-  name: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 4,
-  },
-  address: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 4,
-  },
-  distance: {
-    fontSize: 12,
-    color: '#6B2737',
-    fontWeight: '500',
-  },
-});
 
 export default NearbyStoreCard; 

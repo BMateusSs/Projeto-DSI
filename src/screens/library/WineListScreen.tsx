@@ -6,12 +6,14 @@ import { WineClass as Wine } from '../../services/wineClass';
 import { auth } from "../../firebase/firebaseConfig";
 import WineList from '../../components/WineList';
 import FilterSelector from '../../components/FilterSelector';
+import SearchBar from '../../components/SearchBar';
 
 const WineListScreen = () => {
   const [wines, setWines] = useState<Wine[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<'all' | 'experimented' | 'desired'>('all');
+  const [searchText, setSearchText] = useState('');
   const isFocused = useIsFocused();
 
   const fetchWines = async () => {
@@ -42,8 +44,16 @@ const WineListScreen = () => {
   }, [isFocused]);
 
   const filteredWines = wines.filter((wine) => {
-    if (filter === 'all') return true;
-    return wine.status === filter;
+    // Filtro por status
+    const matchesFilter = filter === 'all' || wine.status === filter;
+    
+    // Filtro por pesquisa
+    const matchesSearch = searchText.trim().length === 0 || 
+      wine.nome.toLowerCase().includes(searchText.toLowerCase()) ||
+      wine.tipo.toLowerCase().includes(searchText.toLowerCase()) ||
+      wine.regiao.toLowerCase().includes(searchText.toLowerCase());
+    
+    return matchesFilter && matchesSearch;
   });
 
   const handleDelete = async (deletedId: string) => {
@@ -74,6 +84,11 @@ const WineListScreen = () => {
 
   return (
     <View style={styles.container}>
+      <SearchBar
+        value={searchText}
+        onChangeText={setSearchText}
+        placeholder="Pesquisar vinhos por nome, tipo ou região..."
+      />
       <FilterSelector
         options={[
           { label: 'Todos', value: 'all' },

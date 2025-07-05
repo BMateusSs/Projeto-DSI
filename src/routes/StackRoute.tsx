@@ -17,6 +17,8 @@ import RecommendationScreen from "../screens/recomendations/RecomendationScreen"
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { ActivityIndicator, View } from 'react-native';
+import ProfessionaisScreen from "../screens/professionais/ProfessionaisScreen";
+import EnologoDetailsScreen from "../screens/professionais/EnologoDetailsScreen";
 
 export type RootStackParamList = {
   'Login': undefined;
@@ -25,11 +27,13 @@ export type RootStackParamList = {
   'RecoveryCode': undefined;
   'NewPassword': undefined;
   'Preferences': undefined;
-  'Home': undefined;
+  'TabNavigation': {screen: string} | undefined;
   'Adicionar Vinhos': { wineToEdit?: WineClass };
   'Adicionar Lojas': { storeToEdit?: StoreClass };
   'Mapa': undefined;
   'Recomendados': undefined;
+  'Profissionais': undefined;
+  'Detalhes Enologo': { professionalId: string, professionalType: 'Sommelier' | 'Enólogo' };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -57,7 +61,7 @@ function StackRoute() {
           if (perfil === 'consumer' && (!preferencias || Object.keys(preferencias).length === 0)) {
             setInitialRoute('Preferences');
           } else {
-            setInitialRoute('Home');
+            setInitialRoute('TabNavigation');
           }
         } else {
           setInitialRoute('Preferences');
@@ -131,9 +135,31 @@ function StackRoute() {
         }}
       />
       <Stack.Screen 
-        name="Home" 
+        name="TabNavigation" 
         component={TabNavigation} 
         options={{ gestureEnabled: false, headerShown: false }}
+      />
+      <Stack.Screen 
+        name="Profissionais" 
+        component={ProfessionaisScreen}
+        options={{
+          headerShown: true,
+          headerStyle: {backgroundColor: '#6B2737'},
+          headerTintColor: 'white',
+          headerTitleStyle: {fontWeight: 'bold'},
+          title: 'Profissionais'
+        }}
+      />
+      <Stack.Screen 
+        name="Detalhes Enologo" 
+        component={EnologoDetailsScreen}
+        options={{
+          headerShown: false,
+          headerStyle: {backgroundColor: '#6B2737'},
+          headerTintColor: 'white',
+          headerTitleStyle: {fontWeight: 'bold'},
+          title: 'Detalhes do Profissional'
+        }}
       />
     </Stack.Navigator>
   );

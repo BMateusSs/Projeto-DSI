@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AddInput from '../../components/AddInput';
 import DualOptionSelector from '../../components/StatusButton';
 import Anotation from '../../components/Anotations';
@@ -21,6 +22,7 @@ const AddWineScreen = () => {
   const navigation = useNavigation();
   const route = useRoute<AddWineScreenRouteProp>();
   const wineToEdit = route.params?.wineToEdit;
+  const insets = useSafeAreaInsets();
 
   const [nome, setNome] = useState('');
   const [tipo, setTipo] = useState('');
@@ -163,7 +165,7 @@ const AddWineScreen = () => {
           />
         </View>
       </ScrollView>
-      <View style={styles.buttonContainer}>
+      <View style={[styles.buttonContainer, { paddingBottom: Math.max(16, insets.bottom) }]}>
         <ConfirmButton
           title={wineToEdit ? 'Atualizar Vinho' : 'Adicionar Vinho'}
           onPress={handleSaveWine}
@@ -178,6 +180,7 @@ const AddWineScreen = () => {
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
+    paddingBottom: 20,
   },
   formContainer: {
     width: '90%',
@@ -192,6 +195,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     padding: 16,
+    paddingTop: 12,
     backgroundColor: '#fff',
     borderTopWidth: 1,
     borderTopColor: '#eee',

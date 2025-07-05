@@ -1,11 +1,13 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Image } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types/navigation';
-import { auth } from '../../firebase/firebaseConfig';
-import { getFirestore, doc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import { auth, db } from '../../firebase/firebaseConfig';
+import { doc, getDoc, collection, query, where, getDocs, updateDoc } from 'firebase/firestore';
 import { Ionicons } from '@expo/vector-icons';
+import { pickAndUploadImage } from '../../utils/uploadImage';
+import { AppUser } from '../../firebase/AppUser';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -13,6 +15,7 @@ const ProfileScreen = () => {
   const navigation = useNavigation<NavigationProp>();
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
   const [stats, setStats] = useState({
     wines: 0,
     stores: 0,
@@ -20,56 +23,42 @@ const ProfileScreen = () => {
   });
 
   const fetchUserData = async () => {
-    if (!auth.currentUser) return;
-    
-    try {
-      const db = getFirestore();
-      const userRef = doc(db, "users", auth.currentUser.uid);
-      const userSnap = await getDoc(userRef);
-      
-      if (userSnap.exists()) {
-        const userData = userSnap.data();
-        if (userData.name) {
-          setUserName(userData.name);
-        }
-        if (userData.email) {
-          setUserEmail(userData.email);
-        }
-      }
+  if (!auth.currentUser) return;
 
-      const winesQuery = query(
-        collection(db, "wines"),
-        where("createdBy", "==", auth.currentUser.uid)
-      );
-      const winesSnap = await getDocs(winesQuery);
-      
-      const storesQuery = query(
-        collection(db, "stores"),
-        where("createdBy", "==", auth.currentUser.uid)
-      );
-      const storesSnap = await getDocs(storesQuery);
-      
-      const professionalsQuery = query(
-        collection(db, "professionals"),
-        where("createdBy", "==", auth.currentUser.uid)
-      );
-      const professionalsSnap = await getDocs(professionalsQuery);
+  try {
+    const appUser = await AppUser.create(auth.currentUser);
+    setUserName(appUser.name);
+    setUserEmail(appUser.email);
+    setProfilePicture(appUser.profilePicture);
 
-      setStats({
-        wines: winesSnap.size,
-        stores: storesSnap.size,
-        professionals: professionalsSnap.size
-      });
+    const winesQuery = query(
+      collection(db, "wines"),
+      where("createdBy", "==", appUser.uid)
+    );
+    const winesSnap = await getDocs(winesQuery);
 
-      console.log('Estatísticas:', {
-        wines: winesSnap.size,
-        stores: storesSnap.size,
-        professionals: professionalsSnap.size
-      });
-    } catch (error) {
-      console.error('Erro ao buscar dados do usuário:', error);
-    }
-  };
+    const storesQuery = query(
+      collection(db, "stores"),
+      where("createdBy", "==", appUser.uid)
+    );
+    const storesSnap = await getDocs(storesQuery);
+
+    const professionalsQuery = query(
+      collection(db, "professionals"),
+      where("createdBy", "==", appUser.uid)
+    );
+    const professionalsSnap = await getDocs(professionalsQuery);
+
+    setStats({
+      wines: winesSnap.size,
+      stores: storesSnap.size,
+      professionals: professionalsSnap.size,
+    });
+
+  } catch (error) {
+    console.error('Erro ao carregar dados do usuário:', error);
+  }
+};
 
   useFocusEffect(
     useCallback(() => {
@@ -89,6 +78,16 @@ const ProfileScreen = () => {
     }
   };
 
+  const handleProfilePictureChange = async () => {
+    const url = await pickAndUploadImage();
+    if (url && auth.currentUser) {
+      await updateDoc(doc(db, 'users', auth.currentUser.uid), {
+        profilePicture: url,
+      });
+      setProfilePicture(url);
+    }
+  }
+
   const getInitial = () => {
     return userName ? userName.charAt(0).toUpperCase() : '?';
   };
@@ -98,7 +97,21 @@ const ProfileScreen = () => {
       <View style={styles.content}>
         <View style={styles.profileContainer}>
           <View style={styles.avatarContainer}>
-            <Text style={styles.avatarText}>{getInitial()}</Text>
+            {profilePicture ? (
+              <Image
+                source={{ uri: profilePicture }}
+                style={styles.avatarImage}
+              />
+            ) : (
+              <Text style={styles.avatarText}>{getInitial()}</Text>
+            )}
+            <TouchableOpacity
+              onPress={handleProfilePictureChange}
+              style={styles.cameraButton}
+              activeOpacity={0.8}
+            >
+              <Ionicons name="camera" size={20} color="#fff" />
+            </TouchableOpacity>
           </View>
           <Text style={styles.userName}>{userName}</Text>
           <Text style={styles.userEmail}>{userEmail}</Text>
@@ -169,11 +182,35 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
+    position: 'relative',
   },
   avatarText: {
     fontSize: 48,
     color: '#6B2737',
     fontWeight: 'bold',
+  },
+  avatarImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 60,
+  },
+  cameraButton: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    backgroundColor: '#6B2737',
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 6,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3.84,
+    borderWidth: 3,
+    borderColor: '#fff',
   },
   userName: {
     fontSize: 24,
