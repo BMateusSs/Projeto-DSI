@@ -14,6 +14,7 @@ class WineService {
     await setDoc(wineRef, {
       ...wine,
       createdAt: Timestamp.fromDate(wine.createdAt),
+      ...(wine.wineRecommendationId ? { wineRecommendationId: wine.wineRecommendationId } : {}),
     });
   }
 
@@ -54,6 +55,44 @@ class WineService {
   async deleteWine(wineId: string): Promise<void> {
     const wineRef = doc(db, WINES_COLLECTION, wineId);
     await deleteDoc(wineRef);
+  }
+
+  async getRatingsByRecommendationId(wineRecommendationId: string): Promise<number[]> {
+    const wineQuery = query(collection(db, WINES_COLLECTION), where('wineRecommendationId', '==', wineRecommendationId));
+    const snapshot = await getDocs(wineQuery);
+    const ratings: number[] = [];
+    snapshot.docs.forEach(doc => {
+      const data = doc.data();
+      if (typeof data.rating === 'number' && data.rating > 0) {
+        ratings.push(data.rating);
+      }
+    });
+    return ratings;
+  }
+
+  async getWineByUserAndRecommendationId(userId: string, wineRecommendationId: string): Promise<WineClass | null> {
+    const wineQuery = query(
+      collection(db, WINES_COLLECTION),
+      where('createdBy', '==', userId),
+      where('wineRecommendationId', '==', wineRecommendationId)
+    );
+    const snapshot = await getDocs(wineQuery);
+    if (!snapshot.empty) {
+      const docSnap = snapshot.docs[0];
+      const data = docSnap.data();
+      return new WineClass(
+        data.nome,
+        data.tipo,
+        data.regiao,
+        data.status,
+        data.createdBy,
+        data.rating ?? null,
+        data.anotation ?? null,
+        docSnap.id,
+        data.createdAt?.toDate()
+      );
+    }
+    return null;
   }
 }
 

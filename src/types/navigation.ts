@@ -1,6 +1,3 @@
-import { StoreData } from '../services/storeService';
-import { Wine } from '../services/wineService';
-
 export type RootStackParamList = {
   'Login': undefined;
   'SignUp': undefined;
@@ -23,7 +20,7 @@ export type RootStackParamList = {
 
 export type TabParamList = {
   Home: undefined;
-  Biblioteca: undefined;
+  Adega: undefined;
   Lojas: undefined;
   Professionais: undefined;
   Perfil: undefined;

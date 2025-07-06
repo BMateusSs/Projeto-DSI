@@ -22,6 +22,9 @@ const AddWineScreen = () => {
   const navigation = useNavigation();
   const route = useRoute<AddWineScreenRouteProp>();
   const wineToEdit = route.params?.wineToEdit;
+  const wineToEditFixed = wineToEdit
+    ? { ...wineToEdit, createdAt: wineToEdit.createdAt ? new Date(wineToEdit.createdAt) : undefined }
+    : undefined;
   const insets = useSafeAreaInsets();
 
   const [nome, setNome] = useState('');
@@ -33,13 +36,13 @@ const AddWineScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (wineToEdit) {
-      setNome(wineToEdit.nome);
-      setTipo(wineToEdit.tipo);
-      setRegiao(wineToEdit.regiao);
-      setStatus(wineToEdit.status);
-      setRating(wineToEdit.rating);
-      setAnotation(wineToEdit.anotation || '');
+    if (wineToEditFixed) {
+      setNome(wineToEditFixed.nome);
+      setTipo(wineToEditFixed.tipo);
+      setRegiao(wineToEditFixed.regiao);
+      setStatus(wineToEditFixed.status);
+      setRating(wineToEditFixed.rating);
+      setAnotation(wineToEditFixed.anotation || '');
     }
   }, [wineToEdit]);
 
@@ -69,8 +72,8 @@ const AddWineScreen = () => {
       user.uid,
       status === 'experimented' ? (rating ?? 0) : null,
       anotation.trim() || null,
-      wineToEdit?.id,
-      wineToEdit?.createdAt
+      wineToEditFixed?.id,
+      wineToEditFixed?.createdAt
     );
 
     try {

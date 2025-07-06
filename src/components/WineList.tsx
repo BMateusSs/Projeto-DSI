@@ -27,7 +27,12 @@ const WineList: React.FC<WineListProps> = ({ wines, onDelete }) => {
   };
 
   const handleEditWine = (wine: Wine) => {
-    navigation.navigate('Adicionar Vinhos', { wineToEdit: wine });
+    navigation.navigate('Adicionar Vinhos', {
+      wineToEdit: {
+        ...wine,
+        createdAt: wine.createdAt ? wine.createdAt.toISOString() : undefined,
+      }
+    });
   };
 
   const confirmDelete = (wineId: string) => {

@@ -1,8 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Place } from './types';
 import { Alert } from 'react-native';
-
-const GOOGLE_PLACES_API_KEY = "AIzaSyBcCgYOru3lIB5PZWRra-ds4vkHEYntOAc";
+import { GOOGLE_PLACES_API_KEY } from '../../config/apiKeys';
 
 export function useWineStores() {
   const [wineStores, setWineStores] = useState<Place[]>([]);

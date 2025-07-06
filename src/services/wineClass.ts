@@ -8,6 +8,7 @@ export class WineClass {
   anotation: string | null;
   createdAt: Date;
   createdBy: string;
+  wineRecommendationId?: string;
 
   constructor(
     nome: string,
@@ -18,7 +19,8 @@ export class WineClass {
     rating: number | null = null,
     anotation: string | null = null,
     id?: string,
-    createdAt?: Date
+    createdAt?: Date,
+    wineRecommendationId?: string
   ) {
     this.nome = nome;
     this.tipo = tipo;
@@ -29,6 +31,7 @@ export class WineClass {
     this.createdAt = createdAt ?? new Date();
     this.createdBy = createdBy;
     if (id) this.id = id;
+    if (wineRecommendationId) this.wineRecommendationId = wineRecommendationId;
   }
 
   validate() {

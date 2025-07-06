@@ -33,11 +33,11 @@ export default function TabNavigation() {
         }}
       />
       <Tab.Screen 
-        name="Biblioteca" 
+        name="Adega" 
         component={Library} 
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="book-outline" color={color} size={size} />
+            <Ionicons name="wine-outline" color={color} size={size} />
           ),
         }}
       />
