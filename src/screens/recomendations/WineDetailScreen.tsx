@@ -98,6 +98,7 @@ export default function WineDetailScreen() {
       } else {
         setAverageRating(0.0);
       }
+      setIsAlreadyInCellar(true);
     } catch (error) {
       Alert.alert('Erro', 'Não foi possível adicionar o vinho.');
     } finally {
