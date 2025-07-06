@@ -19,6 +19,7 @@ import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { ActivityIndicator, View } from 'react-native';
 import ProfessionaisScreen from "../screens/professionais/ProfessionaisScreen";
 import EnologoDetailsScreen from "../screens/professionais/EnologoDetailsScreen";
+import WineDetailScreen from "../screens/recomendations/WineDetailScreen";
 
 export type RootStackParamList = {
   'Login': undefined;
@@ -34,6 +35,7 @@ export type RootStackParamList = {
   'Recomendados': undefined;
   'Profissionais': undefined;
   'Detalhes Enologo': { professionalId: string, professionalType: 'Sommelier' | 'Enólogo' };
+  'Detalhes Vinho': { wine: WineRecommendation };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -159,6 +161,17 @@ function StackRoute() {
           headerTintColor: 'white',
           headerTitleStyle: {fontWeight: 'bold'},
           title: 'Detalhes do Profissional'
+        }}
+      />
+      <Stack.Screen
+        name="Detalhes Vinho"
+        component={WineDetailScreen}
+        options={{
+          headerShown: true,
+          headerStyle: { backgroundColor: '#6B2737' },
+          headerTintColor: 'white',
+          headerTitleStyle: { fontWeight: 'bold' },
+          title: 'Detalhes do Vinho',
         }}
       />
     </Stack.Navigator>

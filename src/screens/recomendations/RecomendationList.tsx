@@ -4,6 +4,9 @@ import styles from '../../styles/recomendationStyles';
 import { UserAuthService } from '../../firebase/UserAuthService';
 import { auth } from '../../firebase/firebaseConfig';
 import SearchBar from '../../components/SearchBar';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../routes/StackRoute';
 
 const API_URL = 'https://68547dca6a6ef0ed662f3b6b.mockapi.io/api/v1/wines';
 
@@ -23,6 +26,7 @@ type WineRecommendation = {
 };
 
 function WineRecommendationCard({ wine }: { wine: WineRecommendation }) {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const getFlagEmoji = (country: string) => {
     const countryFlags: Record<string, string> = {
       'Brasil': '🇧🇷',
@@ -37,7 +41,10 @@ function WineRecommendationCard({ wine }: { wine: WineRecommendation }) {
   };
 
   return (
-    <TouchableOpacity activeOpacity={0.9} style={styles.card}>
+    <TouchableOpacity 
+      activeOpacity={0.9} 
+      style={styles.card}
+      onPress={() => navigation.navigate('Detalhes Vinho', { wine })}>
       <Image source={{ uri: wine.img }} style={styles.image} resizeMode='contain' />
       
       <View style={styles.infoContainer}>
