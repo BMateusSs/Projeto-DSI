@@ -14,11 +14,10 @@ import { Enologo } from "../../entities/Enologo";
 import { RepositoryException } from "../../repositories/RepositoryException";
 
 // Define um tipo para os dados do formulário para simplificar o estado
-type EnologoFormData = {
+type ProfissionalFormData = {
   nome: string;
   email: string;
   telefone: string;
-  formacaoAcademica: string;
   certificacoes: CertificacaoVinho[];
 };
 type ProfessionalDetailsRouteProp = RouteProp<RootStackParamList, typeof ROUTE_NAMES.ENOLOGO_DETAILS>;
@@ -27,20 +26,12 @@ const EnologoDetailsScreen: React.FC = () => {
   const route = useRoute<ProfessionalDetailsRouteProp>();
   const navigation = useNavigation();
   const enologoId = route.params.professionalId;
-  const [profissional, setProfissional] = useState<Profissional | null>(null);
-  const [enologo, setEnologo] = useState<Enologo | null>(null);
+  const [profissional, setProfissional] = useState<Profissional>(new Profissional('', '', ''));
+  const [enologo, setEnologo] = useState<Enologo>(new Enologo('', ''));
     // UseMemo para instanciar repositórios apenas uma vez
   const enologoRepository = useMemo(() => new EnologoRepository(), []);
   const profissionalRepository = useMemo(() => new ProfissionaisRepository(), []);
 
-  // Estado unificado para os dados do formulário
-  const [formData, setFormData] = useState<EnologoFormData>({
-    nome: "",
-    email: "",
-    telefone: "",
-    formacaoAcademica: "",
-    certificacoes: [],
-  });
   useEffect(() => {
     if (enologoId !== "new") {
       const fetchEnologo = async () => {
@@ -49,7 +40,6 @@ const EnologoDetailsScreen: React.FC = () => {
         setEnologo(enologo);
         const profissional = await profissionalRepository.find(enologo.professionalId)
         setProfissional(profissional)
-        setProfissional(profissional);
         } catch(error) {
           if(error instanceof RepositoryException) {
             Alert.alert(error.message)
@@ -63,7 +53,7 @@ const EnologoDetailsScreen: React.FC = () => {
   }, [enologoId]);
 
   const handleSave = async () => {
-    if (!profissional?.nome || !profissional?.email || !profissional?.telefone || !enologo?.formacaoAcademica) {
+    if (!profissional.nome || !profissional?.email || !profissional?.telefone || !enologo?.formacaoAcademica) {
       Alert.alert("Erro", "Todos os campos devem ser preenchidos.");
       return;
     }
@@ -73,7 +63,7 @@ const EnologoDetailsScreen: React.FC = () => {
         await enologoRepository.create(new Enologo(profissionalId, enologo.formacaoAcademica));
         Alert.alert("Enologo adicionado");
       } else {
-        const newEnologo = await enologoRepository.update(enologoId, enologo)
+        await enologoRepository.update(enologoId, enologo)
         await profissionalRepository.update(enologo.profissionalId, profissional)
         Alert.alert("Enologo atualizado");
       }
@@ -88,12 +78,18 @@ const EnologoDetailsScreen: React.FC = () => {
     navigation.goBack();
   };
     // Função centralizada para atualizar o estado do formulário de forma imutável
-  const handleInputChange = (field: keyof EnologoFormData, value: string | CertificacaoVinho[]) => {
-    setFormData(prevData => ({
+  const handleProfissionalChange = (field: keyof ProfissionalFormData, value: string | CertificacaoVinho[]) => {
+    setProfissional(prevData => ({
       ...prevData,
       [field]: value,
-    }));
+    }) as Profissional);
   };
+  const handleEnologoChange = (formacaoAcademica: string) => {
+    setEnologo( prevData => ({
+      ...prevData,
+      ["formacaoAcademica"]: formacaoAcademica
+    }) as Enologo)
+  }
 
     return (
       <View style={localStyles.screenContainer}>
@@ -101,39 +97,39 @@ const EnologoDetailsScreen: React.FC = () => {
       <LabeledInput
         title="Nome do Enólogo"
         placeholder="Digite o nome"
-        value={formData.nome}
-        onChange={(text) => handleInputChange('nome', text)}
+        value={profissional.nome}
+        onChange={(text) => handleProfissionalChange('nome', text)}
         containerStyle={localStyles.inputContainer}
       />
       <LabeledInput
         title="Email"
         placeholder="Digite o email"
-        value={formData.email}
-        onChange={(text) => handleInputChange('email', text)}
+        value={profissional.email}
+        onChange={(text) => handleProfissionalChange('email', text)}
         keyboardType="email-address"
         containerStyle={localStyles.inputContainer}
       />
       <LabeledInput
         title="Telefone"
         placeholder="Digite o telefone"
-        value={formData.telefone}
-        onChange={(text) => handleInputChange('telefone', text)}
+        value={profissional.telefone}
+        onChange={(text) => handleProfissionalChange('telefone', text)}
         keyboardType="phone-pad"
         containerStyle={localStyles.inputContainer}
       />
       <LabeledInput
         title="Formação Acadêmica"
         placeholder="Digite a formação acadêmica"
-        value={formData.formacaoAcademica}
-        onChange={(text) => handleInputChange('formacaoAcademica', text)}
+        value={enologo.formacaoAcademica}
+        onChange={(text) => handleEnologoChange(text)}
         containerStyle={localStyles.inputContainer}
       />
       <PreferenceSection
         title="Certificações"
         subtitle="Selecione as certificações do enólogo"
         options={Object.values(CertificacaoVinho)}
-        selected={formData.certificacoes}
-        onChange={(value) => handleInputChange('certificacoes', (Array.isArray(value) ? value : [value]) as CertificacaoVinho[])}
+        selected={profissional.certificacoes}
+        onChange={(value) => handleProfissionalChange('certificacoes', (Array.isArray(value) ? value : [value]) as CertificacaoVinho[])}
         multiSelect={true}
         styles={localStyles.preferencesContainer}
       />
