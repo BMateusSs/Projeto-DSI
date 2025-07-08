@@ -18,7 +18,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { ActivityIndicator, View } from 'react-native';
 import ProfessionaisScreen from "../screens/profissionais/ProfissionaisScreen";
-import EnologoDetailsScreen from "../screens/professionais/EnologoDetailsScreen";
+import EnologoDetailsScreen from "../screens/profissionais/EnologoDetailsScreen";
 import WineDetailScreen from "../screens/recomendations/WineDetailScreen";
 
 export type RootStackParamList = {

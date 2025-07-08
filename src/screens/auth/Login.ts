@@ -26,8 +26,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 35,
     color: VinicotecaTheme.colors.primary,
-    fontWeight: "bold",
-    marginBottom: 80,
+    fontWeight: "bold"
   },
   containerCreatePassword: {
     width: "90%"

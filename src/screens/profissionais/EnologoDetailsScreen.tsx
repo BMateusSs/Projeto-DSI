@@ -96,7 +96,8 @@ const EnologoDetailsScreen: React.FC = () => {
   };
 
     return (
-    <ScrollView contentContainerStyle={localStyles.screenContainer}>
+      <View style={localStyles.screenContainer}>
+    <ScrollView contentContainerStyle={localStyles.scrollContainer}>
       <LabeledInput
         title="Nome do Enólogo"
         placeholder="Digite o nome"
@@ -141,10 +142,14 @@ const EnologoDetailsScreen: React.FC = () => {
         <CancelButton title="Cancelar" onPress={handleCancel} />
       </View>
     </ScrollView>
+    </View>
   );
 };
 
 const localStyles = StyleSheet.create({
+  screenContainer: {
+    flex: 1,
+  },
   confirmButton:{
     width: "100%"
   },
@@ -154,9 +159,7 @@ const localStyles = StyleSheet.create({
   inputContainer: {
     padding: 1,
   },
-  screenContainer: {
-    justifyContent: "flex-start",
-    flex: 1,
+  scrollContainer: {
     paddingStart:14,
     paddingEnd: 14,
     backgroundColor: "#fff",

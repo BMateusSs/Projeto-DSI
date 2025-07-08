@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect } from "react";
-import { View, Text, ScrollView, Keyboard, Platform, TouchableWithoutFeedback } from "react-native";
+import { View, Text, ScrollView, Keyboard, Platform, TouchableWithoutFeedback, StyleSheet, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styles from "../../styles/authStyles";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -11,7 +11,7 @@ import { AccountButton } from "../../components/AccountButton";
 import Link from "../../components/Link";
 import Title from "../../components/Title";
 import RememberMeSwitch from "../../components/RememberMeSwitch";
-
+const { height} = Dimensions.get("window");
 const KeyboardDismissWrapper = ({ children }: { children: React.ReactNode }) => {
   if (Platform.OS === 'web') {
     return <View style={{ flex: 1 }}>{children}</View>;
@@ -80,17 +80,15 @@ export default function Login() {
         keyboardShouldPersistTaps="handled"
       >
         <Title text="Bem-vindo"/>
-
         <View style={styles.containerForm}>
           {errorMessage ? (
-            <Text style={{ color: 'red', fontSize: 14, marginBottom: 10 }}>
+            <Text style={localStyles.errorMessage}>
               {errorMessage}
             </Text>
           ) : null}
-
           <InputEmail email={email} onChangeEmail={setEmail} hasError={hasError} />
           <InputPassword password={senha} onChangePassword={setSenha} hasError={hasError} />
-          
+        
           <RememberMeSwitch
           value={rememberMe}
           onValueChange={setRememberMe}
@@ -105,3 +103,7 @@ export default function Login() {
     </KeyboardDismissWrapper>
   );
 }
+
+const localStyles = StyleSheet.create({
+  errorMessage: { color: 'red', fontSize: 14, marginBottom: height < 720 ? 2 : 10 }
+})

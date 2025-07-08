@@ -1,13 +1,12 @@
 import { StyleSheet, Dimensions } from "react-native";
 import { VinicotecaTheme } from "./colors";
 
-const { width } = Dimensions.get("window");
-
+const { width, height } = Dimensions.get("window");
 const authStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingTop: 60,
+    paddingTop: height < 720? 6 : 60,
     alignItems: "center",
   },
   containerForm: {
@@ -35,7 +34,7 @@ const authStyles = StyleSheet.create({
   },
   option: {
     textAlign: "center",
-    marginVertical: 12,
+    marginVertical: height < 720 ? 0 : 12,
     fontSize: 14,
     color: "#666",
   },
