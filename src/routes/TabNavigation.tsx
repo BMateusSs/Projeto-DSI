@@ -6,7 +6,7 @@ import Home from "../screens/auth/HomeScreen";
 import Library from "../screens/library/LibraryScreen";
 import Professionals from "../screens/ProfessionalsScreen";
 import Store from "../screens/store/StoreScreen";
-import ProfessionaisScreen from '../screens/professionais/ProfessionaisScreen';
+import ProfessionaisScreen from '../screens/profissionais/ProfissionaisScreen';
 import ProfileScreen from '../screens/profile/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
