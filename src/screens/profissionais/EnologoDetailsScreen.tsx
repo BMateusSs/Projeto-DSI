@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { View, StyleSheet, Alert, ScrollView } from "react-native";
 import { RouteProp, useRoute, useNavigation } from "@react-navigation/native";
 import LabeledInput from "../../components/LabeledInput";
@@ -9,75 +9,73 @@ import { EnologoRepository } from "../../repositories/EnologoRepository";
 import CancelButton from "../../components/CancelButtons";
 import { RootStackParamList } from "../../types/navigation";
 import { ProfissionaisRepository } from "../../repositories/ProfessionalsRepository";
+import { Profissional } from "../../entities/Professional";
+import { Enologo } from "../../entities/Enologo";
+import { RepositoryException } from "../../repositories/RepositoryException";
 
+// Define um tipo para os dados do formulário para simplificar o estado
+type EnologoFormData = {
+  nome: string;
+  email: string;
+  telefone: string;
+  formacaoAcademica: string;
+  certificacoes: CertificacaoVinho[];
+};
 type ProfessionalDetailsRouteProp = RouteProp<RootStackParamList, typeof ROUTE_NAMES.ENOLOGO_DETAILS>;
 
 const EnologoDetailsScreen: React.FC = () => {
   const route = useRoute<ProfessionalDetailsRouteProp>();
   const navigation = useNavigation();
-  const professionalId = route.params.professionalId;
+  const enologoId = route.params.professionalId;
+  const [profissional, setProfissional] = useState<Profissional | null>(null);
+  const [enologo, setEnologo] = useState<Enologo | null>(null);
+    // UseMemo para instanciar repositórios apenas uma vez
+  const enologoRepository = useMemo(() => new EnologoRepository(), []);
+  const profissionalRepository = useMemo(() => new ProfissionaisRepository(), []);
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [telephone, setTelephone] = useState("");
-  const [academicFormation, setAcademicFormation] = useState("");
-  const [certifications, setCertifications] = useState<string[]>([]);
-
-  const enologoRepository = new EnologoRepository();
-  const profissionalRepository = new ProfissionaisRepository();
+  // Estado unificado para os dados do formulário
+  const [formData, setFormData] = useState<EnologoFormData>({
+    nome: "",
+    email: "",
+    telefone: "",
+    formacaoAcademica: "",
+    certificacoes: [],
+  });
   useEffect(() => {
-    if (professionalId !== "new") {
+    if (enologoId !== "new") {
       const fetchEnologo = async () => {
-        const profissional = await profissionalRepository.find(professionalId)
-        
-        profissionalRepository.find(professionalId).then((data) => {
-          if (data) {
-            setName(data.profissional.nome);
-            setEmail(data.profissional.email);
-            setTelephone(data.profissional.telefone);
-            setAcademicFormation(data.formacaoAcademica);
-            setCertifications(data.profissional.certificacoes || []);
+        try {
+        const enologo = await enologoId.find(enologoId)
+        setEnologo(enologo);
+        const profissional = await profissionalRepository.find(enologo.professionalId)
+        setProfissional(profissional)
+        setProfissional(profissional);
+        } catch(error) {
+          if(error instanceof RepositoryException) {
+            Alert.alert(error.message)
           } else {
-            Alert.alert("Erro", "Profissional não encontrado.");
-            navigation.goBack();
+            Alert.alert("Um erro desconhecido ocorreu, por favor tente novamente.")
           }
-        });
+        }
       }
       fetchEnologo();
     }
-  }, [professionalId]);
+  }, [enologoId]);
 
   const handleSave = async () => {
-    if (!name || !email || !telephone || !academicFormation) {
+    if (!profissional?.nome || !profissional?.email || !profissional?.telefone || !enologo?.formacaoAcademica) {
       Alert.alert("Erro", "Todos os campos devem ser preenchidos.");
       return;
     }
-
     try {
-      if (professionalId === "new") {
-        // Criar novo profissional
-        await enologoRepository.create({
-          profissionalId: {
-            nome: name,
-            email,
-            telefone: telephone,
-            certificacoes: certifications as CertificacaoVinho[],
-          },
-          formacaoAcademica: academicFormation,
-        });
-        Alert.alert("Sucesso", "Profissional adicionado com sucesso.");
+      if (enologoId === "new") {
+        const profissionalId = await profissionalRepository.create(new Profissional(profissional.nome, profissional.email, profissional.telefone, profissional.certificacoes as CertificacaoVinho[]));
+        await enologoRepository.create(new Enologo(profissionalId, enologo.formacaoAcademica));
+        Alert.alert("Enologo adicionado");
       } else {
-        // Atualizar profissional existente
-        await enologoRepository.update(professionalId, {
-          profissionalId: {
-            nome: name,
-            email,
-            telefone: telephone,
-            certificacoes: certifications as CertificacaoVinho[],
-          },
-          formacaoAcademica: academicFormation,
-        });
-        Alert.alert("Sucesso", "Profissional atualizado com sucesso.");
+        const newEnologo = await enologoRepository.update(enologoId, enologo)
+        await profissionalRepository.update(enologo.profissionalId, profissional)
+        Alert.alert("Enologo atualizado");
       }
       navigation.goBack();
     } catch (error) {
@@ -89,47 +87,59 @@ const EnologoDetailsScreen: React.FC = () => {
   const handleCancel = () => {
     navigation.goBack();
   };
+    // Função centralizada para atualizar o estado do formulário de forma imutável
+  const handleInputChange = (field: keyof EnologoFormData, value: string | CertificacaoVinho[]) => {
+    setFormData(prevData => ({
+      ...prevData,
+      [field]: value,
+    }));
+  };
 
-  return (
-       <ScrollView contentContainerStyle={localStyles.screenContainer}>
+    return (
+    <ScrollView contentContainerStyle={localStyles.screenContainer}>
       <LabeledInput
         title="Nome do Enólogo"
         placeholder="Digite o nome"
-        value={name}
-        onChange={setName}
+        value={formData.nome}
+        onChange={(text) => handleInputChange('nome', text)}
         containerStyle={localStyles.inputContainer}
       />
       <LabeledInput
         title="Email"
         placeholder="Digite o email"
-        value={email}
-        onChange={setEmail}
+        value={formData.email}
+        onChange={(text) => handleInputChange('email', text)}
+        keyboardType="email-address"
         containerStyle={localStyles.inputContainer}
       />
       <LabeledInput
         title="Telefone"
         placeholder="Digite o telefone"
-        value={telephone}
-        onChange={setTelephone}
-
+        value={formData.telefone}
+        onChange={(text) => handleInputChange('telefone', text)}
+        keyboardType="phone-pad"
+        containerStyle={localStyles.inputContainer}
       />
       <LabeledInput
         title="Formação Acadêmica"
         placeholder="Digite a formação acadêmica"
-        value={academicFormation}
-        onChange={setAcademicFormation}
+        value={formData.formacaoAcademica}
+        onChange={(text) => handleInputChange('formacaoAcademica', text)}
+        containerStyle={localStyles.inputContainer}
       />
       <PreferenceSection
         title="Certificações"
         subtitle="Selecione as certificações do enólogo"
         options={Object.values(CertificacaoVinho)}
-        selected={certifications}
-        onChange={(value) => setCertifications(Array.isArray(value) ? value : [value])}
+        selected={formData.certificacoes}
+        onChange={(value) => handleInputChange('certificacoes', (Array.isArray(value) ? value : [value]) as CertificacaoVinho[])}
         multiSelect={true}
         styles={localStyles.preferencesContainer}
       />
-        <ConfirmButton title="Salvar" onPress={handleSave} styles={localStyles.confirmButton}/>
-        <CancelButton title="Cancelar" onPress={handleCancel}/>
+      <View style={localStyles.buttonContainer}>
+        <ConfirmButton title="Salvar" onPress={handleSave} styles={localStyles.confirmButton} />
+        <CancelButton title="Cancelar" onPress={handleCancel} />
+      </View>
     </ScrollView>
   );
 };

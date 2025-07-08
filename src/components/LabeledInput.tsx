@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, StyleProp, ViewStyle } from "react-native";
+import { View, StyleSheet, StyleProp, ViewStyle, KeyboardTypeOptions } from "react-native";
 import SubTitle from "./SubTitle";
 import AddInput from "./AddInput";
 
@@ -9,13 +9,14 @@ interface LabeledInputProps {
   value: string;
   onChange: (text: string) => void;
   containerStyle?: StyleProp<ViewStyle>;
+  keyboardType?: KeyboardTypeOptions 
 }
 
-const LabeledInput: React.FC<LabeledInputProps> = ({ title, placeholder, value, onChange, containerStyle }) => {
+const LabeledInput: React.FC<LabeledInputProps> = ({ title, placeholder, value, onChange, containerStyle, keyboardType }) => {
   return (
     <View style={[styles.container, containerStyle]}>
       <SubTitle title={title} />
-      <AddInput placeholder={placeholder} value={value} onChange={onChange} />
+      <AddInput placeholder={placeholder} value={value} onChange={onChange} keyboardType={keyboardType} />
     </View>
   );
 };

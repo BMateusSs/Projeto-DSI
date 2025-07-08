@@ -9,7 +9,7 @@ export class RepositoryException extends ReferenceError {
     constructor(cause: Cause, entity: Entity) {
         switch (cause) {
             case "ENTITY_NOT_FOUND":
-                super(`Não foi encontrado um ${entity} com id informado.`);
+                super(`Não foi encontrado o ${entity} com essas informações.`);
                 break;
             default:
                 super()

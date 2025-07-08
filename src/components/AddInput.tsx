@@ -1,13 +1,14 @@
 import React from 'react'
-import { View, Text, StyleSheet, TextInput } from 'react-native'
+import { View, Text, StyleSheet, TextInput, KeyboardTypeOptions } from 'react-native'
 
 interface AddInputProps{
     placeholder: string,
     value: string,
     onChange: (text: string) => void,
+    keyboardType?: KeyboardTypeOptions | undefined
 }
 
-const AddInput: React.FC<AddInputProps> = ({placeholder, value, onChange}) => {
+const AddInput: React.FC<AddInputProps> = ({placeholder, value, onChange, keyboardType}) => {
     return(
         <View style={styles.container}>
             <View style={styles.input}>
@@ -16,6 +17,7 @@ const AddInput: React.FC<AddInputProps> = ({placeholder, value, onChange}) => {
                 value={value}
                 onChangeText={onChange}
                 style={styles.textInput}
+                keyboardType={keyboardType}
                 />
             </View>
         </View>
