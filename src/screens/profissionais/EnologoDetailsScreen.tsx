@@ -8,6 +8,7 @@ import { CertificacaoVinho } from "../../constants/CertificacoesVinho";
 import { EnologoRepository } from "../../repositories/EnologoRepository";
 import CancelButton from "../../components/CancelButtons";
 import { RootStackParamList } from "../../types/navigation";
+import { ProfissionaisRepository } from "../../repositories/ProfessionalsRepository";
 
 type ProfessionalDetailsRouteProp = RouteProp<RootStackParamList, typeof ROUTE_NAMES.ENOLOGO_DETAILS>;
 
@@ -23,22 +24,26 @@ const EnologoDetailsScreen: React.FC = () => {
   const [certifications, setCertifications] = useState<string[]>([]);
 
   const enologoRepository = new EnologoRepository();
-
+  const profissionalRepository = new ProfissionaisRepository();
   useEffect(() => {
     if (professionalId !== "new") {
-      // Carregar dados do profissional existente
-      enologoRepository.read(professionalId).then((data) => {
-        if (data) {
-          setName(data.profissional.nome);
-          setEmail(data.profissional.email);
-          setTelephone(data.profissional.telefone);
-          setAcademicFormation(data.formacaoAcademica);
-          setCertifications(data.profissional.certificacoes || []);
-        } else {
-          Alert.alert("Erro", "Profissional não encontrado.");
-          navigation.goBack();
-        }
-      });
+      const fetchEnologo = async () => {
+        const profissional = await profissionalRepository.find(professionalId)
+        
+        profissionalRepository.find(professionalId).then((data) => {
+          if (data) {
+            setName(data.profissional.nome);
+            setEmail(data.profissional.email);
+            setTelephone(data.profissional.telefone);
+            setAcademicFormation(data.formacaoAcademica);
+            setCertifications(data.profissional.certificacoes || []);
+          } else {
+            Alert.alert("Erro", "Profissional não encontrado.");
+            navigation.goBack();
+          }
+        });
+      }
+      fetchEnologo();
     }
   }, [professionalId]);
 
@@ -52,7 +57,7 @@ const EnologoDetailsScreen: React.FC = () => {
       if (professionalId === "new") {
         // Criar novo profissional
         await enologoRepository.create({
-          profissional: {
+          profissionalId: {
             nome: name,
             email,
             telefone: telephone,
@@ -64,7 +69,7 @@ const EnologoDetailsScreen: React.FC = () => {
       } else {
         // Atualizar profissional existente
         await enologoRepository.update(professionalId, {
-          profissional: {
+          profissionalId: {
             nome: name,
             email,
             telefone: telephone,

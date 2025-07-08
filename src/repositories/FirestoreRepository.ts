@@ -8,7 +8,8 @@ import {
     deleteDoc,
   } from "firebase/firestore";
   import { db } from "../firebase/firebaseConfig";
-  
+import { Entity, RepositoryException } from "./RepositoryException";
+
   export class FirestoreRepository<T> {
     constructor(private collectionName: string) {}
   
@@ -17,10 +18,13 @@ import {
       return docRef.id;
     }
   
-    async read(id: string): Promise<T | null> {
+    async find(id: string): Promise<T> {
       const docRef = doc(db, this.collectionName, id);
       const docSnap = await getDoc(docRef);
-      return docSnap.exists() ? (docSnap.data() as T) : null;
+      if(!docSnap.exists()) {
+        throw new RepositoryException("ENTITY_NOT_FOUND", this.collectionName as Entity);
+      }
+       return docSnap.data() as T
     }
   
     async readAll(): Promise<T[]> {
