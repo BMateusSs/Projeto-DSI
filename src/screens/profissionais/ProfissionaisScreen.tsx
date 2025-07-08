@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, FlatList, Alert } from "react-native";
 import SearchBar from "../../components/SearchBar";
 import AddButton from "../../components/AddButton";
-import { CurrentRenderContext, useNavigation } from "@react-navigation/native";
+import { CurrentRenderContext, useFocusEffect, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "../../types/navigation";
 import { ProfissionaisRepository } from "../../repositories/ProfessionalsRepository";
 import { Profissional } from "../../entities/Professional";
@@ -20,9 +20,9 @@ const ProfessionaisScreen = () => {
   const profissionaisRepository = new ProfissionaisRepository();
   const [showDropdown, setShowDropdown] = useState(false);
 
-  useEffect(() => {
+  useFocusEffect(() => {
     fetchProfissionais();
-  }, []);
+  });
 
   const handleSelectType = (type: "Sommelier" | "Enólogo") => {
     setShowDropdown(false);
