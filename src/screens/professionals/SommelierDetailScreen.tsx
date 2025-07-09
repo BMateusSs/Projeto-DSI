@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useCallback } from 'react';
-import { Alert, Switch, Text } from 'react-native';
+import { Alert, Switch, Text, StyleSheet, View} from 'react-native';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import LabeledInput from '../../components/LabeledInput';
 import { ProfessionalsRepository } from '../../repositories/ProfessionalsRepository';
@@ -9,6 +9,7 @@ import ProfessionalsBasicInformation from '../../components/professionals/Profis
 import { Sommelier } from '../../entities/Sommelier';
 import { SommelierRepository } from '../../repositories/SommelierRepository';
 import { globalStyles } from '../../styles/preferenceStyles';
+import { VinicotecaTheme } from '../../styles/colors';
 
 
 export const SommelierDetailsScreen: React.FC = () => {
@@ -49,13 +50,22 @@ export const SommelierDetailsScreen: React.FC = () => {
       onSave={handleSave}
     >
       <Text style={globalStyles.optionText}>Tem especialização em harmonização?</Text>
+      <View style={localStyle.switchContainer}>
       <Switch
-          trackColor={{false: '#767577', true: '#81b0ff'}}
-          thumbColor={sommelier.especializacaoHarmonizacao ? '#f5dd4b' : '#f4f3f4'}
+          trackColor={{false: VinicotecaTheme.colors.disabledButton, true: VinicotecaTheme.colors.primary}}
+          thumbColor={sommelier.especializacaoHarmonizacao ? VinicotecaTheme.colors.searchBarBackground : VinicotecaTheme.colors.secondaryButtonBackground}
           ios_backgroundColor="#3e3e3e"
           onValueChange={handleSwitch}
           value={sommelier.especializacaoHarmonizacao}
         />
+      </View>
     </ProfessionalsBasicInformation>
   );
 };
+
+const localStyle = StyleSheet.create({
+    switchContainer: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start'
+    }
+})
