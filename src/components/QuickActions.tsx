@@ -31,7 +31,7 @@ const QuickActions: React.FC<QuickActionsProps> = ({
     },
     {
       iconName: 'users',
-      buttonText: 'Adicionar profissional',
+      buttonText: 'Adicionar professional',
       onPress: onAddProfessional,
       iconColor: '#6B2737',
       iconLib: 'FontAwesome5'

@@ -1,0 +1,1 @@
+export type professionalType = "Enólogo" | "Sommelier"

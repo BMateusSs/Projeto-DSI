@@ -1,6 +1,6 @@
 import { CertificacaoVinho } from "../constants/CertificacoesVinho";
 
-export class Profissional {
+export class Professional {
   constructor(
     public nome: string,
     public email: string,

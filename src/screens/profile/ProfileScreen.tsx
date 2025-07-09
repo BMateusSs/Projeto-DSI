@@ -131,7 +131,7 @@ const ProfileScreen = () => {
           <View style={styles.statItem}>
             <Ionicons name="people" size={24} color="#6B2737" />
             <Text style={styles.statValue}>{stats.professionals}</Text>
-            <Text style={styles.statLabel}>Profissionais</Text>
+            <Text style={styles.statLabel}>Professionals</Text>
           </View>
         </View>
         <TouchableOpacity 

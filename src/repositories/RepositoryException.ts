@@ -1,9 +1,9 @@
 import { Enologo } from "../entities/Enologo";
-import { Profissional } from "../entities/Professional";
+import { Professional } from "../entities/Professional";
 import { Sommelier } from "../entities/Sommelier";
 
 type Cause = "ENTITY_NOT_FOUND"
-export type Entity = "Enologo" | "Sommelier" | "Profissional"
+export type Entity = "Enologo" | "Sommelier" | "Professional"
 export class RepositoryException extends ReferenceError {
     entity: Entity;
     constructor(cause: Cause, entity: Entity) {

@@ -1,39 +1,55 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { View, Text, StyleSheet, FlatList, Alert } from "react-native";
 import SearchBar from "../../components/SearchBar";
 import AddButton from "../../components/AddButton";
 import { CurrentRenderContext, useFocusEffect, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "../../types/navigation";
-import { ProfissionaisRepository } from "../../repositories/ProfessionalsRepository";
-import { Profissional } from "../../entities/Professional";
+import { ProfessionalsRepository } from "../../repositories/ProfessionalsRepository";
+import { Professional } from "../../entities/Professional";
 import ProfessionalCard from "../../components/ProfessionalCard";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Modal } from "react-native";
 import { TouchableOpacity } from "react-native";
+import { professionalType } from "./Contants";
+import { EnologoRepository } from "../../repositories/EnologoRepository";
+import { SommelierRepository } from "../../repositories/SommelierRepository";
+import { Sommelier } from "../../entities/Sommelier";
+
+interface ProfessionalItem extends Professional {
+  professionalType: professionalType;
+  idOfType: string
+} 
 
 type NavigationProps = NativeStackNavigationProp<RootStackParamList>;
-
-const ProfessionaisScreen = () => {
+const ProfessionalsScreen = () => {
   const [searchText, setSearchText] = useState("");
-  const [profissionais, setProfissionais] = useState<Profissional[]>([]);
+  const [professionalsItems, setProfessionalsItems] = useState<ProfessionalItem[]>([]);
   const navigation = useNavigation<NavigationProps>();
-  const profissionaisRepository = new ProfissionaisRepository();
+  const professionalsRepository = useMemo(() => new ProfessionalsRepository(), [])
+  const enologoRepository = useMemo(() => new EnologoRepository(), [])
+  const sommelierRepository = useMemo(() => new SommelierRepository(), [])
   const [showDropdown, setShowDropdown] = useState(false);
 
   useFocusEffect(() => {
-    fetchProfissionais();
+    fetchProfessionals();
   });
 
-  const handleSelectType = (type: "Sommelier" | "Enólogo") => {
-    setShowDropdown(false);
-    navigation.navigate('Detalhes Enologo', {
-      professionalId: "new",
-    });
-  };
-  const fetchProfissionais = async () => {
+  const fetchProfessionals = async () => {
     try {
-      const data = await profissionaisRepository.readAll();
-      setProfissionais(data);
+      const professionals = await professionalsRepository.readAll();
+      const sommeliers = await sommelierRepository.readAll();
+      const enologos = await enologoRepository.readAll();
+      for(const professional of professionals) {
+        const sommelier = sommeliers.find((sommelier: Sommelier) => sommelier.professionalId === professional.id);
+        const enologo = enologos.find((enologo) => enologo.professionalId === professional.id);
+        if(sommelier) {
+         setProfessionalsItems((prev) => [...prev, {...professional, professionalType: "Sommelier", idOfType: sommelier.id} as ProfessionalItem]);
+        } else if(enologo) {
+          setProfessionalsItems((prev) => [...prev, {...professional, professionalType: "Enólogo", idOfType: enologo.id} as ProfessionalItem])
+        } else {
+          console.log("Profissional não é enologo ou sommelier")
+        }
+      }
     } catch (error) {
       Alert.alert("Erro", "Não foi possível carregar os enólogos.");
       console.error("Erro ao buscar enólogos:", error);
@@ -42,14 +58,24 @@ const ProfessionaisScreen = () => {
 
   const addEnologo = () => {
     navigation.navigate('Detalhes Enologo', {
-      professionalId: "new",
+      EnologoId: "new",
+    });
+  };
+  const addSommelier = () => {
+    navigation.navigate('Detalhes Sommelier', {
+      SommelierId: "new",
     });
   };
 
-  const deleteEnologo = async (id: string) => {
+  const deleteProfessional = async (professionalItem: ProfessionalItem) => {
     try {
-      await profissionaisRepository.delete(id);
-      setProfissionais((prev) => prev.filter((enologo) => enologo.id !== id));
+      await professionalsRepository.delete(professionalItem.id!);
+      if(professionalItem.professionalType === "Enólogo") {
+        await enologoRepository.delete(professionalItem.idOfType);
+      } else if(professionalItem.professionalType === "Sommelier") {
+        await sommelierRepository.delete(professionalItem.idOfType);
+      }
+      setProfessionalsItems((prev) => prev.filter((item) => item.id !== professionalItem.id));
       Alert.alert("Sucesso", "Enólogo excluído com sucesso.");
     } catch (error) {
       Alert.alert("Erro", "Não foi possível excluir o enólogo.");
@@ -57,8 +83,10 @@ const ProfessionaisScreen = () => {
     }
   };
 
-  const filteredEnologos = profissionais.filter((profissional) =>
-    (profissional.nome || '').toLowerCase().includes(searchText.toLowerCase())
+  const filteredProfessionalsItems = professionalsItems.filter((professionalItem) =>
+    (professionalItem.nome || '').toLowerCase().includes(searchText.toLowerCase()) ||
+    (professionalItem.email || '').toLowerCase().includes(searchText.toLocaleLowerCase()) ||
+    (professionalItem.telefone || '').includes(searchText.toLocaleLowerCase())
   );
 
   return (
@@ -67,23 +95,23 @@ const ProfessionaisScreen = () => {
         <SearchBar
           value={searchText}
           onChangeText={setSearchText}
-          placeholder="Pesquisar profissionais..."
+          placeholder="Pesquisar professionals..."
         />
       </View>
       <View style={styles.content}>
         <FlatList
-          data={filteredEnologos}
+          data={filteredProfessionalsItems}
           keyExtractor={(item) => item.id!}
           renderItem={({ item }) => (
             <ProfessionalCard
               name={item.nome}
               email={item.email}
-              onDelete={() => deleteEnologo(item.id!)}
-            />
+              onDelete={() => deleteProfessional(item)}
+              professionalType={item.professionalType}/>
           )}
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
-              <Text style={styles.emptyText}>Nenhum enólogo encontrado.</Text>
+              <Text style={styles.emptyText}>Nenhum profissional encontrado.</Text>
             </View>
           }
         />
@@ -100,13 +128,13 @@ const ProfessionaisScreen = () => {
             <View style={styles.dropdownContainer}>
               <TouchableOpacity
                 style={styles.dropdownButton}
-                onPress={() => handleSelectType("Sommelier")}
+                onPress={addSommelier}
               >
                 <Text style={styles.dropdownText}>Sommelier</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.dropdownButton}
-                onPress={() => handleSelectType("Enólogo")}
+                onPress={addEnologo}
               >
                 <Text style={styles.dropdownText}>Enólogo</Text>
               </TouchableOpacity>
@@ -183,4 +211,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfessionaisScreen;
+export default ProfessionalsScreen;

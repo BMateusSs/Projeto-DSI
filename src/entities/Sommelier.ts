@@ -1,8 +1,8 @@
-import { Profissional } from "./Professional";
+import { Professional } from "./Professional";
 
 export class Sommelier {
   constructor(
-    public profissionalId: string,
+    public professionalId: string,
     public especializacaoHarmonizacao: string,
     public id?: string
   ) {}

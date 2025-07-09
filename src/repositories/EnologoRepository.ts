@@ -1,10 +1,10 @@
 import { FirestoreRepository } from "./FirestoreRepository";
 import { Enologo } from "../entities/Enologo";
-import { ProfissionaisRepository } from "./ProfessionalsRepository";
+import { ProfessionalsRepository } from "./ProfessionalsRepository";
 import { Entity, RepositoryException } from "./RepositoryException";
-import { Profissional } from "../entities/Professional";
-export interface EnologoDTO extends Enologo, Profissional { } 
-export interface CreateEnologoDTO extends Profissional {
+import { Professional } from "../entities/Professional";
+export interface EnologoDTO extends Enologo, Professional { } 
+export interface CreateEnologoDTO extends Professional {
   formacaoAcademica: string;
 }
 

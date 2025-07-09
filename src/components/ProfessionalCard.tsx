@@ -2,15 +2,17 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { VinicotecaTheme } from "../styles/colors";
+import { professionalType } from "../screens/professionals/Contants";
 
 interface ProfessionalCardProps {
   photoUrl?: string; // URL da foto do enólogo
   name: string;
   email: string;
   onDelete: () => void;
+  professionalType: professionalType;
 }
 
-const ProfessionalCard: React.FC<ProfessionalCardProps> = ({ photoUrl, name, email, onDelete }) => {
+const ProfessionalCard: React.FC<ProfessionalCardProps> = ({ photoUrl, name, email, onDelete, professionalType }) => {
   return (
     <View style={styles.card}>
       <View style={styles.leftBar} />
@@ -24,7 +26,7 @@ const ProfessionalCard: React.FC<ProfessionalCardProps> = ({ photoUrl, name, ema
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.title}>{name}</Text>
-          <Text style={styles.subtitle}>Enólogo</Text>
+          <Text style={styles.subtitle}>{professionalType}</Text>
           <Text style={styles.email}>Email: {email}</Text>
         </View>
       </View>

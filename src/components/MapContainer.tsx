@@ -22,7 +22,7 @@ const MapContainer = () => {
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.title}>Explorar no Mapa</Text>
-          <Text style={styles.subtitle}>Encontre lojas e profissionais próximos a você</Text>
+          <Text style={styles.subtitle}>Encontre lojas e professionals próximos a você</Text>
         </View>
         <Ionicons name="chevron-forward" size={24} color="#6B2737" />
       </View>

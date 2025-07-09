@@ -1,8 +1,8 @@
 import { FirestoreRepository } from "./FirestoreRepository";
-import { Profissional } from "../entities/Professional";
+import { Professional } from "../entities/Professional";
 
-export class ProfissionaisRepository extends FirestoreRepository<Profissional> {
+export class ProfessionalsRepository extends FirestoreRepository<Professional> {
   constructor() {
-    super("Profissionais");
+    super("Professionals");
   }
 }

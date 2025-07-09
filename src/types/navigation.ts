@@ -10,8 +10,9 @@ export type RootStackParamList = {
   'Adicionar Lojas': { storeToEdit?: any };
   'Mapa': undefined;
   'Recomendados': undefined;
-  'Profissionais': undefined;
-  'Detalhes Enologo': { professionalId: string };
+  'Professionals': undefined;
+  'Detalhes Enologo': { EnologoId: string };
+  'Detalhes Sommelier': { SommelierId: string };
   'Lista de Vinhos': undefined;
   'Lista de Lojas': undefined;
   'WineDetails': { wineId: string };

@@ -17,8 +17,8 @@ import RecommendationScreen from "../screens/recomendations/RecomendationScreen"
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { ActivityIndicator, View } from 'react-native';
-import ProfessionaisScreen from "../screens/profissionais/ProfissionaisScreen";
-import EnologoDetailsScreen from "../screens/profissionais/EnologoDetailsScreen";
+import ProfessionalsScreen from "../screens/professionals/ProfessionaisScreen";
+import EnologoDetailsScreen from "../screens/professionals/EnologoDetailsScreen";
 import WineDetailScreen from "../screens/recomendations/WineDetailScreen";
 
 export type RootStackParamList = {
@@ -33,7 +33,7 @@ export type RootStackParamList = {
   'Adicionar Lojas': { storeToEdit?: StoreClass };
   'Mapa': undefined;
   'Recomendados': undefined;
-  'Profissionais': undefined;
+  'Professionals': undefined;
   'Detalhes Enologo': { professionalId: string, professionalType: 'Sommelier' | 'Enólogo' };
   'Detalhes Vinho': { wine: WineRecommendation };
 };
@@ -142,14 +142,14 @@ function StackRoute() {
         options={{ gestureEnabled: false, headerShown: false }}
       />
       <Stack.Screen 
-        name="Profissionais" 
-        component={ProfessionaisScreen}
+        name="Professionals" 
+        component={ProfessionalsScreen}
         options={{
           headerShown: true,
           headerStyle: {backgroundColor: '#6B2737'},
           headerTintColor: 'white',
           headerTitleStyle: {fontWeight: 'bold'},
-          title: 'Profissionais'
+          title: 'Professionals'
         }}
       />
       <Stack.Screen 
@@ -160,7 +160,7 @@ function StackRoute() {
           headerStyle: {backgroundColor: '#6B2737'},
           headerTintColor: 'white',
           headerTitleStyle: {fontWeight: 'bold'},
-          title: 'Detalhes do Profissional'
+          title: 'Detalhes do Professional'
         }}
       />
       <Stack.Screen
