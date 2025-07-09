@@ -118,6 +118,7 @@ const ProfessionalsScreen = () => {
           keyExtractor={(item) => item?.id ? item.id : item.email}
           renderItem={({ item }) => (
             <ProfessionalCard
+              typeOfProfessionalId={item.idOfType!}
               name={item.nome}
               email={item.email}
               onDelete={() => deleteProfessional(item)}

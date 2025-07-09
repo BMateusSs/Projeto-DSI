@@ -50,7 +50,8 @@ function removeUndefinedValues<T extends object>(obj: T): Partial<T> {
   
     async update(id: string, data: Partial<T>): Promise<void> {
       const docRef = doc(db, this.collectionName, id);
-      await updateDoc(docRef, data);
+      const cleanedData = removeUndefinedValues(data)
+      await updateDoc(docRef, {...cleanedData});
     }
   
     async delete(id: string): Promise<void> {

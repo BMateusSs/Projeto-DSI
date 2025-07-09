@@ -1,10 +1,12 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { VinicotecaTheme } from "../styles/colors";
 import { professionalType } from "../screens/professionals/Contants";
+import { useNavigation } from "@react-navigation/native";
 
 interface ProfessionalCardProps {
+  typeOfProfessionalId: string;
   photoUrl?: string; // URL da foto do enólogo
   name: string;
   email: string;
@@ -12,8 +14,21 @@ interface ProfessionalCardProps {
   professionalType: professionalType;
 }
 
-const ProfessionalCard: React.FC<ProfessionalCardProps> = ({ photoUrl, name, email, onDelete, professionalType }) => {
+const ProfessionalCard: React.FC<ProfessionalCardProps> = ({ photoUrl, name, email, onDelete, professionalType, typeOfProfessionalId}) => {
+  const navigation = useNavigation();
+  const handleDetailsScreen = () => {
+    if(professionalType == "Enólogo") {
+          navigation.navigate('Detalhes Enologo', {
+      enologoId: typeOfProfessionalId,
+    });
+    } else if(professionalType == "Sommelier") {
+      navigation.navigate('Detalhes Sommelier', {
+      sommelierId: typeOfProfessionalId,
+    });
+    }
+  }
   return (
+    <Pressable onPress={handleDetailsScreen}>
     <View style={styles.card}>
       <View style={styles.leftBar} />
       <View style={styles.content}>
@@ -34,6 +49,7 @@ const ProfessionalCard: React.FC<ProfessionalCardProps> = ({ photoUrl, name, ema
         <Ionicons name="trash-outline" size={24} color={VinicotecaTheme.colors.redError} />
       </TouchableOpacity>
     </View>
+  </Pressable>
   );
 };
 
