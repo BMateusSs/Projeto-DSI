@@ -41,6 +41,12 @@ const ProfessionalsScreen = () => {
         } else {
           setProfessionalsItems((prev) => [...prev, {...professional, professionalType: "Sommelier", idOfType: idOfType} as ProfessionalItem]);
         }
+      } else {
+        if(professionalType === "Enólogo") {
+          setProfessionalsItems((prev) => [...prev.filter(item => item.id !== professional.id), {...professional, professionalType: "Enólogo", idOfType: idOfType} as ProfessionalItem])
+        } else {
+          setProfessionalsItems((prev) => [...prev.filter(item => item.id !== professional.id), {...professional, professionalType: "Sommelier", idOfType: idOfType} as ProfessionalItem]);
+        }
       }
   } 
   const fetchProfessionals = async () => {
