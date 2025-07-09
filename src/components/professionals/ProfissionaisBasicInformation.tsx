@@ -15,7 +15,7 @@ import { CertificacaoVinho } from '../../constants/CertificacoesVinho';
  */
 interface ProfessionalsBasicInformationProps {
   // The ID of the professional being edited, or "new" for creation.
-  professionalId: string;
+  typeOfProfessionalId: string;
 
   // The specific UI fields for the specialized professional (e.g., Enologo's academic formation).
   children: React.ReactNode;
@@ -31,7 +31,7 @@ interface ProfessionalsBasicInformationProps {
 }
 
 const ProfessionalsBasicInformation: React.FC<ProfessionalsBasicInformationProps> = ({
-  professionalId,
+  typeOfProfessionalId,
   children,
   onLoad,
   onSave,
@@ -40,13 +40,13 @@ const ProfessionalsBasicInformation: React.FC<ProfessionalsBasicInformationProps
   const navigation = useNavigation();
   const [professional, setProfessional] = useState<Professional>(initialData);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const isEditing = professionalId !== 'new';
+  const isEditing = typeOfProfessionalId !== 'new';
 
   // Effect to load data when in "edit" mode.
   useEffect(() => {
     if (isEditing) {
       setIsLoading(true);
-      onLoad(professionalId)
+      onLoad(typeOfProfessionalId)
         .then(loadedProfessional => {
           if (loadedProfessional) {
             setProfessional(loadedProfessional);
@@ -60,7 +60,7 @@ const ProfessionalsBasicInformation: React.FC<ProfessionalsBasicInformationProps
           setIsLoading(false);
         });
     }
-  }, [professionalId, isEditing, onLoad, navigation]);
+  }, [typeOfProfessionalId, isEditing, onLoad, navigation]);
 
   // Centralized handler for input changes.
   const handleInputChange = (field: keyof Professional, value: any) => {
@@ -150,7 +150,7 @@ const localStyles = StyleSheet.create({
     centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
     inputContainer: { marginBottom: 16 },
     preferencesContainer: { paddingTop: 16, marginBottom: 24 },
-    buttonContainer: { marginTop: 'auto', paddingTop: 16 },
+    buttonContainer: { paddingTop: 16 },
 });
 
 export default ProfessionalsBasicInformation;

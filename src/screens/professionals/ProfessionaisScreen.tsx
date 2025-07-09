@@ -33,19 +33,31 @@ const ProfessionalsScreen = () => {
   useFocusEffect(() => {
     fetchProfessionals();
   });
-
+  
+  const pushProfessionalItem = (professional: Professional, professionalType: professionalType, idOfType: string) => {
+      if(!professionalsItems.find((item) => item.id === professional.id)) {
+        if(professionalType === "Enólogo") {
+          setProfessionalsItems((prev) => [...prev, {...professional, professionalType: "Enólogo", idOfType: idOfType} as ProfessionalItem])
+        } else {
+          setProfessionalsItems((prev) => [...prev, {...professional, professionalType: "Sommelier", idOfType: idOfType} as ProfessionalItem]);
+        }
+      }
+  } 
   const fetchProfessionals = async () => {
     try {
       const professionals = await professionalsRepository.readAll();
       const sommeliers = await sommelierRepository.readAll();
       const enologos = await enologoRepository.readAll();
+      console.log(professionals)
       for(const professional of professionals) {
-        const sommelier = sommeliers.find((sommelier: Sommelier) => sommelier.professionalId === professional.id);
-        const enologo = enologos.find((enologo) => enologo.professionalId === professional.id);
+        const sommelier = sommeliers.find((item: Sommelier) => item.professionalId === professional.id);
+        const enologo = enologos.find((item) => item.professionalId === professional.id);
         if(sommelier) {
-         setProfessionalsItems((prev) => [...prev, {...professional, professionalType: "Sommelier", idOfType: sommelier.id} as ProfessionalItem]);
+          console.log(sommelier)
+          pushProfessionalItem(professional, "Sommelier", sommelier.id!)
         } else if(enologo) {
-          setProfessionalsItems((prev) => [...prev, {...professional, professionalType: "Enólogo", idOfType: enologo.id} as ProfessionalItem])
+          console.log(enologo)
+          pushProfessionalItem(professional, "Enólogo", enologo.id!)
         } else {
           console.log("Profissional não é enologo ou sommelier")
         }
@@ -58,13 +70,15 @@ const ProfessionalsScreen = () => {
 
   const addEnologo = () => {
     navigation.navigate('Detalhes Enologo', {
-      EnologoId: "new",
+      enologoId: "new",
     });
+    setShowDropdown(false);
   };
   const addSommelier = () => {
     navigation.navigate('Detalhes Sommelier', {
-      SommelierId: "new",
+      sommelierId: "new",
     });
+    setShowDropdown(false)
   };
 
   const deleteProfessional = async (professionalItem: ProfessionalItem) => {
@@ -101,7 +115,7 @@ const ProfessionalsScreen = () => {
       <View style={styles.content}>
         <FlatList
           data={filteredProfessionalsItems}
-          keyExtractor={(item) => item.id!}
+          keyExtractor={(item) => item?.id ? item.id : item.email}
           renderItem={({ item }) => (
             <ProfessionalCard
               name={item.nome}

@@ -11,8 +11,8 @@ export type RootStackParamList = {
   'Mapa': undefined;
   'Recomendados': undefined;
   'Professionals': undefined;
-  'Detalhes Enologo': { EnologoId: string };
-  'Detalhes Sommelier': { SommelierId: string };
+  'Detalhes Enologo': { enologoId: string };
+  'Detalhes Sommelier': { sommelierId: string };
   'Lista de Vinhos': undefined;
   'Lista de Lojas': undefined;
   'WineDetails': { wineId: string };

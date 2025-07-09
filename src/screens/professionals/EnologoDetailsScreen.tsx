@@ -13,8 +13,8 @@ type EnologoDetailsRouteProp = RouteProp<RootStackParamList, typeof ROUTE_NAMES.
 
 const EnologoDetailsScreen: React.FC = () => {
   const route = useRoute<EnologoDetailsRouteProp>();
-  const { professionalId: enologoId } = route.params; // The ID is for the Enologo entity
-
+  const { enologoId } = route.params; // The ID is for the Enologo entity
+  console.log(enologoId)
   // State for Enologo-specific fields
   const [enologo, setEnologo] = useState<Enologo>(new Enologo('', ''));
 
@@ -48,7 +48,7 @@ const EnologoDetailsScreen: React.FC = () => {
       const professionalId = await professionalRepository.create(professionalData);
       const newEnologo = new Enologo(professionalId, enologo.formacaoAcademica);
       await enologoRepository.create(newEnologo);
-      Alert.alert('Sucesso', 'Enólogo adicionado com sucesso!');
+      Alert.alert('Sucesso', 'Enólogo adicionado');
     } else {
       // Update existing Professional and Enologo
       await professionalRepository.update(enologo.professionalId, professionalData);
@@ -59,7 +59,7 @@ const EnologoDetailsScreen: React.FC = () => {
 
   return (
     <ProfessionalsBasicInformation
-      professionalId={enologoId}
+      typeOfProfessionalId={enologoId}
       onLoad={handleLoad}
       onSave={handleSave}
     >

@@ -24,7 +24,6 @@ export function ConfirmButton({
       style={[
         localStyles.button,
         (disabled || loading) && localStyles.buttonDisabled,
-        { width: width * 0.8, height: height * 0.07 },
         styles
       ]}
       onPress={onPress}
@@ -42,6 +41,8 @@ export function ConfirmButton({
 
 const localStyles = StyleSheet.create({
   button: {
+    width: '100%',
+    height: 50,
     backgroundColor: '#6B2737',
     borderRadius: 10,
     justifyContent: 'center',
