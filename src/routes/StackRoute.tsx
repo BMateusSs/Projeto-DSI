@@ -18,8 +18,9 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { ActivityIndicator, View } from 'react-native';
 import ProfessionalsScreen from "../screens/professionals/ProfessionaisScreen";
-import EnologoDetailsScreen from "../screens/professionals/EnologoDetailsScreen";
+import {EnologoDetailsScreen} from "../screens/professionals/EnologoDetailsScreen";
 import WineDetailScreen from "../screens/recomendations/WineDetailScreen";
+import { SommelierDetailsScreen } from "../screens/professionals/SommelierDetailScreen";
 
 export type RootStackParamList = {
   'Login': undefined;
@@ -34,7 +35,8 @@ export type RootStackParamList = {
   'Mapa': undefined;
   'Recomendados': undefined;
   'Professionals': undefined;
-  'Detalhes Enologo': { professionalId: string, professionalType: 'Sommelier' | 'Enólogo' };
+  'Detalhes Enologo': { enologoId: string };
+  'Detalhes Sommelier': { sommelierId: string };
   'Detalhes Vinho': { wine: WineRecommendation };
 };
 
@@ -156,11 +158,14 @@ function StackRoute() {
         name="Detalhes Enologo" 
         component={EnologoDetailsScreen}
         options={{
-          headerShown: false,
-          headerStyle: {backgroundColor: '#6B2737'},
-          headerTintColor: 'white',
-          headerTitleStyle: {fontWeight: 'bold'},
-          title: 'Detalhes do Professional'
+          headerShown: false
+        }}
+      />
+      <Stack.Screen 
+        name="Detalhes Sommelier" 
+        component={SommelierDetailsScreen}
+        options={{
+          headerShown: false
         }}
       />
       <Stack.Screen

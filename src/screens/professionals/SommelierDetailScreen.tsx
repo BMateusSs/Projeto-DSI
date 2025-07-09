@@ -1,77 +1,61 @@
+import React, { useMemo, useState, useCallback } from 'react';
+import { Alert, Switch, Text } from 'react-native';
+import { RouteProp, useRoute } from '@react-navigation/native';
+import LabeledInput from '../../components/LabeledInput';
+import { ProfessionalsRepository } from '../../repositories/ProfessionalsRepository';
+import { Professional } from '../../entities/Professional';
+import { RootStackParamList } from '../../types/navigation';
+import ProfessionalsBasicInformation from '../../components/professionals/ProfissionaisBasicInformation';
+import { Sommelier } from '../../entities/Sommelier';
+import { SommelierRepository } from '../../repositories/SommelierRepository';
+import { globalStyles } from '../../styles/preferenceStyles';
 
-// import React, { useMemo, useState, useCallback } from 'react';
-// import { Alert } from 'react-native';
-// import { RouteProp, useRoute } from '@react-navigation/native';
-// import LabeledInput from '../../components/LabeledInput';
-// import { ProfessionalsRepository } from '../../repositories/ProfessionalsRepository';
-// import { Professional } from '../../entities/Professional';
-// import { RootStackParamList } from '../../types/navigation';
-// import ProfessionalsBasicInformation from '../../components/professionals/ProfissionaisBasicInformation';
 
-// type SommelierDetailsRouteProp = RouteProp<RootStackParamList, typeof ROUTE_NAMES.SOMMELIER_DETAILS>;
+export const SommelierDetailsScreen: React.FC = () => {
+  const route = useRoute();
+  const { sommelierId } = route.params; 
+  const [sommelier, setSommelier] = useState<Sommelier>(new Sommelier('', false));
+    const handleSwitch = () => {
+        setSommelier((prev: Sommelier) => new Sommelier(prev.professionalId, !prev.especializacaoHarmonizacao ))
+    }
+  // Repositories
+  const sommelierRepository = useMemo(() => new SommelierRepository(), []);
+  const professionalRepository = useMemo(() => new ProfessionalsRepository(), []);
 
-// const SommelierDetailsScreen: React.FC = () => {
-//   const route = useRoute<SommelierDetailsRouteProp>();
-//   const { professionalId: sommelierId } = route.params; // The ID is for the Enologo entity
+  const handleLoad = useCallback(async (id: string): Promise<Professional | null> => {
+    const loadedSommelier = await sommelierRepository.find(id);
+    const loadedProfessional = await professionalRepository.find(loadedSommelier.professionalId);
+    setSommelier(loadedSommelier); // Set the specific state here
+    return loadedProfessional; // Return the common state to the child
+  }, [sommelierRepository, professionalRepository]);
 
-//   // State for Enologo-specific fields
-//   const [enologo, setEnologo] = useState<Enologo>(new Enologo('', ''));
+  const handleSave = useCallback(async (professionalData: Professional) => {
+    if (sommelierId === 'new') {
+      const professionalId = await professionalRepository.create(professionalData);
+      const newSommelier = new Sommelier(professionalId, sommelier.especializacaoHarmonizacao);
+      await sommelierRepository.create(newSommelier);
+      Alert.alert('Sucesso', 'Sommelier adicionado');
+    } else {
+      await professionalRepository.update(sommelier.professionalId, professionalData);
+      await sommelierRepository.update(sommelierId, sommelier);
+      Alert.alert('Sucesso', 'Sommelier atualizado com sucesso!');
+    }
+  }, [sommelier, sommelierId, sommelierRepository, professionalRepository]);
 
-//   // Repositories
-//   const enologoRepository = useMemo(() => new EnologoRepository(), []);
-//   const professionalRepository = useMemo(() => new ProfessionalsRepository(), []);
-
-//   /**
-//    * Handles loading the Enologo and its associated Professional.
-//    * This function is passed to the generic component's `onLoad` prop.
-//    */
-//   const handleLoad = useCallback(async (id: string): Promise<Professional | null> => {
-//     const loadedEnologo = await enologoRepository.find(id);
-//     const loadedProfessional = await professionalRepository.find(loadedEnologo.professionalId);
-//     setEnologo(loadedEnologo); // Set the specific state here
-//     return loadedProfessional; // Return the common state to the child
-//   }, [enologoRepository, professionalRepository]);
-
-//   /**
-//    * Handles saving both the Professional and Enologo data.
-//    * This function is passed to the generic component's `onSave` prop.
-//    */
-//   const handleSave = useCallback(async (professionalData: Professional) => {
-//     // Basic validation for enologo-specific fields
-//     if (!enologo.formacaoAcademica) {
-//         throw new Error("Formação Acadêmica é um campo obrigatório.");
-//     }
-    
-//     if (enologoId === 'new') {
-//       // Create new Professional, then create new Enologo with the returned ID
-//       const professionalId = await professionalRepository.create(professionalData);
-//       const newEnologo = new Enologo(professionalId, enologo.formacaoAcademica);
-//       await enologoRepository.create(newEnologo);
-//       Alert.alert('Sucesso', 'Enólogo adicionado com sucesso!');
-//     } else {
-//       // Update existing Professional and Enologo
-//       await professionalRepository.update(enologo.professionalId, professionalData);
-//       await enologoRepository.update(enologoId, enologo);
-//       Alert.alert('Sucesso', 'Enólogo atualizado com sucesso!');
-//     }
-//   }, [enologo, enologoId, enologoRepository, professionalRepository]);
-
-//   return (
-//     <ProfessionalsBasicInformation
-//       professionalId={enologoId}
-//       onLoad={handleLoad}
-//       onSave={handleSave}
-//     >
-//       {/* This is the Enologo-specific part of the form */}
-//       <LabeledInput
-//         title="Formação Acadêmica"
-//         placeholder="Digite a formação acadêmica"
-//         value={enologo.formacaoAcademica}
-//         onChange={text => setEnologo(prev => new Enologo(prev.professionalId, text))}
-//         containerStyle={{ marginBottom: 16 }}
-//       />
-//     </ProfessionalsBasicInformation>
-//   );
-// };
-
-// export default EnologoDetailsScreen;
+  return (
+    <ProfessionalsBasicInformation
+      typeOfProfessionalId={sommelierId}
+      onLoad={handleLoad}
+      onSave={handleSave}
+    >
+      <Text style={globalStyles.optionText}>Tem especialização em harmonização?</Text>
+      <Switch
+          trackColor={{false: '#767577', true: '#81b0ff'}}
+          thumbColor={sommelier.especializacaoHarmonizacao ? '#f5dd4b' : '#f4f3f4'}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={handleSwitch}
+          value={sommelier.especializacaoHarmonizacao}
+        />
+    </ProfessionalsBasicInformation>
+  );
+};

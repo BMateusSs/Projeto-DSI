@@ -11,7 +11,7 @@ import ProfessionalsBasicInformation from '../../components/professionals/Profis
 
 type EnologoDetailsRouteProp = RouteProp<RootStackParamList, typeof ROUTE_NAMES.ENOLOGO_DETAILS>;
 
-const EnologoDetailsScreen: React.FC = () => {
+export const EnologoDetailsScreen: React.FC = () => {
   const route = useRoute<EnologoDetailsRouteProp>();
   const { enologoId } = route.params; // The ID is for the Enologo entity
   console.log(enologoId)
@@ -74,5 +74,3 @@ const EnologoDetailsScreen: React.FC = () => {
     </ProfessionalsBasicInformation>
   );
 };
-
-export default EnologoDetailsScreen;
