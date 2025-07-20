@@ -105,5 +105,5 @@ export default function Login() {
 }
 
 const localStyles = StyleSheet.create({
-  errorMessage: { color: 'red', fontSize: 14, marginBottom: height < 720 ? 2 : 10 }
+  errorMessage: { color: 'red', fontSize: 14, marginBottom: height < 720 ? 2 : 4 }
 })

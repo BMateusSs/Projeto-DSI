@@ -6,11 +6,11 @@ const authStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingTop: height < 720? 6 : 60,
+    paddingTop: height < 720? 6 : 10,
     alignItems: "center",
   },
   containerForm: {
-    marginTop: 20,
+    marginTop: height < 720 ? 2 : 4,
     width: width * 0.85,
     gap: 16,
     alignItems: "center"
